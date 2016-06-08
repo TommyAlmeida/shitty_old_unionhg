@@ -2,8 +2,10 @@ package eu.union.dev;
 
 import eu.union.dev.events.*;
 import eu.union.dev.utils.Messages;
+import eu.union.dev.utils.Perms;
 import eu.union.dev.utils.StructureCreator;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,6 +30,7 @@ public class HGManager implements Listener{
     }
     private Status status;
     Location feast,minifeast,coliseu = null;
+    int bordsize;
     public enum Status {
         LOBBY("Lobby"),
         INVENCIBILITY("Invencibility"),
@@ -48,10 +51,16 @@ public class HGManager implements Listener{
     public Status getStatus() {
         return status;
     }
+
+    public int getBordSize() {
+        return bordsize;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
     public void setup(){
+        bordsize = 480;
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
         feast = RandomLocation(100);
         minifeast = RandomLocation(300);
@@ -142,11 +151,57 @@ public class HGManager implements Listener{
         if (e.getBlock().getY() >=145){
             e.setCancelled(true);
         }
+        Location loc = e.getBlock().getLocation();
+        Location loc2 = new Location(e.getBlock().getWorld(), 0, 120, 0);
+        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= bordsize) ||
+                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= bordsize)))
+        {
+            e.setCancelled(true);
+            if (e.getPlayer() != null){
+                e.getPlayer().sendMessage("§4This very close to the Bord!");
+            }
+        }
     }
     @EventHandler
     public void onPlace(BlockPlaceEvent e){
         if (e.getBlock().getY() >=145){
             e.setCancelled(true);
+        }
+        Location loc = e.getBlock().getLocation();
+        Location loc2 = new Location(e.getBlock().getWorld(), 0, 120, 0);
+        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= bordsize) ||
+                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= bordsize)))
+        {
+            e.setCancelled(true);
+            if (e.getPlayer() != null){
+                e.getPlayer().sendMessage("§4This very close to the Bord!");
+            }
+        }
+    }
+    @EventHandler
+    public void onSeconds(HGTimerSecondsEvent e){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            Location loc = p.getLocation();
+            Location loc2 = new Location(p.getWorld(), 0, 120, 0);
+            if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= bordsize) ||
+                    (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= bordsize)))
+            {
+                if ((p.getGameMode() == GameMode.SPECTATOR ||
+                        p.getGameMode() == GameMode.CREATIVE) &&
+                                !Perms.isStaff(p)){
+                    p.sendMessage("§cSorry! Spectators don't leave the map!");
+                    p.teleport(getColiseuLoc().add(0,5,0));
+                }else{
+                    p.sendMessage("§4Caution! You are entering the area of the bord!");
+                    double dmg = 2.5D;
+                    if (p.getHealth() - dmg > 0.0D) {
+                        p.damage(dmg);
+                    } else {
+                        p.setHealth(0.0D);
+                        Bukkit.broadcastMessage("§a"+p.getDisplayName()+" §ckilled by bord!");
+                    }
+                }
+            }
         }
     }
 }
