@@ -3,6 +3,7 @@ package eu.union.dev;
 import eu.union.dev.events.*;
 import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Packets;
+import eu.union.dev.utils.StructureCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,11 +68,19 @@ public class Timer {
                     HGManager.getInstance().setStatus(HGManager.Status.POSINVINCIBILITY);
                     Bukkit.getPluginManager().callEvent(new HGEndInvencibleEvent());
                 }
-                if (time == 2*60 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){//spawn feast
-                    HGManager.getInstance().setStatus(HGManager.Status.FEAST);
-                    Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(Bukkit.getWorlds().get(0).getSpawnLocation()));//Substituir depois
+                if (time == 15*60 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    StructureCreator scf = new StructureCreator(HGManager.getInstance().getFeastLoc(), StructureCreator.Structure.FEASTBASE);
+                    scf.createStrucure();
+                    Bukkit.broadcastMessage(Messages.PREFIX+" §aThe Feast will appear on " +
+                            "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
+                            "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
+                            " §ain 5m!");
                 }
-                if (time == 3*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//acaba o jogo
+                if (time == 20*60 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){//spawn feast
+                    HGManager.getInstance().setStatus(HGManager.Status.FEAST);
+                    Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(HGManager.getInstance().getFeastLoc()));//Substituir depois
+                }
+                if (time == 60*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//acaba o jogo
                     HGManager.getInstance().setStatus(HGManager.Status.ENDGAME);
                     Bukkit.getPluginManager().callEvent(new HGEndEvent());
                 }

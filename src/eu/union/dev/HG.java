@@ -20,7 +20,9 @@ public class HG extends JavaPlugin implements Listener{
     @Override
     public void onEnable() {
         instance = this;
-        HGManager.getInstance().setStatus(HGManager.Status.LOBBY);
+        HGManager hgm = HGManager.getInstance();
+        hgm.setStatus(HGManager.Status.LOBBY);
+        hgm.setup();
         Timer.getInstace().start();
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new HGManager(), this);
