@@ -1,12 +1,14 @@
 package eu.union.dev.utils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.union.dev.HG;
 import eu.union.dev.chests.ChestItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +21,7 @@ import org.bukkit.event.Listener;
 public class StructureCreator implements Listener{
     Location centro;
     Structure type;
+    List<Block> piston = new ArrayList<>();
     public StructureCreator(Location centro, Structure type) {
         this.centro = centro;
         this.type = type;
@@ -86,6 +89,25 @@ public class StructureCreator implements Listener{
                     ChestItems items = new ChestItems(ChestItems.ChestType.FEAST);
                     items.fillChest(chest.getInventory());
                 }
+            }
+            if (type == Structure.MINIFEAST){
+                if (m == Material.CHEST){
+                    Chest chest = (Chest)loccenter.getBlock().getLocation().add(x, y, z).getBlock().getState();
+                    ChestItems items = new ChestItems(ChestItems.ChestType.MINIFEAST);
+                    items.fillChest(chest.getInventory());
+                }
+            }
+            if (type == Structure.COLISEU){
+                if (m == Material.PISTON_BASE){
+                    piston.add(loccenter.getBlock().getLocation().add(x, y, z).getBlock());
+                }
+            }
+        }
+    }
+    public void removePistons(){
+        if (type == Structure.COLISEU){
+            for (Block b : piston){
+                b.setType(Material.AIR);
             }
         }
     }

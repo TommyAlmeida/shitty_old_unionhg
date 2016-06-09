@@ -54,6 +54,15 @@ public class ChestItems {
 
             randomItems.add(new ChestRandomItems(1.0D, Material.POTION, 16462, 1, 1));
         }
+        if (chesttype == ChestType.MINIFEAST){
+            randomItems.add(new ChestRandomItems(5.0D, Material.DIAMOND, 0, 1, 3));
+            randomItems.add(new ChestRandomItems(5.0D, Material.IRON_INGOT, 0, 1, 6));
+            randomItems.add(new ChestRandomItems(20.0D, Material.LAVA_BUCKET, 0, 1, 1));
+            randomItems.add(new ChestRandomItems(20.0D, Material.WATER_BUCKET, 0, 1, 1));
+            randomItems.add(new ChestRandomItems(20.0D, Material.TNT, 0, 1, 20));
+            randomItems.add(new ChestRandomItems(20.0D, Material.MUSHROOM_SOUP, 0, 1, 7));
+            randomItems.add(new ChestRandomItems(20.0D, Material.FLINT_AND_STEEL, 0, 1, 1));
+        }
     }
     public enum ChestType {
         MINIFEAST("MiniFeast"),

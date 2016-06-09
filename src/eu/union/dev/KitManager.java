@@ -1,6 +1,7 @@
 package eu.union.dev;
 
 
+import eu.union.dev.storage.KPlayer;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.utils.Messages;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ public class KitManager {
 
     public static KitManager km = new KitManager();
     public HashMap<Player, Kit> playerKit = new HashMap<>();
+    private HashMap<Player, Kit> kitselector = new HashMap<>();
     List<Kit> kits = new ArrayList<>(); //Lista de Kits.
 
     /**
@@ -103,14 +105,14 @@ public class KitManager {
      * @param kit
      */
     public void applyKit(Player player, Kit kit) {
-        //KPlayer kPlayer = PlayerManager.getPlayer(player.getUniqueId());
+        KPlayer kPlayer = PlayerManager.getPlayer(player.getUniqueId());
 
         if (!player.hasPermission(kit.getPermission())) {
             player.sendMessage(Messages.NO_PERM.toString());
             return;
         }
 
-        if (!hasEnoughLevel()) {// temporario
+        if (!hasEnoughLevel(kPlayer,kit)) {
             player.sendMessage(Messages.PREFIX.toString() + " §7You dont have enough §alevel");
         }else{
             if (usingKit(player)) {
@@ -120,8 +122,6 @@ public class KitManager {
                 kit.applyKit(player);
 
                 playerKit.put(player, kit);
-
-                //Util.getInstance().giveSoups(player);
 
                 player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
             }
@@ -162,11 +162,8 @@ public class KitManager {
      * @param //kit
      * @return
      */
-    /*public boolean hasEnoughLevel(KPlayer kPlayer, Kit kit) {
+    public boolean hasEnoughLevel(KPlayer kPlayer, Kit kit) {
         return kPlayer.getLevel() >= kit.getLevel();
-    }*/
-    public boolean hasEnoughLevel() {
-        return true;
     }
 
     public boolean usingKit(Player player) {
@@ -183,4 +180,14 @@ public class KitManager {
         return kits;
     }
 
+    public Kit getPlayerKitInLobby(Player p){
+        if (kitselector.containsKey(p)){
+            return kitselector.get(p);
+        }else{
+            return null;
+        }
+    }
+    public void setPlayerKitInLobby(Player p , Kit kit){
+        kitselector.put(p,kit);
+    }
 }

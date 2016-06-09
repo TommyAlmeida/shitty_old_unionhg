@@ -4,6 +4,7 @@ import eu.union.dev.events.*;
 import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Perms;
 import eu.union.dev.utils.StructureCreator;
+import eu.union.dev.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -14,10 +15,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerAchievementAwardedEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by Fentis on 06/06/2016.
@@ -29,7 +37,8 @@ public class HGManager implements Listener{
         return instance;
     }
     private Status status;
-    Location feast,minifeast,coliseu = null;
+    private ArrayList<UUID> reconect = new ArrayList<>();
+    Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
     int bordsize;
     public enum Status {
         LOBBY("Lobby"),
@@ -59,12 +68,15 @@ public class HGManager implements Listener{
     public void setStatus(Status status) {
         this.status = status;
     }
+    StructureCreator scc;
     public void setup(){
         bordsize = 480;
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
         feast = RandomLocation(100);
-        minifeast = RandomLocation(300);
-        StructureCreator scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
+        minifeast1 = RandomLocation(300);
+        minifeast2 = RandomLocation(300);
+        minifeast3 = RandomLocation(300);
+        scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
     }
     public static Location RandomLocation(int raio)
@@ -88,17 +100,83 @@ public class HGManager implements Listener{
         return coliseu;
     }
 
-    public Location getMiniFeastLoc() {
-        return minifeast;
+    public Location getMiniFeastLoc(int n) {
+        if (n == 1){
+            return minifeast1;
+        }
+        if (n == 2){
+            return minifeast2;
+        }
+        if (n == 3){
+            return minifeast3;
+        }
+        return null;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
-        //Give de items
+        Player p = e.getPlayer();
+        e.setJoinMessage(null);
+        KitManager km = KitManager.getManager();
+        if (HGManager.getInstance().getStatus() == Status.LOBBY){
+            if (km.getPlayerKitInLobby(p) == null){
+                km.setPlayerKitInLobby(p,km.getKitByName("Surprise"));
+            }
+            p.getInventory().clear();
+            Util.getInstance().buildJoinIcons(p);
+            p.teleport(getColiseuLoc().add(0,5,0));
+        }else{
+            if (!reconect.contains(p.getUniqueId())){
+                if (p.hasPermission(Perms.SPECTATOR.toString())){
+                    p.setGameMode(GameMode.SPECTATOR);
+                    p.getInventory().clear();
+                    p.getInventory().setArmorContents(null);
+                }else{
+                    p.kickPlayer(Messages.PREFIX+" §aSorry you don't have permission for spectate!");
+                }
+            }else{
+                reconect.remove(p.getUniqueId());
+            }
+        }
+    }
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e){
+        Player p = e.getPlayer();
+        if (HGManager.getInstance().getStatus() != Status.LOBBY){
+            if (!reconect.contains(p.getUniqueId())){
+                reconect.add(p.getUniqueId());
+                startReconect(p);
+            }
+        }
+    }
+    public void startReconect(Player p){
+        UUID uuid = p.getUniqueId();
+        new BukkitRunnable(){
+            int i = 0;
+            @Override
+            public void run() {
+                i++;
+                for (Player p : Bukkit.getOnlinePlayers()){
+                    if (p.getUniqueId() == uuid){
+                        reconect.remove(uuid);
+                        cancel();
+                    }
+                }
+                if (i>60){
+                    reconect.remove(uuid);
+                    Bukkit.broadcastMessage(Messages.PREFIX+" §c"+p.getDisplayName()+" not connected in time!");
+                    cancel();
+                }
+            }
+        }.runTaskTimer(HG.getInstance(),0,20);
     }
     @EventHandler
     public void onStart(HGStartEvent e){
-        //Give kit e remove items
+        scc.removePistons();
+        KitManager km = KitManager.getManager();
+        for (Player p : Bukkit.getOnlinePlayers()){
+            km.applyKit(p,km.getPlayerKitInLobby(p));
+        }
         Bukkit.broadcastMessage(Messages.PREFIX+" §bThe game started! And may the odds be ever in your favor!");
     }
     @EventHandler
@@ -126,6 +204,17 @@ public class HGManager implements Listener{
         loc.setY(130);
         p.teleport(loc);
         Bukkit.broadcastMessage(Messages.PREFIX+" §aThe "+p.getDisplayName()+" won the game! Good game!");
+        new BukkitRunnable(){
+            int i=0;
+            @Override
+            public void run() {
+                i++;
+                Util.getInstance().fireworksRandom(p);
+                if (i>=10){
+                    Bukkit.shutdown();
+                }
+            }
+        }.runTaskTimer(HG.getInstance(),0,20);
     }
     @EventHandler
     public void onEnd(HGEndEvent e){
@@ -142,7 +231,10 @@ public class HGManager implements Listener{
     }
     @EventHandler
     public void onDamage(EntityDamageEvent e){
-        if (getStatus() == Status.INVENCIBILITY || getStatus() == Status.LOBBY || getStatus() == Status.ENDGAME){
+        if (getStatus() == Status.LOBBY || getStatus() == Status.ENDGAME){
+            e.setCancelled(true);
+        }
+        if (getStatus() == Status.INVENCIBILITY && e.getEntity() instanceof Player){
             e.setCancelled(true);
         }
     }
@@ -202,6 +294,31 @@ public class HGManager implements Listener{
                     }
                 }
             }
+        }
+    }
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent e){
+        if (HGManager.getInstance().getStatus() == Status.LOBBY || HGManager.getInstance().getStatus() == Status.ENDGAME){
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onMiniFeastSpawn(HGMiniFeastSpawnEvent e){
+        StructureCreator scmf = new StructureCreator(e.getLocation(), StructureCreator.Structure.MINIFEAST);
+        scmf.createStrucure();
+        Bukkit.broadcastMessage(Messages.PREFIX+" §aMiniFeast has spawned in §cX:"+e.getLocation().getX()+"§a, §cZ:"+e.getLocation().getZ()+"§a!");
+    }
+    @EventHandler
+    public void onQuest(PlayerAchievementAwardedEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onFood(FoodLevelChangeEvent e) {
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
+                HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY ||
+                HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            e.setCancelled(true);
         }
     }
 }

@@ -19,7 +19,9 @@ public class Timer {
         return instace;
     }
     private int time = 0;
+    private boolean fstart = false;
     public void start(){
+        int minplayers = 2;
         new BukkitRunnable(){
             @Override
             public void run() {
@@ -44,8 +46,8 @@ public class Timer {
                         }
                     }
                 }
-                if (time == 5*60 && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                    if (Bukkit.getOnlinePlayers().size() >= 1){
+                if ((time == 5*60 || fstart) && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                    if (Bukkit.getOnlinePlayers().size() >= minplayers || fstart){
                         for (Player p : Bukkit.getOnlinePlayers()){
                             p.setLevel(0);
                             p.setExp(0);
@@ -55,7 +57,7 @@ public class Timer {
                         time = 0;
                     }else{
                         time = 4*60;
-                        Bukkit.broadcastMessage("§cWe need at least §b2§c players to start!");
+                        Bukkit.broadcastMessage("§cWe need at least §b"+minplayers+"§c players to start!");
                     }
                 }
                 if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
@@ -68,6 +70,15 @@ public class Timer {
                     HGManager.getInstance().setStatus(HGManager.Status.POSINVINCIBILITY);
                     Bukkit.getPluginManager().callEvent(new HGEndInvencibleEvent());
                 }
+                if (time == 5*20 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(1),1));
+                }
+                if (time == 10*20 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(2),2));
+                }
+                if (time == 15*20 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(3),3));
+                }
                 if (time == 15*60 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
                     StructureCreator scf = new StructureCreator(HGManager.getInstance().getFeastLoc(), StructureCreator.Structure.FEASTBASE);
                     scf.createStrucure();
@@ -75,6 +86,29 @@ public class Timer {
                             "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
                             "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
                             " §ain 5m!");
+                }
+                if ((time == 16*60 || time == 17*60 || time == 18*60 || time == 19*60) &&
+                        HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    Bukkit.broadcastMessage(Messages.PREFIX+" §aThe Feast will appear on " +
+                            "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
+                            "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
+                            " §ain "+(20-(time/60))+"m!");
+                }
+                if (time >= (19*60) && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                    int seconds = 0;
+                    if (time == (19*60)+30){
+                        seconds = 30;
+                    }
+                    for (int i = 0; i < 10; i++) {
+                        int n = 50+i;
+                        if (time == (19*60)+n){
+                            seconds = n;
+                        }
+                    }
+                    Bukkit.broadcastMessage(Messages.PREFIX+" §aThe Feast will appear on " +
+                            "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
+                            "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
+                            " §ain "+seconds+"s!");
                 }
                 if (time == 20*60 && HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){//spawn feast
                     HGManager.getInstance().setStatus(HGManager.Status.FEAST);
@@ -87,6 +121,15 @@ public class Timer {
             }
         }.runTaskTimer(HG.getInstance(),0,20);
     }
+
+    public void setForceStart(boolean fstart) {
+        this.fstart = fstart;
+    }
+
+    public boolean getFeastStart() {
+        return fstart;
+    }
+
     private String timeformat(int tempo)
     {
         int ss = tempo % 60;

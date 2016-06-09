@@ -5,12 +5,14 @@ import eu.union.dev.HG;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,6 +22,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class Util {
 
     private static Util instance = new Util();
-    private ArrayList<UUID> pvp = new ArrayList<>();
 
     public static Util getInstance() {
         return instance;
@@ -55,18 +57,6 @@ public class Util {
         }
     }
 
-    public void giveSoups(Player player) {
-        Icon icon = new Icon(Material.MUSHROOM_SOUP, "§cSoup");
-
-        for (int i = 0; i < 50; i++) {
-            player.getInventory().addItem(icon.build());
-        }
-
-        player.getInventory().setItem(13, new ItemStack(Material.RED_MUSHROOM, 64));
-        player.getInventory().setItem(15, new ItemStack(Material.BROWN_MUSHROOM, 64));
-        player.getInventory().setItem(14, new ItemStack(Material.BOWL, 64));
-
-    }
 
     public void buildJoinIcons(Player player) {
         Inventory inv = player.getInventory();
@@ -78,9 +68,12 @@ public class Util {
 
 
         {
-            Icon warps = new Icon(Material.VINE, " ", " ");
-            inv.setItem(3, warps.build());
-            inv.setItem(5, warps.build());
+            ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5);
+            ItemMeta im = i.getItemMeta();
+            im.setDisplayName("§7");
+            i.setItemMeta(im);
+            inv.setItem(3,i);
+            inv.setItem(5,i);
         }
 
         {
@@ -192,5 +185,45 @@ public class Util {
 
     public void addPermission(String playerName, String permission) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/pex user " + playerName + " add " + permission);
+    }
+    public void fireworksRandom(Player p){
+        Random r = new Random();
+        Firework fw = (Firework) p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
+        FireworkMeta fwm = fw.getFireworkMeta();
+
+        int rp = r.nextInt(2);
+        fwm.setPower(rp);
+
+        int rt = r.nextInt(5);
+        FireworkEffect.Type type = FireworkEffect.Type.BALL;
+        if (rt == 1) type = FireworkEffect.Type.BALL;
+        if (rt == 2) type = FireworkEffect.Type.BALL_LARGE;
+        if (rt == 3) type = FireworkEffect.Type.BURST;
+        if (rt == 4) type = FireworkEffect.Type.CREEPER;
+        if (rt == 5) type = FireworkEffect.Type.STAR;
+        FireworkEffect ef = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(cores().get(r.nextInt(16))).withFade(cores().get(r.nextInt(16))).with(type).trail(r.nextBoolean()).build();
+        fwm.addEffect(ef);
+        fw.setFireworkMeta(fwm);
+    }
+    private List<Color> cores(){
+        List<Color> list = new ArrayList<>();
+        list.add(Color.AQUA);
+        list.add(Color.BLACK);
+        list.add(Color.BLUE);
+        list.add(Color.FUCHSIA);
+        list.add(Color.GRAY);
+        list.add(Color.GREEN);
+        list.add(Color.LIME);
+        list.add(Color.MAROON);
+        list.add(Color.NAVY);
+        list.add(Color.OLIVE);
+        list.add(Color.ORANGE);
+        list.add(Color.PURPLE);
+        list.add(Color.RED);
+        list.add(Color.SILVER);
+        list.add(Color.TEAL);
+        list.add(Color.WHITE);
+        list.add(Color.YELLOW);
+        return list;
     }
 }
