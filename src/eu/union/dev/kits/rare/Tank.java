@@ -17,7 +17,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
  */
 public class Tank extends Kit implements Listener {
 
-    public Tank() {
+    public Tank() {//
         super("tank", "unkit.tank", Difficulty.LOW, Rarity.RARE, 2, new Icon(Material.IRON_BLOCK), Category.SWORDS, 1000L);
     }
 

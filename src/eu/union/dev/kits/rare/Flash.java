@@ -28,7 +28,7 @@ public class Flash extends Kit implements Listener {
 
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
-    public Flash() {
+    public Flash() {//
         super("flash", "unkit.flash", Difficulty.LOW, Rarity.RARE, 2, new Icon(Material.REDSTONE_TORCH_ON), Category.TELEPORT, 1000L);
     }
 

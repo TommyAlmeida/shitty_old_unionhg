@@ -24,7 +24,7 @@ public class Kangaroo extends Kit implements Listener {
 
     ArrayList<String> cd = new ArrayList<>();
 
-    public Kangaroo() {
+    public Kangaroo() {//
         super("kangaroo", "unkit.kangaroo", Difficulty.MEDIUM, Rarity.HEROIC, 1, new Icon(Material.FIREWORK), Category.SOCIAL, 1000L);
     }
 

@@ -23,7 +23,7 @@ public class Spectre extends Kit implements Listener {
 
     Ability cooldown = new Ability(1, 20, TimeUnit.SECONDS);
 
-    public Spectre() {
+    public Spectre() {//
         super("spectre", "unkit.spectre", Difficulty.LOW, Rarity.COMMON, 4, new Icon(Material.SUGAR),
                 Category.POTION, 1000L);
     }

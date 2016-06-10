@@ -29,7 +29,7 @@ public class TimeLord extends Kit implements Listener {
     Ability cooldown = new Ability(1, 30, TimeUnit.SECONDS);
     ArrayList<String> congelados = new ArrayList<>();
 
-    public TimeLord() {
+    public TimeLord() {//
         super("timelord", "unkit.timelord", Difficulty.LOW, Rarity.RARE, 7, new Icon(Material.WATCH), Category.FREEZE, 2200L);
     }
 

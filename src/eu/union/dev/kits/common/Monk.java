@@ -23,7 +23,7 @@ public class Monk extends Kit implements Listener {
 
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
-    public Monk() {
+    public Monk() {//
         super("monk", "unkit.monk", Difficulty.LOW, Rarity.COMMON, 2, new Icon(Material.BLAZE_ROD), Category.SOCIAL, 1000L);
     }
 

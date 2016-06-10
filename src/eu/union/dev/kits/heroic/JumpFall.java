@@ -24,7 +24,7 @@ public class JumpFall extends Kit implements Listener {
 
     Ability cooldown = new Ability(1, 30, TimeUnit.SECONDS);
 
-    public JumpFall() {
+    public JumpFall() {//
         super("jumpfall", "unkit.jumpfall", Difficulty.MEDIUM, Rarity.HEROIC, 5, new Icon(Material.PAPER), Category.SOCIAL, 1000L);
     }
 

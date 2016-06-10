@@ -30,7 +30,7 @@ public class C4 extends Kit implements Listener {
     public static Map<Player, Item> c4item = new HashMap<>();
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
-    public C4() {
+    public C4() {//
         super("c4", "unkit.c4", Difficulty.MEDIUM, Rarity.HEROIC, 8, new Icon(Material.TNT), Category.KAMIKAZE, 1000L);
     }
 

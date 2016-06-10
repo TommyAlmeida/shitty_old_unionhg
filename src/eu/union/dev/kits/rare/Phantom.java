@@ -29,9 +29,7 @@ public class Phantom extends Kit implements Listener {
 
     Ability cooldown = new Ability(1, 30, TimeUnit.SECONDS);
 
-    ;
-
-    public Phantom() {
+    public Phantom() {//
         super("phantom", "unkit.phantom", Difficulty.LOW, Rarity.RARE, 7, new Icon(Material.FEATHER), Category.POTION, 1000L);
     }
 

@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Poseidon extends Kit implements Listener {
 
-    public Poseidon() {
+    public Poseidon() {//
         super("poseidon", "unkit.poseidon", Difficulty.LOW,
                 Rarity.COMMON, 6, new Icon(Material.RAW_FISH), Category.POTION, 1000L);
     }

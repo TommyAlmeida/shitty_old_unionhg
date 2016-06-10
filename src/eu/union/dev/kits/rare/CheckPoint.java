@@ -25,7 +25,7 @@ public class CheckPoint extends Kit implements Listener {
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
     HashMap<Player, Location> locs = new HashMap<>();
 
-    public CheckPoint() {
+    public CheckPoint() {//
         super("checkpoint", "unkit.checkpoint", Difficulty.LOW, Rarity.RARE, 2, new Icon(Material.NETHER_FENCE), Category.TELEPORT, 1000L);
     }
 
