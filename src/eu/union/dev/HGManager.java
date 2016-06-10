@@ -312,6 +312,9 @@ public class HGManager implements Listener{
                     }
                 }
             }
+            if (p.getLocation().getY() <= getColiseuLoc().add(0,-10,0).getY() && getStatus() == Status.LOBBY){
+                p.teleport(getColiseuLoc().add(0,5,0));
+            }
         }
     }
     @EventHandler
