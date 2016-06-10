@@ -1,0 +1,7 @@
+name: UnionHG
+main: eu.union.dev.HG
+version: 1.0
+commands:
+  kit:
+  feast:
+  start:

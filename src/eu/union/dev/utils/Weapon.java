@@ -13,6 +13,7 @@ public enum Weapon {
     MENU_ADMIN(Material.BLAZE_POWDER, "§eMenu Admin§7 (Right Click Player)"),
     STATUS_ADMIN(Material.SKULL_ITEM, "§eStatus Player§7 (Right Click Player)"),
     SWITCH_ADMIN(Material.SLIME_BALL, "§eSwitch Admin§7 (Right Click)"),
+    COMPASS(Material.COMPASS, "§cCompass"),
     DEFAULT_SWORD(Material.WOOD_SWORD, "§aDefault Sword"),
     DEFAULT_BOW(Material.BOW, "§aDefault Bow"),
     DEFAULT_ARROW(Material.ARROW, "§aArrow"),
@@ -81,6 +82,11 @@ public enum Weapon {
     public static void giveWeapon(Player p, Weapon weapon) {
         ItemStack item = Weapon.makeWeapon(weapon);
         p.getInventory().setItem(0, item);
+    }
+
+    public static void addWeapon(Player p, Weapon weapon) {
+        ItemStack item = Weapon.makeWeapon(weapon);
+        p.getInventory().addItem(item);
     }
 
     public static void giveWeapon(Player p, Weapon weapon, int slot) {

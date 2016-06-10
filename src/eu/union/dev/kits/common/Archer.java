@@ -7,6 +7,7 @@ import eu.union.dev.utils.Weapon;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by Fentis on 08/06/2016.
@@ -22,7 +23,7 @@ public class Archer extends Kit{
     @Override
     public void applyKit(Player player) {
         Weapon.giveWeapon(player, Weapon.DEFAULT_SWORD);
-        Weapon.giveWeapon(player, Weapon.DEFAULT_BOW, 1, Enchantment.ARROW_INFINITE, 1);
-        Weapon.giveWeapon(player, Weapon.DEFAULT_ARROW, 35);
+        Weapon.giveWeapon(player, Weapon.DEFAULT_BOW, 1);
+        player.getInventory().addItem(new ItemStack(Material.ARROW,32));
     }
 }

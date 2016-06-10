@@ -2,7 +2,12 @@ package eu.union.dev;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
+import eu.union.dev.commands.FeastCMD;
+import eu.union.dev.commands.KitCMD;
+import eu.union.dev.commands.StartCMD;
+import eu.union.dev.invs.KitMenu;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.utils.SoupListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +37,11 @@ public class HG extends JavaPlugin implements Listener{
         Timer.getInstace().start();
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new HGManager(), this);
+        pm.registerEvents(new KitMenu(),this);
+        pm.registerEvents(new SoupListener(),this);
+        getCommand("kit").setExecutor(new KitCMD());
+        getCommand("feast").setExecutor(new FeastCMD());
+        getCommand("start").setExecutor(new StartCMD());
         borda();
         registerKits();
     }

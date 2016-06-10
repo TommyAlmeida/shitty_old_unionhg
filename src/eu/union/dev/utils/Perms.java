@@ -14,6 +14,7 @@ public enum Perms {
     UNION_MOD("union.mod"),
     UNION_YT("union.yt"),
     UNION_YT_PLUS("union.yt+"),
+    UNION_DEV("union.dev"),
 
     /**
      * Server perms
@@ -21,6 +22,8 @@ public enum Perms {
 
     RESPAWN("union.respawn"),
     SPECTATOR("union.spectar"),
+    KIT_POS_START("union.kitposstart"),
+    START("union.start"),
 
     /**
      * KITS
@@ -38,7 +41,8 @@ public enum Perms {
         if (p.hasPermission(UNION_ADMIN.toString()) ||
                 p.hasPermission(UNION_OWNER.toString()) ||
                 p.hasPermission(UNION_TMOD.toString()) ||
-                p.hasPermission(UNION_MOD.toString())) {
+                p.hasPermission(UNION_MOD.toString()) ||
+                p.hasPermission(UNION_DEV.toString())) {
             return true;
         } else {
             p.sendMessage(Messages.PREFIX.toString() + " §cYou dont have permission to use this.");

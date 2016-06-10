@@ -1,10 +1,9 @@
 package eu.union.dev;
 
 import eu.union.dev.events.*;
-import eu.union.dev.utils.Messages;
-import eu.union.dev.utils.Perms;
-import eu.union.dev.utils.StructureCreator;
-import eu.union.dev.utils.Util;
+import eu.union.dev.storage.Kit;
+import eu.union.dev.utils.*;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,8 +23,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by Fentis on 06/06/2016.
@@ -44,6 +45,7 @@ public class HGManager implements Listener{
         LOBBY("Lobby"),
         INVENCIBILITY("Invencibility"),
         POSINVINCIBILITY("PosInvencibility"),
+        FEAST_ANNOUNCEMENT("FeastAnnouncement"),
         FEAST("Feast"),
         ENDGAME("EndGame");
 
@@ -119,6 +121,9 @@ public class HGManager implements Listener{
         e.setJoinMessage(null);
         KitManager km = KitManager.getManager();
         if (HGManager.getInstance().getStatus() == Status.LOBBY){
+            List<String> kitNames = KitManager.getManager().getKits().stream().map(Kit::getName).collect(Collectors.toList());
+            String allKits = StringUtils.join(kitNames, ", ");
+            p.sendMessage("§a" + "(" + KitManager.getManager().getKits().size() + ") Kits: " + allKits + ".");
             if (km.getPlayerKitInLobby(p) == null){
                 km.setPlayerKitInLobby(p,km.getKitByName("Surprise"));
             }
@@ -176,6 +181,19 @@ public class HGManager implements Listener{
         KitManager km = KitManager.getManager();
         for (Player p : Bukkit.getOnlinePlayers()){
             km.applyKit(p,km.getPlayerKitInLobby(p));
+            if (km.getKitAmIUsing(p,"surprise")){
+                List<Kit> kits = new ArrayList<>();
+                for (Kit kit : km.getKits()){
+                    if (!kit.getName().equalsIgnoreCase("Surprise")){
+                        kits.add(kit);
+                    }
+                }
+                Kit kit = kits.get(new Random().nextInt(kits.size()));
+                km.setPlayerKitInLobby(p,kit);
+                km.applyKit(p,kit);
+                p.sendMessage("§aYou kit surprise is §c"+kit.getName());
+            }
+            Weapon.addWeapon(p,Weapon.COMPASS);
         }
         Bukkit.broadcastMessage(Messages.PREFIX+" §bThe game started! And may the odds be ever in your favor!");
     }
