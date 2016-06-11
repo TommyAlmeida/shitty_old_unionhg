@@ -20,7 +20,7 @@ public class HGManager {
     }
     private Status status;
     Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
-    int bordsize = 480;
+    int bordsize = 600;//480
     private List<Player> playersvivos = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),

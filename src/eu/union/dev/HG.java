@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class HG extends JavaPlugin implements Listener{
 
@@ -98,7 +99,8 @@ public class HG extends JavaPlugin implements Listener{
                         Location loc = new Location(Bukkit.getWorlds().get(0), x, y, z);
                         if (!loc.getChunk().isLoaded())
                             loc.getChunk().load();
-                        loc.getBlock().setType(Material.BEDROCK);
+                        loc.getBlock().setType(Material.QUARTZ_BLOCK);
+                        loc.getBlock().setData((byte)new Random().nextInt(4));
                     }
                 }
             }
@@ -110,7 +112,8 @@ public class HG extends JavaPlugin implements Listener{
                         Location loc = new Location(Bukkit.getWorlds().get(0), x, y, z);
                         if (!loc.getChunk().isLoaded())
                             loc.getChunk().load();
-                        loc.getBlock().setType(Material.BEDROCK);
+                        loc.getBlock().setType(Material.QUARTZ_BLOCK);
+                        loc.getBlock().setData((byte)new Random().nextInt(4));
                     }
     }
 }

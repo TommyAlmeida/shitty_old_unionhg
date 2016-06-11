@@ -8,13 +8,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -67,6 +71,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onLeave(PlayerQuitEvent e){
         Player p = e.getPlayer();
+        e.setQuitMessage(null);
         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
             if (!reconect.contains(p.getUniqueId())){
                 reconect.add(p.getUniqueId());
@@ -178,7 +183,7 @@ public class HGListener implements Listener{
     }
     @EventHandler
     public void onBreack(BlockBreakEvent e){
-        if (e.getBlock().getY() >=145){
+        if (e.getBlock().getY() >=135){
             e.setCancelled(true);
         }
         Location loc = e.getBlock().getLocation();
@@ -191,7 +196,7 @@ public class HGListener implements Listener{
     }
     @EventHandler
     public void onPlace(BlockPlaceEvent e){
-        if (e.getBlock().getY() >=145){
+        if (e.getBlock().getY() >=135){
             e.setCancelled(true);
         }
         Location loc = e.getBlock().getLocation();
@@ -264,7 +269,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onClick(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        if (p.getItemInHand().getType() == Material.NETHER_STAR &&
+        if (p.getItemInHand().getType() == Material.CHEST &&
                 HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
             Bukkit.dispatchCommand(p,"kit");
         }
@@ -272,6 +277,16 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSpawnMobs(CreatureSpawnEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent e) {
+        Location loc = e.getEntity().getLocation();
+        Location loc2 = new Location(e.getEntity().getWorld(), 0, 120, 0);
+        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= (HGManager.getInstance().getBordSize()-10)) ||
+                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= (HGManager.getInstance().getBordSize()-10))))
+        {
             e.setCancelled(true);
         }
     }

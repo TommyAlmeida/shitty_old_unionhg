@@ -62,34 +62,16 @@ public class Util {
         Inventory inv = player.getInventory();
         inv.clear();
         {
-            Icon kits = new Icon(Material.NETHER_STAR, "§aKits §7(Right-Click)", "§7Choose your kit");
-            inv.setItem(0, kits.build());
+            Icon kits = new Icon(Material.CHEST, "§bKits", "§7Choose your kit");
+            inv.setItem(4, kits.build());
         }
-
 
         {
             ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5);
             ItemMeta im = i.getItemMeta();
             im.setDisplayName("§7");
             i.setItemMeta(im);
-            inv.setItem(3,i);
-            inv.setItem(5,i);
-        }
-
-        {
-            Icon menu = new Icon(Material.COMPASS, "§bMenu §7(Right-Click)", "§7All you need.");
-            inv.setItem(4, menu.build());
-        }
-
-        {
-            ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-
-            SkullMeta meta = (SkullMeta) skull.getItemMeta();
-            meta.setOwner(player.getName());
-            meta.setDisplayName("§9Stats §7(Right-Click)");
-            skull.setItemMeta(meta);
-
-            inv.setItem(8, skull);
+            //add items
         }
     }
 
