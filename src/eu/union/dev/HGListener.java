@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
@@ -116,8 +117,6 @@ public class HGListener implements Listener{
     }
     @EventHandler
     public void onEndInv(HGEndInvencibleEvent e){
-        StructureCreator scc = new StructureCreator(HGManager.getInstance().coliseu, StructureCreator.Structure.COLISEU);
-        scc.removeStrucure();
         Bukkit.broadcastMessage(Messages.PREFIX+" §cYou are not more invincible!!");
     }
     @EventHandler
@@ -213,6 +212,11 @@ public class HGListener implements Listener{
                     p.teleport(new Location(p.getWorld(),0.5,155,0.5));
                 }
             }
+            if (HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145){
+                    p.damage(4.0);
+                }
+            }
         }
     }
     @EventHandler
@@ -246,6 +250,12 @@ public class HGListener implements Listener{
         if (p.getItemInHand().getType() == Material.NETHER_STAR &&
                 HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
             Bukkit.dispatchCommand(p,"kit");
+        }
+    }
+    @EventHandler
+    public void onSpawnMobs(CreatureSpawnEvent e){
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            e.setCancelled(true);
         }
     }
 }
