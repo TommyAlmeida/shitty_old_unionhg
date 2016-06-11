@@ -183,9 +183,8 @@ public class KitManager {
     public Kit getPlayerKitInLobby(Player p){
         if (kitselector.containsKey(p)){
             return kitselector.get(p);
-        }else{
-            return null;
         }
+        return null;
     }
     public void setPlayerKitInLobby(Player p , Kit kit){
         kitselector.put(p,kit);

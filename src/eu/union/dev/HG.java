@@ -36,7 +36,7 @@ public class HG extends JavaPlugin implements Listener{
         hgm.setup();
         Timer.getInstace().start();
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new HGManager(), this);
+        pm.registerEvents(new HGListener(), this);
         pm.registerEvents(new KitMenu(),this);
         pm.registerEvents(new SoupListener(),this);
         getCommand("kit").setExecutor(new KitCMD());
