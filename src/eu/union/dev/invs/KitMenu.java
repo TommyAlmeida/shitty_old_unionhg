@@ -101,6 +101,7 @@ public class KitMenu implements Listener{
                         setItems(p, e.getClickedInventory(), "player", page);
                     }
                 }
+                e.setCancelled(true);
             }
         }
     }

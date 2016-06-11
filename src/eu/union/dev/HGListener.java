@@ -4,10 +4,7 @@ import eu.union.dev.events.*;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.utils.*;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -107,6 +104,7 @@ public class HGListener implements Listener{
         Bukkit.getWorlds().get(0).setTime(0);
         KitManager km = KitManager.getManager();
         for (Player p : Bukkit.getOnlinePlayers()){
+            p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL,1.0F,1.0F);
             km.applyKit(p,km.getPlayerKitInLobby(p));
             if (km.getKitAmIUsing(p,"surprise")){
                 List<Kit> kits = new ArrayList<>();

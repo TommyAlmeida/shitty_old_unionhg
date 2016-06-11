@@ -5,6 +5,9 @@ import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Packets;
 import eu.union.dev.utils.StructureCreator;
 import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -43,6 +46,9 @@ public class Timer {
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+(realtime/60)+"m!");
                         }else{
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+realtime+"s!");
+                        }
+                        for (Player p : Bukkit.getOnlinePlayers()){
+                            p.playNote(p.getLocation(), (byte) 0, (byte) 1);
                         }
                     }
                 }

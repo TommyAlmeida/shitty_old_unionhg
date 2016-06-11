@@ -4,6 +4,7 @@ import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.invs.KitMenu;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Perms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -35,6 +36,7 @@ public class KitCMD implements CommandExecutor{
                                 HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY){
                             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                                 km.setPlayerKitInLobby(p,kit);
+                                p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
                             }else{
                                 if (p.hasPermission(Perms.KIT_POS_START.toString())){
                                     km.setPlayerKitInLobby(p,kit);
