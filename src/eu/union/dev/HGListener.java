@@ -48,6 +48,7 @@ public class HGListener implements Listener{
             p.getInventory().clear();
             Util.getInstance().buildJoinIcons(p);
             p.teleport(new Location(p.getWorld(),0.5,160,0.5));
+            HGManager.getInstance().addPlayersVivos(p);
         }else{
             if (!reconect.contains(p.getUniqueId())){
                 if (p.hasPermission(Perms.SPECTATOR.toString())){
@@ -58,6 +59,7 @@ public class HGListener implements Listener{
                     p.kickPlayer(Messages.PREFIX+" §aSorry you don't have permission for spectate!");
                 }
             }else{
+                HGManager.getInstance().addPlayersVivos(p);
                 reconect.remove(p.getUniqueId());
             }
         }
@@ -87,6 +89,7 @@ public class HGListener implements Listener{
                 }
                 if (i>60){
                     reconect.remove(uuid);
+                    HGManager.getInstance().removePlayersVivos(p);
                     Bukkit.broadcastMessage(Messages.PREFIX+" §c"+p.getDisplayName()+" not connected in time!");
                     cancel();
                 }

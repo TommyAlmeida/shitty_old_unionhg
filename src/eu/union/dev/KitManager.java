@@ -105,23 +105,12 @@ public class KitManager {
      * @param kit
      */
     public void applyKit(Player player, Kit kit) {
-        KPlayer kPlayer = PlayerManager.getPlayer(player.getUniqueId());
+        readyPlayer(player);
+        kit.applyKit(player);
 
-        if (!player.hasPermission(kit.getPermission())) {
-            player.sendMessage(Messages.NO_PERM.toString());
-            return;
-        }
+        playerKit.put(player, kit);
 
-        if (usingKit(player)) {
-            player.sendMessage(Messages.PREFIX.toString() + " §7You already have a kit!");
-        } else {
-            readyPlayer(player);
-            kit.applyKit(player);
-
-            playerKit.put(player, kit);
-
-            player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
-        }
+        player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
     }
 
     /**

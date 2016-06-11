@@ -3,7 +3,10 @@ package eu.union.dev;
 import eu.union.dev.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,6 +21,7 @@ public class HGManager {
     private Status status;
     Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
     int bordsize = 480;
+    private List<Player> playersvivos = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
         INVENCIBILITY("Invencibility"),
@@ -92,5 +96,20 @@ public class HGManager {
         return null;
     }
 
-
+    public List<Player> getPlayersVivos() {
+        return playersvivos;
+    }
+    public void addPlayersVivos(Player p){
+        if (!playersvivos.contains(p)){
+            playersvivos.add(p);
+        }
+    }
+    public void removePlayersVivos(Player p){
+        if (playersvivos.contains(p)){
+            playersvivos.remove(p);
+        }
+    }
+    public boolean isAlive(Player p){
+        return playersvivos.contains(p);
+    }
 }
