@@ -91,7 +91,6 @@ public class KitMenu implements Listener{
                         setItems(p, e.getClickedInventory(), "player", page);
                     }
                 }
-                e.setCancelled(true);
             }
             if (e.getSlot() == 8){
                 String name = item.getItemMeta().getLore().get(0);
@@ -101,6 +100,8 @@ public class KitMenu implements Listener{
                         setItems(p, e.getClickedInventory(), "player", page);
                     }
                 }
+            }
+            if (e.getSlot() <= 8){
                 e.setCancelled(true);
             }
         }

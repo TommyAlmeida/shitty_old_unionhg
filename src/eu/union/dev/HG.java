@@ -3,6 +3,7 @@ package eu.union.dev;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import eu.union.dev.commands.FeastCMD;
+import eu.union.dev.commands.FlyCMD;
 import eu.union.dev.commands.KitCMD;
 import eu.union.dev.commands.StartCMD;
 import eu.union.dev.invs.KitMenu;
@@ -43,6 +44,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
         getCommand("start").setExecutor(new StartCMD());
+        getCommand("fly").setExecutor(new FlyCMD());
         borda();
         registerKits();
     }

@@ -104,6 +104,9 @@ public class HGListener implements Listener{
         Bukkit.getWorlds().get(0).setTime(0);
         KitManager km = KitManager.getManager();
         for (Player p : Bukkit.getOnlinePlayers()){
+            if (p.getAllowFlight()){
+                p.setAllowFlight(false);
+            }
             p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL,1.0F,1.0F);
             km.applyKit(p,km.getPlayerKitInLobby(p));
             if (km.getKitAmIUsing(p,"surprise")){

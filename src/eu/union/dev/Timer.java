@@ -48,7 +48,7 @@ public class Timer {
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+realtime+"s!");
                         }
                         for (Player p : Bukkit.getOnlinePlayers()){
-                            p.playNote(p.getLocation(), (byte) 0, (byte) 1);
+                            p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
                         }
                     }
                 }
