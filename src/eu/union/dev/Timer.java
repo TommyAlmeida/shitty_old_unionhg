@@ -95,22 +95,6 @@ public class Timer {
                             "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
                             " §ain "+(20-(time/60))+"m!");
                 }
-                if (time >= (19*60) && HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
-                    int seconds = 0;
-                    if (time == (19*60)+30){
-                        seconds = 30;
-                    }
-                    for (int i = 0; i < 10; i++) {
-                        int n = 50+i;
-                        if (time == (19*60)+n){
-                            seconds = n;
-                        }
-                    }
-                    Bukkit.broadcastMessage(Messages.PREFIX+" §aThe Feast will appear on " +
-                            "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
-                            "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
-                            " §ain "+seconds+"s!");
-                }
                 if (time == 20*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){//spawn feast
                     HGManager.getInstance().setStatus(HGManager.Status.FEAST);
                     Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(HGManager.getInstance().getFeastLoc()));//Substituir depois

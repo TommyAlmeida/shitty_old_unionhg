@@ -96,6 +96,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onStart(HGStartEvent e){
         HGManager.getInstance().scc.removePistons();
+        Bukkit.getWorlds().get(0).setTime(0);
         KitManager km = KitManager.getManager();
         for (Player p : Bukkit.getOnlinePlayers()){
             km.applyKit(p,km.getPlayerKitInLobby(p));
@@ -179,13 +180,10 @@ public class HGListener implements Listener{
         }
         Location loc = e.getBlock().getLocation();
         Location loc2 = new Location(e.getBlock().getWorld(), 0, 120, 0);
-        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= HGManager.getInstance().getBordSize()) ||
-                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= HGManager.getInstance().getBordSize())))
+        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= (HGManager.getInstance().getBordSize()-10)) ||
+                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= (HGManager.getInstance().getBordSize()-10))))
         {
             e.setCancelled(true);
-            if (e.getPlayer() != null){
-                e.getPlayer().sendMessage("§4This very close to the Bord!");
-            }
         }
     }
     @EventHandler
@@ -195,13 +193,10 @@ public class HGListener implements Listener{
         }
         Location loc = e.getBlock().getLocation();
         Location loc2 = new Location(e.getBlock().getWorld(), 0, 120, 0);
-        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= HGManager.getInstance().getBordSize()) ||
-                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= HGManager.getInstance().getBordSize())))
+        if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= (HGManager.getInstance().getBordSize()-10)) ||
+                (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= (HGManager.getInstance().getBordSize()-10))))
         {
             e.setCancelled(true);
-            if (e.getPlayer() != null){
-                e.getPlayer().sendMessage("§4This very close to the Bord!");
-            }
         }
     }
     @EventHandler
@@ -215,6 +210,25 @@ public class HGListener implements Listener{
             if (HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
                 if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145){
                     p.damage(4.0);
+                }
+            }
+            Location loc = p.getLocation();
+            Location loc2 = new Location(p.getWorld(), 0, 0, 0);
+            if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= HGManager.getInstance().getBordSize()) ||
+                    (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= HGManager.getInstance().getBordSize())))
+            {
+                if (p.getGameMode() == GameMode.SPECTATOR){
+                    if (!Perms.isStaff(p)){
+                        p.teleport(new Location(p.getWorld(),0.5,155,0.5));
+                    }
+                }else{
+                    double dmg = 2.5D;
+                    if (p.getHealth() - dmg > 0.0D) {
+                        p.damage(dmg);
+                    } else {
+                        p.setHealth(0.0D);
+                        Bukkit.broadcastMessage("§c"+p.getDisplayName()+" killed by bord!");
+                    }
                 }
             }
         }
