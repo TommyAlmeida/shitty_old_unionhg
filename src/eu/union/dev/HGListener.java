@@ -46,7 +46,7 @@ public class HGListener implements Listener{
             }
             p.getInventory().clear();
             Util.getInstance().buildJoinIcons(p);
-            p.teleport(new Location(p.getWorld(),0.5,155,0.5));
+            p.teleport(new Location(p.getWorld(),0.5,160,0.5));
         }else{
             if (!reconect.contains(p.getUniqueId())){
                 if (p.hasPermission(Perms.SPECTATOR.toString())){

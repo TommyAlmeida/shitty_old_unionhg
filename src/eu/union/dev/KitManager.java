@@ -112,19 +112,15 @@ public class KitManager {
             return;
         }
 
-        if (!hasEnoughLevel(kPlayer,kit)) {
-            player.sendMessage(Messages.PREFIX.toString() + " §7You dont have enough §alevel");
-        }else{
-            if (usingKit(player)) {
-                player.sendMessage(Messages.PREFIX.toString() + " §7You already have a kit!");
-            } else {
-                readyPlayer(player);
-                kit.applyKit(player);
+        if (usingKit(player)) {
+            player.sendMessage(Messages.PREFIX.toString() + " §7You already have a kit!");
+        } else {
+            readyPlayer(player);
+            kit.applyKit(player);
 
-                playerKit.put(player, kit);
+            playerKit.put(player, kit);
 
-                player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
-            }
+            player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
         }
     }
 
