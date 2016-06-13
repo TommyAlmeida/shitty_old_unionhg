@@ -63,7 +63,7 @@ public class Util {
         inv.clear();
         {
             Icon kits = new Icon(Material.CHEST, "§bKits", "§7Choose your kit");
-            inv.setItem(4, kits.build());
+            inv.setItem(0, kits.build());
         }
 
         {

@@ -2,8 +2,10 @@ package eu.union.dev.commands;
 
 import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
+import eu.union.dev.api.Icon;
 import eu.union.dev.invs.KitMenu;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.utils.KitLayout;
 import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Perms;
 import org.bukkit.Bukkit;
@@ -36,12 +38,9 @@ public class KitCMD implements CommandExecutor{
                                 HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY){
                             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                                 km.setPlayerKitInLobby(p,kit);
+                                Icon icon = km.getPlayerKitInLobby(p).getIcon();
+                                p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
                                 p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
-                            }else{
-                                if (p.hasPermission(Perms.KIT_POS_START.toString())){
-                                    km.setPlayerKitInLobby(p,kit);
-                                    km.applyKit(p,kit);
-                                }
                             }
                         }
                     }

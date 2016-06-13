@@ -22,6 +22,7 @@ public class HGManager {
     Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
     int bordsize = 600;//480
     private List<Player> playersvivos = new ArrayList<>();
+    private ArrayList<Player> build = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
         INVENCIBILITY("Invencibility"),
@@ -55,9 +56,9 @@ public class HGManager {
     public void setup(){
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
         feast = RandomLocation(100);
-        minifeast1 = RandomLocation(300);
-        minifeast2 = RandomLocation(300);
-        minifeast3 = RandomLocation(300);
+        minifeast1 = RandomLocation(500);
+        minifeast2 = RandomLocation(500);
+        minifeast3 = RandomLocation(500);
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
@@ -111,5 +112,19 @@ public class HGManager {
     }
     public boolean isAlive(Player p){
         return playersvivos.contains(p);
+    }
+
+    public boolean inBuild(Player p){
+        return build.contains(p);
+    }
+    public void addBuild(Player p){
+        if (!inBuild(p)){
+            build.add(p);
+        }
+    }
+    public void removeBuild(Player p){
+        if (inBuild(p)){
+            build.remove(p);
+        }
     }
 }

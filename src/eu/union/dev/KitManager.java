@@ -10,12 +10,13 @@ import org.bukkit.potion.PotionEffect;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class KitManager {
 
     public static KitManager km = new KitManager();
     public HashMap<Player, Kit> playerKit = new HashMap<>();
-    private HashMap<Player, Kit> kitselector = new HashMap<>();
+    private HashMap<UUID, Kit> kitselector = new HashMap<>();
     List<Kit> kits = new ArrayList<>(); //Lista de Kits.
 
     /**
@@ -166,12 +167,12 @@ public class KitManager {
     }
 
     public Kit getPlayerKitInLobby(Player p){
-        if (kitselector.containsKey(p)){
-            return kitselector.get(p);
+        if (kitselector.containsKey(p.getUniqueId())){
+            return kitselector.get(p.getUniqueId());
         }
         return null;
     }
     public void setPlayerKitInLobby(Player p , Kit kit){
-        kitselector.put(p,kit);
+        kitselector.put(p.getUniqueId(),kit);
     }
 }

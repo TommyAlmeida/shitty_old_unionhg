@@ -68,6 +68,12 @@ public class StructureCreator implements Listener{
             int y = Integer.parseInt(getValor(getValor(s1,":", 2),";", 1)[1]);
             int z = Integer.parseInt(getValor(getValor(s1,":", 2),";", 1)[2]);
             //Location loc = new Location(loccenter.getWorld(), x, y, z);
+            if (type == Structure.COLISEU) {
+                Location loc = loccenter.getBlock().getLocation().add(x, y, z);
+                if (!loc.getChunk().isLoaded()) {
+                    loc.getChunk().load();
+                }
+            }
             loccenter.getBlock().getLocation().add(x, y, z).getBlock().setType(m);
             loccenter.getBlock().getLocation().add(x, y, z).getBlock().setData(d);
             if (m == Material.SIGN_POST ||

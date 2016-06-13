@@ -22,13 +22,21 @@ public class Timer {
         return instace;
     }
     private int time = 0;
+
+    public int getTime() {
+        return time;
+    }
+
     private boolean fstart = false;
+    private boolean end = false;
     public void start(){
         int minplayers = 2;
         new BukkitRunnable(){
             @Override
             public void run() {
-                time++;
+                if (!end){
+                    time++;
+                }
                 int realtime = (5*60)-time;
                 if (time <= 5*60 && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                     Bukkit.getPluginManager().callEvent(new HGTimerSecondsEvent(time,timeformat(realtime)));
@@ -41,14 +49,15 @@ public class Timer {
                             realtime == 2*60 ||
                             realtime == 60 ||
                             realtime == 30 ||
-                            realtime <= 10){
+                            (realtime <= 10 &&
+                            realtime != 0)){
                         if (realtime >=60){
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+(realtime/60)+"m!");
                         }else{
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+realtime+"s!");
                         }
                         for (Player p : Bukkit.getOnlinePlayers()){
-                            p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+                            p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 5.0F);
                         }
                     }
                 }
@@ -71,6 +80,7 @@ public class Timer {
                     for (Player p : Bukkit.getOnlinePlayers()){
                         Packets.getAPI().sendActionBar(p, "§8»§c§l"+timeformat(time)+"§8«");
                     }
+                    detectWin();
                 }
                 if (time == 2*60 && HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY){//remove inven
                     HGManager.getInstance().setStatus(HGManager.Status.POSINVINCIBILITY);
@@ -119,6 +129,13 @@ public class Timer {
 
     public boolean getFeastStart() {
         return fstart;
+    }
+
+    public void detectWin(){
+        if (HGManager.getInstance().getPlayersVivos().size() == 1 && !end){
+            end = true;
+            Bukkit.getPluginManager().callEvent(new HGPlayerWinEvent(HGManager.getInstance().getPlayersVivos().get(0)));
+        }
     }
 
     private String timeformat(int tempo)

@@ -18,8 +18,12 @@ public class StartCMD implements CommandExecutor{
         if (cmd.getName().equalsIgnoreCase("start")){
             if (sender.hasPermission(Perms.START.toString())){
                 if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                    Timer.getInstace().setForceStart(true);
-                    sender.sendMessage(Messages.PREFIX+" §4Game Started!");
+                    if (HGManager.getInstance().getPlayersVivos().size() >= 2){
+                        Timer.getInstace().setForceStart(true);
+                        sender.sendMessage(Messages.PREFIX+" §cGame Started!");
+                    }else{
+                        sender.sendMessage(Messages.PREFIX+" §4Min 2 Players!");
+                    }
                 }
             }
         }

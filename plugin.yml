@@ -6,3 +6,4 @@ commands:
   feast:
   start:
   fly:
+  build:

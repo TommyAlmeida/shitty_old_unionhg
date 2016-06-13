@@ -28,10 +28,7 @@ public class KitLayout implements Layout {
                 " "
         );*/
 
-        icon = new Icon(icon.getMaterial(), "§7Kit » " + kit.getRarity().getColor() + WordUtils.capitalize(kit.getName()),
-                "§7Category: " + kit.getCategory().getName(),
-                " ",
-                "§7Difficulty: §e" + kit.getDifficulty().value()
+        icon = new Icon(icon.getMaterial(), "§7Kit » " + kit.getRarity().getColor() + WordUtils.capitalize(kit.getName())
         );
 
         return icon.build();
