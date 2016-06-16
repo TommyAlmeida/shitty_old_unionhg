@@ -7,3 +7,4 @@ commands:
   start:
   fly:
   build:
+  info:

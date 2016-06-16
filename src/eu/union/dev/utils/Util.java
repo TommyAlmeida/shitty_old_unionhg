@@ -1,10 +1,11 @@
 package eu.union.dev.utils;
 
 
-import eu.union.dev.HG;
-import eu.union.dev.KitManager;
+import eu.union.dev.*;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
+import eu.union.dev.storage.KPlayer;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -83,48 +84,100 @@ public class Util {
 
         Objective stats = board.registerNewObjective("stats", "dummy");
         stats.setDisplaySlot(DisplaySlot.SIDEBAR);
-        int index = 11;
-        stats.setDisplayName("      §b§lUnion §3§lKitPvP      ");
+        int index = 10;
+        stats.setDisplayName("      §a§lUnion §b§lHG      ");
         stats.getScore("§a").setScore(index--);
-        stats.getScore("§3[INFO] ").setScore(index--);
+        stats.getScore("§b§fStage:").setScore(index--);
         stats.getScore("§1").setScore(index--);
         stats.getScore("§2").setScore(index--);
         stats.getScore("§3").setScore(index--);
+        stats.getScore("§fKit:").setScore(index--);
         stats.getScore("§4").setScore(index--);
-        stats.getScore("§6").setScore(index--);
+        stats.getScore("§c").setScore(index--);
         stats.getScore("§5").setScore(index--);
-        stats.getScore("§b").setScore(index--);
-        stats.getScore("§7/stats").setScore(index);
+        stats.getScore("§7/score").setScore(index--);
         stats.getScore("§fwww.unionnetwork.eu").setScore(index);
 
-        board.registerNewTeam("kills").addEntry("§1");
-        board.registerNewTeam("deaths").addEntry("§2");
-        board.registerNewTeam("coins").addEntry("§3");
-        board.registerNewTeam("level").addEntry("§4");
-        board.registerNewTeam("online").addEntry("§5");
-        board.registerNewTeam("exp").addEntry("§6");
+        board.registerNewTeam("stage").addEntry("§1");
+        board.registerNewTeam("timer").addEntry("§2");
+        board.registerNewTeam("online").addEntry("§3");
+        board.registerNewTeam("kit").addEntry("§4");
+        board.registerNewTeam("server").addEntry("§5");
 
-        new BukkitRunnable() {
-            final Team deaths = board.getTeam("deaths");
-            final Team kills = board.getTeam("kills");
-            final Team coins = board.getTeam("coins");
-            final Team level = board.getTeam("level");
-            final Team exp = board.getTeam("exp");
-            final Team online = board.getTeam("online");
+        final Team stage = board.getTeam("stage");
+        final Team timer = board.getTeam("timer");
+        final Team online = board.getTeam("online");
+        final Team kit = board.getTeam("kit");
+        final Team server = board.getTeam("server");
 
-            public void run() {
-                //final KPlayer profile = PlayerManager.getPlayer(p.getUniqueId());
-
-                //deaths.setPrefix("§fDeaths: §b" + profile.getDeaths());
-                //kills.setPrefix("§fKills: §b" + profile.getKills());
-                //coins.setPrefix("§fCoins: §b" + profile.getCoins());
-                //exp.setPrefix("§fEXP: §b" + profile.getCurrentEXP());
-                //level.setPrefix("§fLevel: §b" + profile.getLevel());
-                //online.setPrefix("§fKDR: §b" + Bukkit.getOnlinePlayers().size());
-            }
-        }.runTaskTimer(HG.getInstance(), 0, 2 * 20);
+        String stagee = "";
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            stagee = "Waiting";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
+            stagee = "Start";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+            stagee = "In Battle";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
+            stagee = "Pre Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST){
+            stagee = "In Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            stagee = "In End";
+        }
+        String timerr = Timer.getInstace().getTimerFormated();
+        String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
+        String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
+        String serverr = "A1";
+        stage.setPrefix("§a"+stagee);
+        timer.setPrefix("§fTimer: §c" + timerr);
+        online.setPrefix("§fPlayers: §d" + onlinee);
+        kit.setPrefix("§b"+kitt);
+        server.setPrefix("§fServer: §6" + serverr);
 
         p.setScoreboard(board);
+    }
+
+    public void updateSocoreBoard(Player p){
+        Scoreboard board = p.getScoreboard();
+        final Team stage = board.getTeam("stage");
+        final Team timer = board.getTeam("timer");
+        final Team online = board.getTeam("online");
+        final Team kit = board.getTeam("kit");
+        final Team server = board.getTeam("server");
+
+        String stagee = "";
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            stagee = "Waiting";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
+            stagee = "Start";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+            stagee = "In Battle";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
+            stagee = "Pre Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST){
+            stagee = "In Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            stagee = "In End";
+        }
+        String timerr = Timer.getInstace().getTimerFormated();
+        String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
+        String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
+        String serverr = "A1";
+        stage.setPrefix("§a"+stagee);
+        timer.setPrefix("§fTimer: §c" + timerr);
+        online.setPrefix("§fPlayers: §d" + onlinee);
+        kit.setPrefix("§b"+kitt);
+        server.setPrefix("§fServer: §6" + serverr);
     }
 
     public void readyPlayer(Player player) {

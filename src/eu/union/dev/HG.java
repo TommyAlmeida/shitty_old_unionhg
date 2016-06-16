@@ -43,6 +43,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("start").setExecutor(new StartCMD());
         getCommand("fly").setExecutor(new FlyCMD());
         getCommand("build").setExecutor(new BuildCMD());
+        getCommand("info").setExecutor(new InfoCMD());
         borda();
         registerKits();
     }

@@ -23,10 +23,11 @@ public class HGManager {
     int bordsize = 600;//480
     private List<Player> playersvivos = new ArrayList<>();
     private ArrayList<Player> build = new ArrayList<>();
+    private List<Player> specs = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
-        INVENCIBILITY("Invencibility"),
-        POSINVINCIBILITY("PosInvencibility"),
+        INVINCIBILITY("Invencibility"),
+        POS_INVINCIBILITY("PosInvencibility"),
         FEAST_ANNOUNCEMENT("FeastAnnouncement"),
         FEAST("Feast"),
         ENDGAME("EndGame");
@@ -127,4 +128,22 @@ public class HGManager {
             build.remove(p);
         }
     }
+
+    public List<Player> getSpecs() {
+        return specs;
+    }
+    public void addSpec(Player p){
+        if (!specs.contains(p)){
+            specs.add(p);
+        }
+    }
+    public void removeSpec(Player p){
+        if (specs.contains(p)){
+            specs.remove(p);
+        }
+    }
+    public boolean isSpec(Player p){
+        return specs.contains(p);
+    }
+
 }

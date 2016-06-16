@@ -35,7 +35,7 @@ public class KitCMD implements CommandExecutor{
                     if (km.getKitByName(args[0]) != null){
                         Kit kit = km.getKitByName(args[0]);
                         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
-                                HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY){
+                                HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
                             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                                 km.setPlayerKitInLobby(p,kit);
                                 Icon icon = km.getPlayerKitInLobby(p).getIcon();

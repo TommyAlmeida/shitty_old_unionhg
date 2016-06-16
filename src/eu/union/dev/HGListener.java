@@ -8,6 +8,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,18 +17,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class HGListener implements Listener{
 
-    private ArrayList<UUID> reconect = new ArrayList<>();
+    private ArrayList<String> reconect = new ArrayList<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
@@ -50,22 +51,30 @@ public class HGListener implements Listener{
             }
             p.getInventory().clear();
             Util.getInstance().buildJoinIcons(p);
+            Util.getInstance().buildScoreboard(p);
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
             p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
             p.teleport(new Location(p.getWorld(),0.5,160,0.5));
             HGManager.getInstance().addPlayersVivos(p);
         }else{
-            if (!reconect.contains(p.getUniqueId())){
+            if (!reconect.contains(p.getName())){
                 if (p.hasPermission(Perms.SPECTATOR.toString())){
-                    p.setGameMode(GameMode.SPECTATOR);
+                    p.setGameMode(GameMode.ADVENTURE);
+                    HGManager.getInstance().isSpec(p);
+                    p.setAllowFlight(true);
+                    p.setFlying(true);
                     p.getInventory().clear();
                     p.getInventory().setArmorContents(null);
+                    if (km.getPlayerKitInLobby(p) == null){
+                        km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
+                    }
+                    Util.getInstance().buildScoreboard(p);
                 }else{
                     p.kickPlayer(Messages.PREFIX+" §aSorry you don't have permission for spectate!");
                 }
             }else{
                 HGManager.getInstance().addPlayersVivos(p);
-                reconect.remove(p.getUniqueId());
+                reconect.remove(p.getName());
             }
         }
     }
@@ -74,27 +83,28 @@ public class HGListener implements Listener{
         Player p = e.getPlayer();
         e.setQuitMessage(null);
         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
-            if (!reconect.contains(p.getUniqueId())){
-                reconect.add(p.getUniqueId());
+            if (!reconect.contains(p.getName())){
+                reconect.add(p.getName());
                 startReconect(p);
             }
+        }else{
+            HGManager.getInstance().removePlayersVivos(p);
         }
     }
     public void startReconect(Player p){
-        UUID uuid = p.getUniqueId();
         new BukkitRunnable(){
             int i = 0;
             @Override
             public void run() {
                 i++;
-                for (Player p : Bukkit.getOnlinePlayers()){
-                    if (uuid == p.getUniqueId()){
-                        reconect.remove(p.getUniqueId());
+                for (Player ps : Bukkit.getOnlinePlayers()){
+                    if (p.getName().equalsIgnoreCase(ps.getName())){
+                        reconect.remove(p.getName());
                         cancel();
                     }
                 }
                 if (i>60){
-                    reconect.remove(uuid);
+                    reconect.remove(p.getName());
                     HGManager.getInstance().removePlayersVivos(p);
                     Timer.getInstace().detectWin();
                     Bukkit.broadcastMessage(Messages.PREFIX+" §c"+p.getDisplayName()+" not connected in time!");
@@ -166,8 +176,14 @@ public class HGListener implements Listener{
             public void run() {
                 i++;
                 Util.getInstance().fireworksRandom(p);
-                if (i>=10){
+                if (i>=20){
+                    for (Player ps: Bukkit.getOnlinePlayers()){
+                        ps.kickPlayer(Messages.PREFIX+" §aThe "+p.getDisplayName()+" won the game! Good game!");
+                    }
+                }
+                if (i>=22){
                     Bukkit.shutdown();
+                    cancel();
                 }
             }
         }.runTaskTimer(HG.getInstance(),0,20);
@@ -190,7 +206,7 @@ public class HGListener implements Listener{
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY || HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
         }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY && e.getEntity() instanceof Player){
+        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY && e.getEntity() instanceof Player){
             e.setCancelled(true);
         }
     }
@@ -227,12 +243,30 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSeconds(HGTimerSecondsEvent e){
         for (Player p : Bukkit.getOnlinePlayers()){
+            Util.getInstance().updateSocoreBoard(p);
+            for (Player ps : Bukkit.getOnlinePlayers()){
+                if (HGManager.getInstance().isSpec(ps)){
+                    if (!HGManager.getInstance().isSpec(p)){
+                        p.hidePlayer(ps);
+                        for (Entity en : ps.getNearbyEntities(5,5,5)){
+                            if (en instanceof Player){
+                                Player p2 = (Player)en;
+                                if (HGManager.getInstance().isSpec(p2)){
+                                    Vector v = p2.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(3);
+                                    p2.setVelocity(v);
+                                    p2.sendMessage(Messages.PREFIX+" §cPlease! Don't ");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                 if (p.getLocation().getY() <= 140){
                     p.teleport(new Location(p.getWorld(),0.5,155,0.5));
                 }
             }
-            if (HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+            if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                 if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145){
                     p.damage(4.0);
                 }
@@ -242,7 +276,7 @@ public class HGListener implements Listener{
             if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= HGManager.getInstance().getBordSize()) ||
                     (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= HGManager.getInstance().getBordSize())))
             {
-                if (p.getGameMode() == GameMode.SPECTATOR){
+                if (HGManager.getInstance().isSpec(p)){
                     if (!Perms.isStaff(p)){
                         p.teleport(new Location(p.getWorld(),0.5,155,0.5));
                     }
@@ -295,7 +329,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onFood(FoodLevelChangeEvent e) {
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
-                HGManager.getInstance().getStatus() == HGManager.Status.INVENCIBILITY ||
+                HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
         }
@@ -317,6 +351,9 @@ public class HGListener implements Listener{
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
             e.setCancelled(true);
         }
+        if (e.getEntity() instanceof Ghast){
+            e.setCancelled(true);
+        }
     }
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
@@ -334,7 +371,7 @@ public class HGListener implements Listener{
         Player p = e.getEntity();
         e.setDeathMessage(null);
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
-                HGManager.getInstance().getStatus() == HGManager.Status.POSINVINCIBILITY){
+                HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
             p.setNoDamageTicks((2*60)*20);
             p.sendMessage(Messages.PREFIX+" §aYou came back from the ashes! You gained 2m invincibility");
@@ -346,13 +383,18 @@ public class HGListener implements Listener{
                     p.teleport(HGManager.getInstance().getColiseuLoc().add(0.5,3,0.5));
                     KitManager km = KitManager.getManager();
                     km.applyKit(p,km.getPlayerKitInLobby(p));
+                    Weapon.addWeapon(p, Weapon.COMPASS);
                 }
             },10);
             return;
         }
         if (p.hasPermission(Perms.SPECTATOR.toString())){
             p.setHealth(20.0D);
-            p.setGameMode(GameMode.SPECTATOR);
+            p.setFoodLevel(20);
+            p.setGameMode(GameMode.ADVENTURE);
+            p.setAllowFlight(true);
+            p.setFlying(true);
+            HGManager.getInstance().addSpec(p);
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
@@ -380,13 +422,60 @@ public class HGListener implements Listener{
         //String prefix = PermissionsEx.getUser(e.getPlayer()).getGroups()[0].getPrefix();
         String prefix = "§5Test";
         e.setCancelled(true);
-        Bukkit.broadcastMessage("§7" + prefix + " §r§7" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
+        if (HGManager.getInstance().isSpec(e.getPlayer())){
+            for (Player p : Bukkit.getOnlinePlayers()){
+                if (HGManager.getInstance().isSpec(e.getPlayer()) ||
+                        Perms.isStaff(p)){
+                    p.sendMessage("§7[" + prefix + "§r§7]»(Spec)" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
+                }
+            }
+        }else{
+            Bukkit.broadcastMessage("§7[" + prefix + "§r§7]»" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
+        }
     }
     @EventHandler
     public void onPickUp(PlayerPickupItemEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onDecaly(LeavesDecayEvent e){
+        e.setCancelled(true);
+    }
+    @EventHandler
+    public void onCompass(HGTimerSecondsEvent e){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            if (p.getItemInHand().getType() == Material.COMPASS){
+                String message = "§c§lNo Players!";
+                List<Player> players = new ArrayList<>();
+                for (Player ps : p.getWorld().getPlayers()){
+                    if (!(ps.getUniqueId().equals(p.getUniqueId())) &&
+                            !p.canSee(ps) &&
+                            !HGManager.getInstance().isSpec(ps) &&
+                            ps.getGameMode() == GameMode.SURVIVAL){
+                        players.add(ps);
+                    }
+                }
+                Collections.sort(players, new CompassCompare(p));
+                Player nearest = null;
+
+                if (players.size() > 0){
+                    nearest = players.get(0);
+                    message = "§fPlayer:§a"+nearest.getName()+" " +
+                            "§fDistance:§a"+((int)nearest.getLocation().distance(p.getLocation()));
+                }
+                Packets.getAPI().sendActionBar(p,message);
+                if (p.getWorld().getPlayers().size() > 1) {
+                    p.setCompassTarget(nearest.getLocation());
+                }
+                try {
+                    p.setCompassTarget(nearest != null ? nearest.getLocation() : null);
+                }catch (NullPointerException ex){
+
+                }
+            }
         }
     }
 }
