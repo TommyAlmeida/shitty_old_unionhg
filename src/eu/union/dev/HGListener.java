@@ -220,6 +220,24 @@ public class HGListener implements Listener{
         if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY && e.getEntity() instanceof Player){
             e.setCancelled(true);
         }
+        if (e.getEntity() instanceof Player){
+            Player p = (Player)e.getEntity();
+            if (nodamage.contains(p.getUniqueId())){
+                e.setCancelled(true);
+            }
+            if (HGManager.getInstance().isSpec(p)){
+                e.setCancelled(true);
+            }
+        }
+    }
+    @EventHandler
+    public void onDamageByEntity(EntityDamageByEntityEvent e){
+        if (e.getDamager() instanceof Player){
+            Player p = (Player)e.getDamager();
+            if (HGManager.getInstance().isSpec(p)){
+                e.setCancelled(true);
+            }
+        }
     }
     @EventHandler
     public void onBreak(BlockBreakEvent e){
@@ -235,6 +253,9 @@ public class HGListener implements Listener{
         {
             e.setCancelled(true);
         }
+        if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
+            e.setCancelled(true);
+        }
     }
     @EventHandler
     public void onPlace(BlockPlaceEvent e){
@@ -248,6 +269,9 @@ public class HGListener implements Listener{
                 (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= (HGManager.getInstance().getBordSize()-10)))
                 && !HGManager.getInstance().inBuild(p))
         {
+            e.setCancelled(true);
+        }
+        if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);
         }
     }
@@ -314,6 +338,9 @@ public class HGListener implements Listener{
                     e.setCancelled(true);
                 }
             }
+            if (HGManager.getInstance().isSpec(e.getPlayer())){
+                e.setCancelled(true);
+            }
         }
     }
     @EventHandler
@@ -344,6 +371,12 @@ public class HGListener implements Listener{
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
         }
+        if (e.getEntity() instanceof Player){
+            Player p = (Player)e.getEntity();
+            if (HGManager.getInstance().isSpec(p)){
+                e.setCancelled(true);
+            }
+        }
     }
     @EventHandler
     public void onClick(PlayerInteractEvent e){
@@ -355,6 +388,9 @@ public class HGListener implements Listener{
         if (p.getItemInHand().getType() == Material.CHEST &&
                 HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
             Bukkit.dispatchCommand(p,"kit");
+        }
+        if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
+            e.setCancelled(true);
         }
     }
     @EventHandler
@@ -377,6 +413,7 @@ public class HGListener implements Listener{
         }
     }
     ArrayList<UUID> respawn = new ArrayList<>();
+    ArrayList<UUID> nodamage = new ArrayList<>();
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
         Player p = e.getEntity();
@@ -384,7 +421,7 @@ public class HGListener implements Listener{
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
                 HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
-            p.setNoDamageTicks((2*60)*20);
+            nodamage.add(p.getUniqueId());
             p.sendMessage(Messages.PREFIX+" §aYou came back from the ashes! You gained 2m invincibility");
             respawn.add(p.getUniqueId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
@@ -397,14 +434,19 @@ public class HGListener implements Listener{
                     Weapon.addWeapon(p, Weapon.COMPASS);
                 }
             },10);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    nodamage.remove(p.getUniqueId());
+                    p.sendMessage(Messages.PREFIX+" §cYou are not more invincible!");
+                }
+            },10);
             return;
         }
         if (p.hasPermission(Perms.SPECTATOR.toString())){
             p.setHealth(20.0D);
             p.setFoodLevel(20);
             p.setGameMode(GameMode.ADVENTURE);
-            p.setAllowFlight(true);
-            p.setFlying(true);
             HGManager.getInstance().addSpec(p);
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
@@ -413,6 +455,8 @@ public class HGListener implements Listener{
                 public void run() {
                     Util.getInstance().readyPlayer(p);
                     p.teleport(p.getLocation().add(0,5,0));
+                    p.setAllowFlight(true);
+                    p.setFlying(true);
                 }
             },10);
             return;
@@ -430,24 +474,26 @@ public class HGListener implements Listener{
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        //String prefix = PermissionsEx.getUser(e.getPlayer()).getGroups()[0].getPrefix();
-        String prefix = "§5Test";
+        String prefix = PermissionsEx.getUser(e.getPlayer()).getGroups()[0].getPrefix();
         e.setCancelled(true);
         if (HGManager.getInstance().isSpec(e.getPlayer())){
             for (Player p : Bukkit.getOnlinePlayers()){
                 if (HGManager.getInstance().isSpec(e.getPlayer()) ||
                         Perms.isStaff(p)){
-                    p.sendMessage("§7[" + prefix + "§r§7]»(Spec)" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
+                    p.sendMessage("§7" + prefix + "»(Spec)" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
                 }
             }
         }else{
-            Bukkit.broadcastMessage("§7[" + prefix + "§r§7]»" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
+            Bukkit.broadcastMessage("§7" + prefix + "»" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
         }
     }
     @EventHandler
     public void onPickUp(PlayerPickupItemEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            e.setCancelled(true);
+        }
+        if (HGManager.getInstance().isSpec(e.getPlayer())){
             e.setCancelled(true);
         }
     }
@@ -459,33 +505,38 @@ public class HGListener implements Listener{
     public void onCompass(HGTimerSecondsEvent e){
         for (Player p : Bukkit.getOnlinePlayers()){
             if (p.getItemInHand().getType() == Material.COMPASS){
-                String message = "§c§lNo Players!";
+                String message = "§c§lNo Players Nearby!";
                 List<Player> players = new ArrayList<>();
                 for (Player ps : p.getWorld().getPlayers()){
                     if (!(ps.getUniqueId().equals(p.getUniqueId())) &&
                             !p.canSee(ps) &&
                             !HGManager.getInstance().isSpec(ps) &&
-                            ps.getGameMode() == GameMode.SURVIVAL){
+                            ps.getGameMode() == GameMode.SURVIVAL &&
+                            ps.getLocation().distance(p.getLocation()) >=15){
                         players.add(ps);
                     }
                 }
                 Collections.sort(players, new CompassCompare(p));
                 Player nearest = null;
 
-                if (players.size() > 0){
+                try {
                     nearest = players.get(0);
-                    message = "§fPlayer:§a"+nearest.getName()+" " +
-                            "§fDistance:§a"+((int)nearest.getLocation().distance(p.getLocation()));
-                }
-                Packets.getAPI().sendActionBar(p,message);
-                if (p.getWorld().getPlayers().size() > 1) {
+                }catch (IndexOutOfBoundsException ex){}
+                if (nearest != null){
+                    message = "§aPlayer:§7"+nearest.getName()+" " +
+                            "§aDistance:§7"+((int)nearest.getLocation().distance(p.getLocation()));
                     p.setCompassTarget(nearest.getLocation());
                 }
-                try {
-                    p.setCompassTarget(nearest != null ? nearest.getLocation() : null);
-                }catch (NullPointerException ex){
-
-                }
+                Packets.getAPI().sendActionBar(p,message);
+            }
+        }
+    }
+    @EventHandler
+    public void onTarget(EntityTargetEvent e){
+        if (e.getTarget() instanceof Player){
+            Player p = (Player)e.getTarget();
+            if (HGManager.getInstance().isSpec(p)){
+                e.setCancelled(true);
             }
         }
     }

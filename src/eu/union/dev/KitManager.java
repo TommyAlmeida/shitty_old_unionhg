@@ -148,9 +148,6 @@ public class KitManager {
      * @param //kit
      * @return
      */
-    public boolean hasEnoughLevel(KPlayer kPlayer, Kit kit) {
-        return kPlayer.getLevel() >= kit.getLevel();
-    }
 
     public boolean usingKit(Player player) {
         return playerKit.containsKey(player);
