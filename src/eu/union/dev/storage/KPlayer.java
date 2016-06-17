@@ -5,42 +5,28 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Level formula: L = (25 + sqrt(25 * 25 - 4 * 25 * (-X) ))/ (2 * 25)
- * <p>
- * TODO: Transform level formula to actual exp system
+ * Termologia:
+ *
+ * - UniC = UniCoins - Moedas pagas
  */
 public class KPlayer {
 
     private UUID uuid;
-    private int deaths, kills, level, kdr, current_exp;
-    private long coins;
+    private int deaths, kills, kdr, wins, loses;
+    private long coins, unic;
 
-    private int baseCurve;
-    private int difficulty;
-    private int starterlevel = 0;
-
-    private int maximumlevelCapacity;
-    private ArrayList<Integer> levelcurve = new ArrayList<>();
     public HashMap<UUID, Integer> killstreak = new HashMap<>();
 
 
-    public KPlayer(UUID uuid, int kills, int deaths, long coins, int level, int kdr, int current_exp) {
+    public KPlayer(UUID uuid, int kills, int deaths, long coins, long unic, int kdr, int wins, int loses) {
         this.uuid = uuid;
-        this.current_exp = current_exp;
         this.kills = kills;
         this.deaths = deaths;
-        this.level = level;
         this.kdr = kdr;
+        this.wins = wins;
+        this.loses = loses;
         this.coins = coins;
-        this.baseCurve = 40;
-        this.difficulty = 8;
-        this.maximumlevelCapacity = 101; // = 1-100 YOU MUST ADD A EXTRA 1 for example 81 will give you 80
-
-        //Initialize the level structure
-        for(int i = starterlevel; i < this.maximumlevelCapacity - 1; i++){
-            int formula = i * difficulty;
-            levelcurve.add(baseCurve * formula);
-        }
+        this.unic = unic;
     }
 
     public UUID getUuid() {
@@ -95,92 +81,6 @@ public class KPlayer {
         this.kills = kills;
     }
 
-    /**
-     * Retrieve the player level
-     * @return
-     */
-    public int getLevel() {
-        int exp = getCurrentEXP();
-        int returnValue = starterlevel;
-
-        for (int i = 0; i < maximumlevelCapacity - 1; i++) {
-            int formula = (maximumlevelCapacity - 1) * difficulty;
-
-            if (getCurrentEXP() >= baseCurve * formula) {
-                setCurrentEXP(baseCurve * formula);
-
-                return maximumlevelCapacity - 1;
-            }
-
-            if (exp < levelcurve.get(i) && exp >= levelcurve.get(i - 1)) {
-                returnValue = (i - 1);
-                return returnValue;
-            }
-        }
-
-        return returnValue;
-    }
-
-
-    public void setLevel(int level){
-        int needed = getNeededXP();
-
-
-        if (getLevel() == maximumlevelCapacity - 1) {
-            //Something
-        } else {
-            setCurrentEXP(needed * level);
-        }
-    }
-
-    /**
-     * Add a new value to player current exp
-     * @param exp
-     */
-    public void addCurrentEXP(int exp) {
-        this.current_exp += exp;
-    }
-
-    /**
-     * Set a new value to player current exp
-     * @param exp
-     */
-    public void setCurrentEXP(int exp){
-        this.current_exp = exp;
-    }
-
-    /**
-     * Retrieve the player current exp
-     * @return
-     */
-    public int getCurrentEXP(){
-        return current_exp;
-    }
-
-    /**
-     * Subtract(-) a value from the current exp
-     * @param exp
-     */
-    public void subtractEXP(int exp){
-        this.current_exp -= exp;
-    }
-
-    /**
-     * Retrieve the exp needed to the next player level
-     * @return
-     */
-    public int getNeededXP(){
-        int level = getLevel();
-
-        if (getLevel() == maximumlevelCapacity - 1 )
-        {
-            return 0;
-        } else {
-            int formula = levelcurve.get(level + 1) - getCurrentEXP();
-
-            return formula;
-        }
-    }
 
     /**
      * Retrieve the player coins
@@ -212,6 +112,42 @@ public class KPlayer {
      */
     public void removeCoins(long coins){
         this.coins -= coins;
+    }
+
+    public long getUnic() {
+        return unic;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getLoses() {
+        return loses;
+    }
+
+    /**
+     * Set a new value to player coins
+     * @param unic
+     */
+    public void setUniCoins(long unic) {
+        this.unic = unic;
+    }
+
+    /**
+     * Add a new value to player coins
+     * @param unic
+     */
+    public void addUniCoins(long unic) {
+        this.unic += unic;
+    }
+
+    /**
+     * Remove a certain value of coins
+     * @param unic
+     */
+    public void removeUniCoins(long unic){
+        this.unic -= unic;
     }
 
     /**

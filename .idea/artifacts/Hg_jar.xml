@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Hg:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Hg_jar</output-path>
-    <root id="archive" name="HardcoreGames.jar">
-      <element id="module-output" name="Hg" />
-      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
-    </root>
-  </artifact>
-</component>

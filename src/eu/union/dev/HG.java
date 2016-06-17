@@ -5,21 +5,28 @@ import com.google.common.reflect.ClassPath;
 import eu.union.dev.commands.*;
 import eu.union.dev.invs.KitMenu;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.storage.sql.Database;
 import eu.union.dev.utils.SoupListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.Iterator;
 import java.util.Random;
 
 public class HG extends JavaPlugin implements Listener{
 
     private static HG instance;
+    Database sql = new Database("root", "Be2Cj16M790EcI", "HG", "3306", "localhost");
+    private Connection c;
 
     @Override
     public void onLoad() {
@@ -30,10 +37,14 @@ public class HG extends JavaPlugin implements Listener{
     @Override
     public void onEnable() {
         instance = this;
+        canConnect(true);
+
         HGManager hgm = HGManager.getInstance();
         hgm.setStatus(HGManager.Status.LOBBY);
+
         hgm.setup();
         Timer.getInstace().start();
+
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new HGListener(), this);
         pm.registerEvents(new KitMenu(),this);
@@ -44,13 +55,21 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("fly").setExecutor(new FlyCMD());
         getCommand("build").setExecutor(new BuildCMD());
         getCommand("info").setExecutor(new InfoCMD());
+
         borda();
         registerKits();
+        MemoryFix();
+    }
+
+    @Override
+    public void onDisable() {
+        canConnect(false);
     }
 
     public static HG getInstance() {
         return instance;
     }
+
     private void deleteWorld(File file){
         if (file.isDirectory()){
             String[] list = file.list();
@@ -60,6 +79,7 @@ public class HG extends JavaPlugin implements Listener{
         }
         file.delete();
     }
+
     private void registerKits() {
         KitManager km = KitManager.getManager();
 
@@ -116,5 +136,36 @@ public class HG extends JavaPlugin implements Listener{
                         loc.getBlock().setType(Material.QUARTZ_BLOCK);
                         loc.getBlock().setData((byte)new Random().nextInt(4));
                     }
+    }
+
+    public void canConnect(boolean can) {
+        if (!can) {
+            if (c != null) {
+                c = sql.close(c);
+            }
+        } else {
+            try {
+                sql.open();
+                this.c = sql.getConnection();
+                sql.setupTables();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void MemoryFix() {
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            Iterator<?> localIterator2;
+            for (Iterator<?> localIterator1 = Bukkit.getWorlds().iterator(); localIterator1.hasNext(); localIterator2.hasNext()) {
+                World world = (World) localIterator1.next();
+
+                localIterator2 = ((CraftWorld) world).getHandle().tileEntityList.iterator();
+            }
+        }, 100L, 100L);
+    }
+
+    public Database getSQL() {
+        return sql;
     }
 }
