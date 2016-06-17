@@ -49,7 +49,8 @@ public class Timer {
                             realtime == 2*60 ||
                             realtime == 60 ||
                             realtime == 30 ||
-                            (realtime <= 10 &&
+                            realtime == 10 ||
+                            (realtime <= 5 &&
                             realtime != 0)){
                         if (realtime >=60){
                             Bukkit.broadcastMessage(Messages.PREFIX+" §aThe game begins in "+(realtime/60)+"m!");

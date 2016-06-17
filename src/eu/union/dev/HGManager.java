@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by Fentis on 06/06/2016.
@@ -21,9 +22,10 @@ public class HGManager {
     private Status status;
     Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
     int bordsize = 600;//480
-    private List<Player> playersvivos = new ArrayList<>();
+    private List<UUID> playersvivos = new ArrayList<>();
     private ArrayList<Player> build = new ArrayList<>();
     private List<Player> specs = new ArrayList<>();
+    private ArrayList<Player> noscore = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
         INVINCIBILITY("Invencibility"),
@@ -99,20 +101,27 @@ public class HGManager {
     }
 
     public List<Player> getPlayersVivos() {
-        return playersvivos;
+        List<Player> players = new ArrayList<>();
+        for (UUID uuid : playersvivos){
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null){
+                players.add(p);
+            }
+        }
+        return players;
     }
     public void addPlayersVivos(Player p){
-        if (!playersvivos.contains(p)){
-            playersvivos.add(p);
+        if (!playersvivos.contains(p.getUniqueId())){
+            playersvivos.add(p.getUniqueId());
         }
     }
     public void removePlayersVivos(Player p){
-        if (playersvivos.contains(p)){
-            playersvivos.remove(p);
+        if (playersvivos.contains(p.getUniqueId())){
+            playersvivos.remove(p.getUniqueId());
         }
     }
     public boolean isAlive(Player p){
-        return playersvivos.contains(p);
+        return playersvivos.contains(p.getUniqueId());
     }
 
     public boolean inBuild(Player p){
@@ -146,4 +155,18 @@ public class HGManager {
         return specs.contains(p);
     }
 
+    public ArrayList<Player> getNoScore() {
+        return noscore;
+    }
+
+    public void addNoScore(Player p){
+        if (!noscore.contains(p)){
+            noscore.add(p);
+        }
+    }
+    public void removeNoScore(Player p){
+        if (noscore.contains(p)){
+            noscore.remove(p);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package eu.union.dev.commands;
 import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.Timer;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,9 +38,10 @@ public class InfoCMD implements CommandExecutor{
             }
             if (sender instanceof Player){
                 Player p = (Player)sender;
+                String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
                 sender.sendMessage("§aStage: §c"+ stage +"\n§a" +
                         "Timer: §c"+ Timer.getInstace().getTimerFormated()+"\n§a" +
-                        "Kit: §c"+ KitManager.getManager().getPlayerKitInLobby(p).getName()+"\n§a" +
+                        "Kit: §c"+ kit+"\n§a" +
                         "Players: §c"+HGManager.getInstance().getPlayersVivos().size());
             }
         }

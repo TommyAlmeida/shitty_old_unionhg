@@ -26,22 +26,21 @@ public class KitCMD implements CommandExecutor{
             if (sender instanceof Player){
                 Player p = (Player)sender;
                 if (args.length == 0){
-                    Inventory inv = Bukkit.createInventory(null,6*9,"Kits");
-                    new KitMenu().setItems(p,inv,"player",1);
-                    p.openInventory(inv);
+                    if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                        Inventory inv = Bukkit.createInventory(null,6*9,"Kits");
+                        new KitMenu().setItems(p,inv,"player",1);
+                        p.openInventory(inv);
+                    }
                 }else{
                     KitManager km = KitManager.getManager();
                     String kitname = args[0];
                     if (km.getKitByName(args[0]) != null){
                         Kit kit = km.getKitByName(args[0]);
-                        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
-                                HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
-                            if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                                km.setPlayerKitInLobby(p,kit);
-                                Icon icon = km.getPlayerKitInLobby(p).getIcon();
-                                p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
-                                p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
-                            }
+                        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                            km.setPlayerKitInLobby(p,kit);
+                            Icon icon = km.getPlayerKitInLobby(p).getIcon();
+                            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+                            p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
                         }
                     }
                 }
