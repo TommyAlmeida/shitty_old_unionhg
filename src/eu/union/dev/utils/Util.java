@@ -7,6 +7,7 @@ import eu.union.dev.api.Icon;
 import eu.union.dev.storage.KPlayer;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -84,12 +85,14 @@ public class Util {
 
         Objective stats = board.registerNewObjective("stats", "dummy");
         stats.setDisplaySlot(DisplaySlot.SIDEBAR);
-        int index = 10;
-        stats.setDisplayName("      §a§lUnion §b§lHG      ");
+        int index = 12;
+        stats.setDisplayName("    §6§lUnion§f§l-§6§lHG    ");
         stats.getScore("§a").setScore(index--);
-        stats.getScore("§b§fStage:").setScore(index--);
+        stats.getScore("§fStage:").setScore(index--);
         stats.getScore("§1").setScore(index--);
+        stats.getScore("§fTimer:").setScore(index--);
         stats.getScore("§2").setScore(index--);
+        stats.getScore("§fPlayers:").setScore(index--);
         stats.getScore("§3").setScore(index--);
         stats.getScore("§fKit:").setScore(index--);
         stats.getScore("§4").setScore(index--);
@@ -110,34 +113,21 @@ public class Util {
         final Team kit = board.getTeam("kit");
         final Team server = board.getTeam("server");
 
-        String stagee = "";
+        String stagee = getStage();
+        String timerr = "";
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-            stagee = "Waiting";
+            timerr = "§a"+Timer.getInstace().getTimerFormated();
+        }else{
+            timerr = "§c"+Timer.getInstace().getTimerFormated();
         }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
-            stagee = "Start";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
-            stagee = "In Battle";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
-            stagee = "Pre Feast";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST){
-            stagee = "In Feast";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
-            stagee = "In End";
-        }
-        String timerr = Timer.getInstace().getTimerFormated();
         String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
         String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
         String serverr = "A1";
-        stage.setPrefix("§a"+stagee);
-        timer.setPrefix("§fTimer: §c" + timerr);
-        online.setPrefix("§fPlayers: §d" + onlinee);
+        stage.setPrefix(stagee);
+        timer.setPrefix(timerr);
+        online.setPrefix("§d" + onlinee+"/60");
         kit.setPrefix("§b"+kitt);
-        server.setPrefix("§fServer: §6" + serverr);
+        server.setPrefix("§6" + serverr);
 
         p.setScoreboard(board);
     }
@@ -150,36 +140,49 @@ public class Util {
         final Team kit = board.getTeam("kit");
         final Team server = board.getTeam("server");
 
-        String stagee = "";
+        String stagee = getStage();
+        String timerr = "";
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-            stagee = "Waiting";
+            timerr = "§a"+Timer.getInstace().getTimerFormated();
+        }else{
+            timerr = "§c"+Timer.getInstace().getTimerFormated();
         }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
-            stagee = "Start";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
-            stagee = "In Battle";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
-            stagee = "Pre Feast";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST){
-            stagee = "In Feast";
-        }
-        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
-            stagee = "In End";
-        }
-        String timerr = Timer.getInstace().getTimerFormated();
         String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
         String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
         String serverr = "A1";
-        stage.setPrefix("§a"+stagee);
-        timer.setPrefix("§fTimer: §c" + timerr);
-        online.setPrefix("§fPlayers: §d" + onlinee);
+        stage.setPrefix(stagee);
+        timer.setPrefix(timerr);
+        online.setPrefix("§d" + onlinee+"/60");
         kit.setPrefix("§b"+kitt);
-        server.setPrefix("§fServer: §6" + serverr);
+        server.setPrefix("§6" + serverr);
     }
 
+    public void setTab(Player p){
+        String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
+        Packets.getAPI().setHeaderFooter(p,"§6§lUnion§f§l-§6§lHG","§cKills: §f0 §bKit: §f"+kit+" §aStage: §f"+getStage()+" §bTimer: §e"+Timer.getInstace().getTimerFormated()+" §7Ping: §f"+((CraftPlayer)p).getHandle().ping);
+    }
+    public String getStage(){
+        String stage = "";
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            stage = "§aWaiting";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){
+            stage = "§bStart";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+            stage = "§cIn Battle";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
+            stage = "§aPre Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.FEAST){
+            stage = "§cIn Feast";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            stage = "§bIn End";
+        }
+        return stage;
+    }
     public void readyPlayer(Player player) {
         player.getInventory().clear();
         player.setHealth(player.getMaxHealth());
