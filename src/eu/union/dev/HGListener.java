@@ -45,19 +45,25 @@ public class HGListener implements Listener{
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
             List<String> kitNames = KitManager.getManager().getKits().stream().map(Kit::getName).collect(Collectors.toList());
             String allKits = StringUtils.join(kitNames, ", ");
-            p.sendMessage("§a" + "(" + KitManager.getManager().getKits().size() + ") Kits: " + allKits + ".");
-            if (km.getPlayerKitInLobby(p) == null){
+            p.sendMessage("§a" + "(" + KitManager.getManager().getKits().size() + ") Kits: " + allKits + ".");// mostra todos os kits
+            if (km.getPlayerKitInLobby(p) == null){//da kit suprise se n tiver escolhido um antes
                 km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
             }
             p.getInventory().clear();
-            Util.getInstance().buildJoinIcons(p);
+            Util.getInstance().buildJoinIcons(p);//da os items
             if (!HGManager.getInstance().getNoScore().contains(p)){
                 Util.getInstance().buildScoreboard(p);
             }
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
-            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
-            p.teleport(new Location(p.getWorld(),0.5,160,0.5));
+            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));//adiciona o kit na hotbar
+            p.teleport(new Location(p.getWorld(),0.5,160,0.5));//teleporta para o coliseu
             HGManager.getInstance().addPlayersVivos(p);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    p.teleport(new Location(p.getWorld(),0.5,160,0.5));//teleporta para o coliseu novamente para desbugar
+                }
+            },20);
         }else{
             if (!reconect.contains(p.getName())){
                 if (p.hasPermission(Perms.SPECTATOR.toString())){
@@ -308,17 +314,17 @@ public class HGListener implements Listener{
             Location loc2 = new Location(p.getWorld(), 0, 0, 0);
             if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= HGManager.getInstance().getBordSize()) ||
                     (Math.abs(loc.getBlockZ() + loc2.getBlockZ()) >= HGManager.getInstance().getBordSize())))
-            {
-                if (HGManager.getInstance().isSpec(p)){
+            {//alem da borda
+                if (HGManager.getInstance().isSpec(p)){//teleporte de players q estão em spec qu n seja staff para o coliseu
                     if (!Perms.isStaff(p)){
                         p.teleport(new Location(p.getWorld(),0.5,155,0.5));
                     }
                 }else{
                     double dmg = 2.5D;
-                    if (p.getHealth() - dmg > 0.0D) {
+                    if (p.getHealth() - dmg > 0.0D) {//da dano a cada segundo se estiver alem borda
                         p.damage(dmg);
                     } else {
-                        p.setHealth(0.0D);
+                        p.setHealth(0.0D);//morte pela borda
                         Bukkit.broadcastMessage("§c"+p.getDisplayName()+" killed by bord!");
                     }
                 }
@@ -341,7 +347,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSpawnItem(ItemSpawnEvent e){
         Item i = e.getEntity();
-        if (i.getItemStack().hasItemMeta()){
+        if (i.getItemStack().hasItemMeta()){//se o item for um item de kit o item é removido do chão
             ItemMeta im = i.getItemStack().getItemMeta();
             if (im.spigot().isUnbreakable()){
                 i.remove();
@@ -349,7 +355,7 @@ public class HGListener implements Listener{
         }
     }
     @EventHandler
-    public void onMiniFeastSpawn(HGMiniFeastSpawnEvent e){
+    public void onMiniFeastSpawn(HGMiniFeastSpawnEvent e){//spawn de minieast
         StructureCreator scmf = new StructureCreator(e.getLocation(), StructureCreator.Structure.MINIFEAST);
         scmf.createStrucure();
         Bukkit.broadcastMessage(Messages.PREFIX+" §aMiniFeast has spawned in §cX:"+e.getLocation().getX()+"§a, §cZ:"+e.getLocation().getZ()+"§a!");
@@ -360,7 +366,7 @@ public class HGListener implements Listener{
     }
 
     @EventHandler
-    public void onFood(FoodLevelChangeEvent e) {
+    public void onFood(FoodLevelChangeEvent e) {//fome apenas depois da invincibilidade
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
@@ -389,7 +395,7 @@ public class HGListener implements Listener{
         }
     }
     @EventHandler
-    public void onEntityExplode(EntityExplodeEvent e) {
+    public void onEntityExplode(EntityExplodeEvent e) {//cancela explosões proximas a borda
         Location loc = e.getEntity().getLocation();
         Location loc2 = new Location(e.getEntity().getWorld(), 0, 120, 0);
         if (((Math.abs(loc.getBlockX() + loc2.getBlockX()) >= (HGManager.getInstance().getBordSize()-10)) ||
@@ -405,7 +411,7 @@ public class HGListener implements Listener{
         Player p = e.getEntity();
         e.setDeathMessage(null);
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
-                HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){//deixa a pessoa reviver 1vez se tiver perm
             p.setHealth(20.0D);
             nodamage.add(p.getUniqueId());
             p.sendMessage(Messages.PREFIX+" §aYou came back from the ashes! You gained 2m invincibility");
@@ -429,7 +435,7 @@ public class HGListener implements Listener{
             },(2*60)*20);
             return;
         }
-        if (p.hasPermission(Perms.SPECTATOR.toString())){
+        if (p.hasPermission(Perms.SPECTATOR.toString())){//deixa o player spectar
             Util.getInstance().readyPlayer(p);
             p.setGameMode(GameMode.ADVENTURE);
             HGManager.getInstance().addSpec(p);
@@ -458,7 +464,7 @@ public class HGListener implements Listener{
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
+    public void onChat(AsyncPlayerChatEvent e) {//chat do server
         String prefix = PermissionsEx.getUser(e.getPlayer()).getGroups()[0].getPrefix();
         e.setCancelled(true);
         if (HGManager.getInstance().isSpec(e.getPlayer())){
@@ -473,7 +479,7 @@ public class HGListener implements Listener{
         }
     }
     @EventHandler
-    public void onPickUp(PlayerPickupItemEvent e){
+    public void onPickUp(PlayerPickupItemEvent e){//deixa o player
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
                 HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
@@ -487,7 +493,7 @@ public class HGListener implements Listener{
         e.setCancelled(true);
     }
     @EventHandler
-    public void onCompass(HGTimerSecondsEvent e){
+    public void onCompass(HGTimerSecondsEvent e){//compass para mostrar a loc do player maix proximo
         for (Player p : Bukkit.getOnlinePlayers()){
             if (p.getItemInHand().getType() == Material.COMPASS){
                 String message = "§c§lNo Players!";
@@ -516,7 +522,7 @@ public class HGListener implements Listener{
         }
     }
     @EventHandler
-    public void onTarget(EntityTargetEvent e){
+    public void onTarget(EntityTargetEvent e){//cancela os mobs seguirem specs
         if (e.getTarget() instanceof Player){
             Player p = (Player)e.getTarget();
             if (HGManager.getInstance().isSpec(p)){
