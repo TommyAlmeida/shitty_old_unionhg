@@ -60,13 +60,7 @@ public class C4 extends Kit implements Listener {
                 e.setCancelled(true);
                 if (c4item.containsKey(p)) {
                     Location loc = c4item.get(p).getLocation();
-                    for (Entity en : c4item.get(p).getNearbyEntities(5, 5, 5)) {
-                        if (en instanceof Player) {
-                            if (((Player) en).canSee(p)) {
-                                ((Player) en).damage(19 - en.getLocation().distance(loc), p);
-                            }
-                        }
-                    }
+                    p.getWorld().createExplosion(loc,3.0F,true);
                     c4item.get(p).remove();
                     c4item.remove(p);
                     p.getWorld().playEffect(loc, Effect.EXPLOSION_LARGE, 10);

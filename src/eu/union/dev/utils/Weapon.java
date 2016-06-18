@@ -38,8 +38,7 @@ public enum Weapon {
     SPECTRE_SUGAR(Material.SUGAR, "§7Spectre"),
     C4_SLIME(Material.SLIME_BALL, "§4C4"),
     RIDER_SADDLE(Material.SADDLE, "§6Rider"),
-    PORTAL_BLUE(Material.DIAMOND_BARDING, "§bBlue Portal"),
-    PORTAL_ORANGE(Material.GOLD_BARDING, "§6Orange Portal"),
+    PORTAL_GUN(Material.DIAMOND_BARDING, "§6Portal §1Gun"),
     WEATHERLORD_TORNADO(Material.WATCH, "§bWeather Controller"),
     GUARDIAN_SHARD(Material.PRISMARINE_SHARD, "§bGuardian Tower"),
     QUAKE_GUN(Material.IRON_HOE, "§bQuake Gun"),
@@ -47,7 +46,11 @@ public enum Weapon {
     HEALER_ITEM(Material.RED_ROSE, "§cHealer Item"),
     BLINK_STAR(Material.NETHER_STAR, "§bBlink Star"),
     TRAVELER_ARROW(Material.ARROW, "§bTraveller Item"),
-    IRON_HOOK(Material.TRIPWIRE_HOOK, "§7Iron §8Hook");
+    IRON_HOOK(Material.TRIPWIRE_HOOK, "§7Iron §8Hook"),
+    MINER_PICKAXE(Material.STONE_PICKAXE, "§4Miner Pickaxe"),
+    PYRO_FIREBALL(Material.FIREBALL, "§6Fire §4Ball"),
+    FIREMAN_BUCKET(Material.WATER_BUCKET, "§bFireman Bucket"),
+    LUMBERJACK_AXE(Material.WOOD_AXE, "§4Lumberjack Axe");
 
 
     Material mat;
