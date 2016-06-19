@@ -29,7 +29,8 @@ public class InfoCMD implements CommandExecutor{
                 Player p = (Player)sender;
                 String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
                 if (cooldown.tryUse(p)){
-                    Location loc = p.getTargetBlock((HashSet<Byte>)null,3).getLocation().add(0.5,1,0.5);
+                    Location loc = p.getTargetBlock((HashSet<Byte>)null,3).getLocation().add(0.5,0,0.5);
+                    loc.setY(p.getLocation().getY()+0.3);
                     Holograms holo = new Holograms(loc,0.0,"§aStage: §c"+ Util.getInstance().getStage() ,
                             "§aTimer: §c"+ Timer.getInstace().getTimerFormated() ,
                             "§aKit: §c"+ kit ,

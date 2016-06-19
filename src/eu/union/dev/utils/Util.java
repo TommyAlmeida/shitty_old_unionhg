@@ -8,9 +8,11 @@ import eu.union.dev.storage.KPlayer;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -209,7 +211,71 @@ public class Util {
             player.removePotionEffect(pE.getType());
         }
 
+    }
 
+    public void sendMessageOfDeath(Player killer, Player killed, EntityDamageEvent.DamageCause damage){
+        KitManager km = KitManager.getManager();
+        String kit = WordUtils.capitalize(km.getPlayerKitInLobby(killed).getName());
+        if ((killer == null)) {
+            if (damage == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
+                    damage == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {//explosão
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" +"§c has died by explosion");
+            }
+            if (damage == EntityDamageEvent.DamageCause.LAVA) {//lava
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by lava");
+            }
+            if (damage == EntityDamageEvent.DamageCause.FALL) {//queda
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c thought it was a bird and died");
+            }
+            if (damage == EntityDamageEvent.DamageCause.FIRE ||
+                    damage == EntityDamageEvent.DamageCause.FIRE_TICK) {//fogo
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by fire");
+            }
+            if (damage == EntityDamageEvent.DamageCause.MAGIC) {//magica
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by magic");
+            }
+            if (damage == EntityDamageEvent.DamageCause.DROWNING) {//falta de ar
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c thought it was a fish and died");
+            }
+            if (damage == EntityDamageEvent.DamageCause.WITHER) {//whiter potion
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by wither");
+            }
+            if (damage == EntityDamageEvent.DamageCause.POISON) {//veneno
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by poison");
+            }
+            if (damage == EntityDamageEvent.DamageCause.FALLING_BLOCK) {//bloco (bigorna)
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by falling block");
+            }
+            if (damage == EntityDamageEvent.DamageCause.LIGHTNING) {//raio
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by lightning");
+            }
+            if (damage == EntityDamageEvent.DamageCause.PROJECTILE) {//projetil
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by projectile");
+            }
+            if (damage == EntityDamageEvent.DamageCause.VOID) {//void
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by void");
+            }
+            if (damage == EntityDamageEvent.DamageCause.SUICIDE) {//se matou
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by suicide");
+            }
+            if (damage == EntityDamageEvent.DamageCause.SUFFOCATION){//sufocado
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by suffocation");
+            }
+            if (damage == EntityDamageEvent.DamageCause.STARVATION){//fome
+                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by starvation");
+            }
+            if (damage == EntityDamageEvent.DamageCause.THORNS){//armadura de thorns
+                Bukkit.broadcastMessage("§a" + killed.getName() + "§a<"+kit+">" + "§c has died by thorns");
+            }
+            if (damage == EntityDamageEvent.DamageCause.ENTITY_ATTACK){//entidades
+                Entity en = killed.getLastDamageCause().getEntity();
+                String entidade = en.toString().toLowerCase();
+                Bukkit.broadcastMessage("§a" + killed.getName() + "§a<"+kit+">" + "§c has died by thorns");
+            }
+        }else{
+            String kitk = WordUtils.capitalize(km.getPlayerKitInLobby(killer).getName());
+            Bukkit.broadcastMessage("§a" + killed.getDisplayName()+ "§a<"+kit+">" + " §chas been slained by §b" + killer.getDisplayName()+"§a<"+kitk+">");
+        }
     }
 
     public void randomKit(Player p) {

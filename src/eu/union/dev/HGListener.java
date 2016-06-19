@@ -436,6 +436,7 @@ public class HGListener implements Listener{
             killer.addKills(1);
             HGManager.getInstance().addKills(p);
         }
+        Util.getInstance().sendMessageOfDeath(p,p.getKiller(),p.getLastDamageCause().getCause());
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
                 HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
