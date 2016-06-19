@@ -4,15 +4,13 @@ import eu.union.dev.api.Icon;
 import eu.union.dev.events.*;
 import eu.union.dev.storage.KPlayer;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.storage.sql.Database;
 import eu.union.dev.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Ghast;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -78,6 +76,14 @@ public class HGListener implements Listener{
                 HGManager.getInstance().addPlayersVivos(p);
                 reconect.remove(p.getName());
             }
+        }
+        if (HGManager.getInstance().scc.addholo){
+            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    HGManager.getInstance().scc.addHolo();
+                }
+            },10*20);
         }
     }
     @EventHandler
@@ -170,6 +176,8 @@ public class HGListener implements Listener{
     @EventHandler
     public void onPlayerWin(HGPlayerWinEvent e){
         Player p = e.getWinner();
+        KPlayer win = PlayerManager.getPlayer(p.getUniqueId());
+        win.addWins();
         p.playSound(p.getLocation(),Sound.ORB_PICKUP,1.0F,1.0F);
         p.getInventory().clear();
         p.getInventory().setArmorContents(null);
@@ -302,7 +310,7 @@ public class HGListener implements Listener{
                 }
             }
             if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
-                if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145){
+                if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145 && !nodamage.contains(p.getUniqueId())){
                     p.damage(4.0);
                 }
             }
@@ -396,9 +404,12 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSpawnMobs(CreatureSpawnEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-            e.setCancelled(true);
+            if (!(e.getEntity() instanceof ArmorStand)){
+                e.setCancelled(true);
+            }
         }
-        if (e.getEntity() instanceof Ghast){
+        if (e.getEntity() instanceof Ghast ||
+                e.getEntity() instanceof PigZombie){
             e.setCancelled(true);
         }
     }
@@ -418,12 +429,19 @@ public class HGListener implements Listener{
     public void onDeath(PlayerDeathEvent e){
         Player p = e.getEntity();
         e.setDeathMessage(null);
+        KPlayer death = PlayerManager.getPlayer(p.getUniqueId());
+        death.addDeaths(1);
+        if (p.getKiller() instanceof Player){
+            KPlayer killer = PlayerManager.getPlayer(p.getKiller().getUniqueId());
+            killer.addKills(1);
+            HGManager.getInstance().addKills(p);
+        }
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
                 HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
-            nodamage.add(p.getUniqueId());
             p.sendMessage(Messages.PREFIX+" §aYou came back from the ashes! You gained 2m invincibility");
             respawn.add(p.getUniqueId());
+            nodamage.add(p.getUniqueId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
                 public void run() {
@@ -450,6 +468,7 @@ public class HGListener implements Listener{
             HGManager.getInstance().addSpec(p);
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
+            death.addLoses();
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
                 public void run() {
@@ -463,6 +482,7 @@ public class HGListener implements Listener{
         }else{
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
+            death.addLoses();
             p.kickPlayer(Messages.PREFIX+" §aYou don't have permission for spectate!");
         }
     }
@@ -509,10 +529,9 @@ public class HGListener implements Listener{
                 List<Player> players = new ArrayList<>();
                 for (Player ps : p.getWorld().getPlayers()){
                     if (!(ps.getUniqueId().equals(p.getUniqueId())) &&
-                            !p.canSee(ps) &&
                             !HGManager.getInstance().isSpec(ps) &&
                             ps.getGameMode() == GameMode.SURVIVAL &&
-                            ps.getLocation().distance(p.getLocation()) >=15){
+                            ps.getLocation().distance(p.getLocation()) >=10.0){
                         players.add(ps);
                     }
                 }
@@ -523,8 +542,8 @@ public class HGListener implements Listener{
                     nearest = players.get(0);
                 }catch (IndexOutOfBoundsException ex){}
                 if (nearest != null){
-                    message = "§aPlayer:§7"+nearest.getName()+" " +
-                            "§aDistance:§7"+((int)nearest.getLocation().distance(p.getLocation()));
+                    message = "§aPlayer: §7"+nearest.getName()+" " +
+                            "§aDistance: §7"+((int)nearest.getLocation().distance(p.getLocation()));
                     p.setCompassTarget(nearest.getLocation());
                 }
                 Packets.getAPI().sendActionBar(p,message);

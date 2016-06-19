@@ -22,6 +22,7 @@ public class StructureCreator implements Listener{
     Location centro;
     Structure type;
     List<Block> piston = new ArrayList<>();
+    List<Block> blocks = new ArrayList<>();
     public StructureCreator(Location centro, Structure type) {
         this.centro = centro;
         this.type = type;
@@ -107,8 +108,41 @@ public class StructureCreator implements Listener{
                 if (m == Material.PISTON_BASE){
                     piston.add(loccenter.getBlock().getLocation().add(x, y, z).getBlock());
                 }
+                if (m == Material.ENDER_CHEST || m == Material.GOLD_BLOCK){
+                    this.blocks.add(loccenter.getBlock().getLocation().add(x,y,z).getBlock());
+                }
+                /*if (m == Material.GOLD_BLOCK){
+                    Block b = loccenter.getBlock().getLocation().add(x, y, z).getBlock();
+                    b.setType(Material.AIR);
+                    Holograms holo = new Holograms(b.getLocation().add(0.5,0,0.5),0.0,"- - - - - - - -",
+                            "§6Jump here",
+                            "- - - - - - - -");
+                    holo.spawn();
+                }
+                if (m == Material.ENDER_CHEST){
+                    Block b = loccenter.getBlock().getLocation().add(x, y, z).getBlock();
+                    Holograms holoc = new Holograms(b.getLocation().add(0.5,0,0.5),0.0,"§f§lUnion Crates");
+                    holoc.spawn();
+                }*/
             }
         }
+    }
+    public boolean addholo = true;
+    public void addHolo(){
+        for (Block b : blocks){
+            if (b.getType() == Material.GOLD_BLOCK){
+                b.setType(Material.AIR);
+                Holograms holoj = new Holograms(b.getLocation().add(0.5,1,0.5),0.0,"- - - - - - - -",
+                        "§6Jump here",
+                        "- - - - - - - -");
+                holoj.spawn();
+            }
+            if (b.getType() == Material.ENDER_CHEST){
+                Holograms holoc = new Holograms(b.getLocation().add(0.5,1,0.5),-0.8,"§f§lUnion Crates");
+                holoc.spawn();
+            }
+        }
+        addholo = false;
     }
     public void removePistons(){
         if (type == Structure.COLISEU){

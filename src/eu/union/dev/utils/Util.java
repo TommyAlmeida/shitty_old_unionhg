@@ -159,7 +159,7 @@ public class Util {
 
     public void setTab(Player p){
         String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
-        Packets.getAPI().setHeaderFooter(p,"§6§lUnion§f§l-§6§lHG","§cKills: §f0 §bKit: §f"+kit+" §aStage: §f"+getStage()+" §bTimer: §e"+Timer.getInstace().getTimerFormated()+" §7Ping: §f"+((CraftPlayer)p).getHandle().ping);
+        Packets.getAPI().setHeaderFooter(p,"§6§lUnion§f§l-§6§lHG","§cKills: §f"+HGManager.getInstance().getKills(p)+" §bKit: §f"+kit+" §aStage: §f"+getStage()+" §bTimer: §e"+Timer.getInstace().getTimerFormated()+" §7Ping: §f"+((CraftPlayer)p).getHandle().ping);
     }
     public String getStage(){
         String stage = "";
@@ -195,7 +195,6 @@ public class Util {
         for (PotionEffect pE : player.getActivePotionEffects()) {
             player.removePotionEffect(pE.getType());
         }
-
     }
 
     public void readyPlayerNoHealth(Player player) {

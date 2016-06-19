@@ -69,18 +69,12 @@ public class KitMenu implements Listener{
             if (e.getSlot() < 0) {
                 return;
             }
-
-            String kit = item.getItemMeta().getDisplayName().replace("§7Kit » ", "").replace("§7", "").replace("§b", "").replace("§d", "").replace("§6", "").replace("§5", "");
-
-            if (KitManager.getManager().getKitByName(kit) != null) {
-                offerKit(p, kit);
-                e.getView().close();
-                e.setCancelled(true);
-            }else{
-                try {
-                    throw new Exception();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+            if (e.getSlot() >= 9){
+                String kit = item.getItemMeta().getDisplayName().replace("§7Kit » ", "").replace("§7", "").replace("§b", "").replace("§d", "").replace("§6", "").replace("§5", "");
+                if (KitManager.getManager().getKitByName(kit) != null) {
+                    offerKit(p, kit);
+                    e.getView().close();
+                    e.setCancelled(true);
                 }
             }
             if (e.getSlot() == 0){

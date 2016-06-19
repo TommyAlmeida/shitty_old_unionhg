@@ -1,5 +1,7 @@
 package eu.union.dev.storage;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -125,6 +127,10 @@ public class KPlayer {
     public int getLoses() {
         return loses;
     }
+
+    public void addWins(){ wins++;}
+
+    public void addLoses(){ loses++;}
 
     /**
      * Set a new value to player coins

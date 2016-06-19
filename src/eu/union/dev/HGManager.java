@@ -5,10 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Fentis on 06/06/2016.
@@ -26,6 +23,7 @@ public class HGManager {
     private ArrayList<Player> build = new ArrayList<>();
     private List<Player> specs = new ArrayList<>();
     private ArrayList<Player> noscore = new ArrayList<>();
+    private HashMap<Player,Integer> kills = new HashMap<>();
     public enum Status {
         LOBBY("Lobby"),
         INVINCIBILITY("Invencibility"),
@@ -55,7 +53,7 @@ public class HGManager {
     public void setStatus(Status status) {
         this.status = status;
     }
-    StructureCreator scc;
+    public StructureCreator scc;
     public void setup(){
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
         feast = RandomLocation(100);
@@ -65,6 +63,12 @@ public class HGManager {
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                //scc.addHolo();
+            }
+        },5*20);
     }
     public static Location RandomLocation(int raio)
     {
@@ -168,5 +172,18 @@ public class HGManager {
         if (noscore.contains(p)){
             noscore.remove(p);
         }
+    }
+    public void addKills(Player p){
+        if (kills.containsKey(p)){
+            kills.put(p,kills.get(p)+1);
+        }else{
+            kills.put(p,1);
+        }
+    }
+    public int getKills(Player p){
+        if (kills.containsKey(p)){
+            return kills.get(p);
+        }
+        return 0;
     }
 }
