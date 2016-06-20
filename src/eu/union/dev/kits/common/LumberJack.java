@@ -33,8 +33,8 @@ public class LumberJack extends Kit implements Listener{
             KitManager km = KitManager.getManager();
             if (p.getItemInHand().getType().toString().contains("_AXE") &&
                     km.getKitAmIUsing(p, "lumberjack") &&
-                    e.getBlock().getType() == Material.LOG ||
-                    e.getBlock().getType() == Material.LOG_2){
+                    (e.getBlock().getType() == Material.LOG ||
+                    e.getBlock().getType() == Material.LOG_2)){
                 Block b = e.getBlock();
                 Double y = Double.valueOf(b.getLocation().getY() + 1.0D);
                 Location l = new Location(b.getWorld(), b.getLocation().getX(), y.doubleValue(), b.getLocation().getZ());

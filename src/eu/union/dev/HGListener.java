@@ -54,7 +54,7 @@ public class HGListener implements Listener{
             Util.getInstance().buildScoreboard(p);
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
             p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
-            p.teleport(new Location(p.getWorld(),0.5,160,0.5));
+            //p.teleport(new Location(p.getWorld(),0.5,160,0.5));
             HGManager.getInstance().addPlayersVivos(p);
         }else{
             if (!reconect.contains(p.getName())){
@@ -286,21 +286,23 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSeconds(HGTimerSecondsEvent e){
         for (Player p : Bukkit.getOnlinePlayers()){
-            Util.getInstance().updateSocoreBoard(p);
+            if (!HGManager.getInstance().getNoScore().contains(p)){
+                Util.getInstance().updateSocoreBoard(p);
+            }
+            Util.getInstance().setTab(p);
             for (Player ps : Bukkit.getOnlinePlayers()){
                 if (HGManager.getInstance().isSpec(ps)){
                     if (!HGManager.getInstance().isSpec(p)){
                         p.hidePlayer(ps);
-                        for (Entity en : ps.getNearbyEntities(5,5,5)){
-                            if (en instanceof Player){
-                                Player p2 = (Player)en;
-                                if (HGManager.getInstance().isSpec(p2)){
-                                    Vector v = p2.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(3);
-                                    p2.setVelocity(v);
-                                    p2.sendMessage(Messages.PREFIX+" §cPlease! Don't ");
-                                }
-                            }
-                        }
+                    }
+                }
+            }
+            for (Entity en : p.getNearbyEntities(5,5,5)){
+                if (en instanceof Player){
+                    Player p2 = (Player)en;
+                    if (HGManager.getInstance().isSpec(p2)){
+                        Vector v = p2.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(3);
+                        p2.setVelocity(v);
                     }
                 }
             }
@@ -310,7 +312,9 @@ public class HGListener implements Listener{
                 }
             }
             if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
-                if (p.getGameMode() == GameMode.SURVIVAL && p.getLocation().getY() >= 145 && !nodamage.contains(p.getUniqueId())){
+                if (p.getGameMode() == GameMode.SURVIVAL &&
+                        p.getLocation().getY() >= 145 &&
+                        !nodamage.contains(p.getUniqueId())){
                     p.damage(4.0);
                 }
             }
@@ -436,13 +440,13 @@ public class HGListener implements Listener{
             killer.addKills(1);
             HGManager.getInstance().addKills(p);
         }
-        Util.getInstance().sendMessageOfDeath(p,p.getKiller(),p.getLastDamageCause().getCause());
+        //Util.getInstance().sendMessageOfDeath(p,p.getKiller(),p.getLastDamageCause().getCause());
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
                 HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
+            nodamage.add(p.getUniqueId());
             p.sendMessage(Messages.PREFIX+" §aYou came back from the ashes! You gained 2m invincibility");
             respawn.add(p.getUniqueId());
-            nodamage.add(p.getUniqueId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
                 public void run() {
@@ -459,7 +463,7 @@ public class HGListener implements Listener{
                     nodamage.remove(p.getUniqueId());
                     p.sendMessage(Messages.PREFIX+" §cYou are not more invincible!");
                 }
-            },10);
+            },(2*60)*20);
             return;
         }
         if (p.hasPermission(Perms.SPECTATOR.toString())){
@@ -474,6 +478,7 @@ public class HGListener implements Listener{
                 @Override
                 public void run() {
                     Util.getInstance().readyPlayer(p);
+                    p.setGameMode(GameMode.ADVENTURE);
                     p.teleport(p.getLocation().add(0,5,0));
                     p.setAllowFlight(true);
                     p.setFlying(true);

@@ -130,16 +130,18 @@ public class StructureCreator implements Listener{
     public boolean addholo = true;
     public void addHolo(){
         for (Block b : blocks){
-            if (b.getType() == Material.GOLD_BLOCK){
-                b.setType(Material.AIR);
-                Holograms holoj = new Holograms(b.getLocation().add(0.5,1,0.5),0.0,"- - - - - - - -",
-                        "§6Jump here",
-                        "- - - - - - - -");
-                holoj.spawn();
-            }
-            if (b.getType() == Material.ENDER_CHEST){
-                Holograms holoc = new Holograms(b.getLocation().add(0.5,1,0.5),-0.8,"§f§lUnion Crates");
-                holoc.spawn();
+            if (addholo){
+                if (b.getType() == Material.GOLD_BLOCK){
+                    b.setType(Material.AIR);
+                    Holograms holoj = new Holograms(b.getLocation().add(0.5,1,0.5),0.0,"- - - - - - - -",
+                            "§6Jump here",
+                            "- - - - - - - -");
+                    holoj.spawn();
+                }
+                if (b.getType() == Material.ENDER_CHEST){
+                    Holograms holoc = new Holograms(b.getLocation().add(0.5,1,0.5),-0.8,"§f§lUnion Crates");
+                    holoc.spawn();
+                }
             }
         }
         addholo = false;
