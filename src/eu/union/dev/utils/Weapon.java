@@ -50,7 +50,8 @@ public enum Weapon {
     MINER_PICKAXE(Material.STONE_PICKAXE, "§4Miner Pickaxe"),
     PYRO_FIREBALL(Material.FIREBALL, "§6Fire §4Ball"),
     FIREMAN_BUCKET(Material.WATER_BUCKET, "§bFireman Bucket"),
-    LUMBERJACK_AXE(Material.WOOD_AXE, "§4Lumberjack Axe");
+    LUMBERJACK_AXE(Material.WOOD_AXE, "§4Lumberjack Axe"),
+    BACKPACKER(Material.ENDER_CHEST,"§5Back-Pack");
 
 
     Material mat;
