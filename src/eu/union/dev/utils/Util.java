@@ -151,10 +151,10 @@ public class Util {
         }
         String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
         String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
-        String serverr = "A1";
+        String serverr = HG.getInstance().getConfig().getString("IP");
         stage.setPrefix(stagee);
         timer.setPrefix(timerr);
-        online.setPrefix("§d" + onlinee+"/60");
+        online.setPrefix("§e" + onlinee+"/60");
         kit.setPrefix("§b"+kitt);
         server.setPrefix("§6" + serverr);
     }

@@ -45,6 +45,9 @@ public class HG extends JavaPlugin implements Listener{
         hgm.setup();
         Timer.getInstace().start();
 
+        getConfig().addDefault("IP","A1");
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new HGListener(), this);
         pm.registerEvents(new KitMenu(),this);
@@ -55,6 +58,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("fly").setExecutor(new FlyCMD());
         getCommand("build").setExecutor(new BuildCMD());
         getCommand("info").setExecutor(new InfoCMD());
+        getCommand("ip").setExecutor(new IpCMD());
 
         borda();
         registerKits();
