@@ -17,7 +17,7 @@ public class HGManager {
         return instance;
     }
     private Status status;
-    Location feast,minifeast1,minifeast2,minifeast3,coliseu = null;
+    Location feast,minifeast1,minifeast2,minifeast3,coliseu,deathmatch = null;
     int bordsize = 600;//480
     private List<UUID> playersvivos = new ArrayList<>();
     private ArrayList<Player> build = new ArrayList<>();
@@ -30,6 +30,7 @@ public class HGManager {
         POS_INVINCIBILITY("PosInvencibility"),
         FEAST_ANNOUNCEMENT("FeastAnnouncement"),
         FEAST("Feast"),
+        DEATH_MATCH("DeathMatch"),
         ENDGAME("EndGame");
 
         String d;
@@ -56,19 +57,15 @@ public class HGManager {
     public StructureCreator scc;
     public void setup(){
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
-        feast = RandomLocation(100);
+        feast = RandomLocation(150);
         minifeast1 = RandomLocation(500);
         minifeast2 = RandomLocation(500);
         minifeast3 = RandomLocation(500);
+        deathmatch = feast;
+        deathmatch.setY(110);
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                //scc.addHolo();
-            }
-        },5*20);
     }
     public static Location RandomLocation(int raio)
     {
@@ -90,6 +87,8 @@ public class HGManager {
     public Location getColiseuLoc() {
         return coliseu;
     }
+
+    public Location getDeathMatchLoc() { return deathmatch;}
 
     public Location getMiniFeastLoc(int n) {
         if (n == 1){

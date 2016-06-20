@@ -32,7 +32,8 @@ public class StructureCreator implements Listener{
         CAKE("Cake"),
         MINIFEAST("MiniFeast"),
         FEAST("Feast"),
-        FEASTBASE("FeastBase");
+        FEASTBASE("FeastBase"),
+        DEATHMATCH("DeathMatch");
 
         String d;
 
@@ -111,19 +112,6 @@ public class StructureCreator implements Listener{
                 if (m == Material.ENDER_CHEST || m == Material.GOLD_BLOCK){
                     this.blocks.add(loccenter.getBlock().getLocation().add(x,y,z).getBlock());
                 }
-                /*if (m == Material.GOLD_BLOCK){
-                    Block b = loccenter.getBlock().getLocation().add(x, y, z).getBlock();
-                    b.setType(Material.AIR);
-                    Holograms holo = new Holograms(b.getLocation().add(0.5,0,0.5),0.0,"- - - - - - - -",
-                            "§6Jump here",
-                            "- - - - - - - -");
-                    holo.spawn();
-                }
-                if (m == Material.ENDER_CHEST){
-                    Block b = loccenter.getBlock().getLocation().add(x, y, z).getBlock();
-                    Holograms holoc = new Holograms(b.getLocation().add(0.5,0,0.5),0.0,"§f§lUnion Crates");
-                    holoc.spawn();
-                }*/
             }
         }
     }

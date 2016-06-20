@@ -34,17 +34,18 @@ public class SoupListener implements Listener {
         melSoup.addIngredient(1, Material.BOWL);
         Bukkit.addRecipe(melSoup);
     }
-
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if (player.getHealth() != 20.0D) {
-            int soup = 7;
-            if (((event.getAction() == Action.RIGHT_CLICK_AIR) ||
-                    (event.getAction() == Action.RIGHT_CLICK_BLOCK)) &&
-                    (player.getItemInHand().getType() == Material.MUSHROOM_SOUP)) {
-                player.setHealth(player.getHealth() + soup > player.getMaxHealth() ? player.getMaxHealth() : player.getHealth() + soup);
-                event.getPlayer().setItemInHand(new ItemStack(Material.BOWL));
+    public void onClick(PlayerInteractEvent e){
+        Player p = e.getPlayer();
+        if (p.getHealth() < p.getMaxHealth() && p.getItemInHand().getType() == Material.MUSHROOM_SOUP){
+            if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR){
+                p.setItemInHand(new ItemStack(Material.BOWL,p.getItemInHand().getAmount()));
+                double soup = 7.0;
+                if ((p.getHealth()+soup) <= p.getMaxHealth()){
+                    p.setHealth(p.getHealth()+soup);
+                }else{
+                    p.setHealth(p.getMaxHealth());
+                }
             }
         }
     }

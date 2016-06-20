@@ -114,9 +114,13 @@ public class Timer {
                 }
                 if (time == 20*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){//spawn feast
                     HGManager.getInstance().setStatus(HGManager.Status.FEAST);
-                    Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(HGManager.getInstance().getFeastLoc()));//Substituir depois
+                    Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(HGManager.getInstance().getFeastLoc()));
                 }
-                if (time == 60*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//acaba o jogo
+                if (time == 50*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//spawn da arena
+                    HGManager.getInstance().setStatus(HGManager.Status.DEATH_MATCH);
+                    Bukkit.getPluginManager().callEvent(new HGDeathMatchEvent(HGManager.getInstance().getDeathMatchLoc()));
+                }
+                if (time == 60*60 && HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH){//acaba o jogo
                     HGManager.getInstance().setStatus(HGManager.Status.ENDGAME);
                     Bukkit.getPluginManager().callEvent(new HGEndEvent());
                 }

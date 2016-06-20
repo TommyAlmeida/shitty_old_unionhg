@@ -37,18 +37,19 @@ public class Holograms {
             Hologram.setCustomNameVisible(true);
             Hologram.setGravity(false);
             Hologram.setVisible(false);
+            holos.add(Hologram);
             return;
         }
         if (lines.size() >= 1){
             loc.setY((loc.getY() + Height)-1.25);
             for(int i = lines.size();i>0;i--){
                 ArmorStand Hologram = loc.getWorld().spawn(loc, ArmorStand.class);
-                holos.add(Hologram);
                 Hologram.setCustomName(lines.get(i-1));
                 Hologram.setCustomNameVisible(true);
                 Hologram.setGravity(false);
                 Hologram.setVisible(false);
                 loc.setY(loc.getY()+0.25);
+                holos.add(Hologram);
             }
         }
     }
@@ -60,9 +61,11 @@ public class Holograms {
             Hologram.setCustomNameVisible(true);
             Hologram.setGravity(false);
             Hologram.setVisible(false);
+            holos.add(Hologram);
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
                 public void run() {
+                    holos.remove(Hologram);
                     Hologram.remove();
                 }
             }, time);
@@ -78,16 +81,38 @@ public class Holograms {
                 Hologram.setGravity(false);
                 Hologram.setVisible(false);
                 loc.setY(loc.getY()+0.25);
+                holos.add(Hologram);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                     @Override
                     public void run() {
+                        holos.remove(Hologram);
                         Hologram.remove();
                     }
                 }, time);
             }
         }
     }
-
+    public void remove(){
+        if (holos.size() != 0){
+            for (Entity en : holos){
+                en.remove();
+            }
+        }
+    }
+    public void teleport(Location loc){
+        if (holos.size() != 0){
+            for (Entity en : holos){
+                en.teleport(loc);
+            }
+        }
+    }
+    public void teleport(double x, double y, double z){
+        if (holos.size() != 0){
+            for (Entity en : holos){
+                en.teleport(loc.add(x,y,z));
+            }
+        }
+    }
     private List<String> listbuild(String... list){
         List<String> lista = new ArrayList<>();
         for (int i = 0; i < list.length; i++) {

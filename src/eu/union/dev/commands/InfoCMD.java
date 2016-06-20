@@ -1,5 +1,6 @@
 package eu.union.dev.commands;
 
+import eu.union.dev.HG;
 import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.Timer;
@@ -34,7 +35,8 @@ public class InfoCMD implements CommandExecutor{
                     Holograms holo = new Holograms(loc,0.0,"§aStage: §c"+ Util.getInstance().getStage() ,
                             "§aTimer: §c"+ Timer.getInstace().getTimerFormated() ,
                             "§aKit: §c"+ kit ,
-                            "§aPlayers: §c"+HGManager.getInstance().getPlayersVivos().size());
+                            "§aPlayers: §c"+HGManager.getInstance().getPlayersVivos().size(),
+                            "§aIp: §c"+ HG.getInstance().getConfig().getString("IP")+".hg.unionnetwork.eu");
                     holo.spawn(8*20);
                 }
             }

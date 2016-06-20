@@ -51,7 +51,9 @@ public class HGListener implements Listener{
             }
             p.getInventory().clear();
             Util.getInstance().buildJoinIcons(p);
-            Util.getInstance().buildScoreboard(p);
+            if (!HGManager.getInstance().getNoScore().contains(p)){
+                Util.getInstance().buildScoreboard(p);
+            }
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
             p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
             //p.teleport(new Location(p.getWorld(),0.5,160,0.5));
@@ -60,7 +62,7 @@ public class HGListener implements Listener{
             if (!reconect.contains(p.getName())){
                 if (p.hasPermission(Perms.SPECTATOR.toString())){
                     p.setGameMode(GameMode.ADVENTURE);
-                    HGManager.getInstance().isSpec(p);
+                    HGManager.getInstance().addSpec(p);
                     p.setAllowFlight(true);
                     p.setFlying(true);
                     p.getInventory().clear();
@@ -140,7 +142,6 @@ public class HGListener implements Listener{
                 p.setAllowFlight(false);
             }
             p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL,1.0F,1.0F);
-            km.applyKit(p,km.getPlayerKitInLobby(p));
             if (km.getKitAmIUsing(p,"surprise")){
                 List<Kit> kits = new ArrayList<>();
                 for (Kit kit : km.getKits()){
@@ -150,9 +151,9 @@ public class HGListener implements Listener{
                 }
                 Kit kit = kits.get(new Random().nextInt(kits.size()));
                 km.setPlayerKitInLobby(p,kit);
-                km.applyKit(p,kit);
                 p.sendMessage("§aYou kit surprise is §c"+kit.getName());
             }
+            km.applyKit(p,km.getPlayerKitInLobby(p));
             Weapon.addWeapon(p,Weapon.COMPASS);
         }
         Bukkit.broadcastMessage(Messages.PREFIX+" §bThe game started! And may the odds be ever in your favor!");
@@ -261,7 +262,7 @@ public class HGListener implements Listener{
         {
             e.setCancelled(true);
         }
-        if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
+        if ((HGManager.getInstance().isSpec(p) || HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH) && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);
         }
     }
@@ -279,7 +280,7 @@ public class HGListener implements Listener{
         {
             e.setCancelled(true);
         }
-        if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
+        if ((HGManager.getInstance().isSpec(p) || HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH) && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);
         }
     }
@@ -462,6 +463,7 @@ public class HGListener implements Listener{
                 public void run() {
                     nodamage.remove(p.getUniqueId());
                     p.sendMessage(Messages.PREFIX+" §cYou are not more invincible!");
+                    p.playSound(p.getLocation(),Sound.ANVIL_LAND,1.0F,1.0F);
                 }
             },(2*60)*20);
             return;
@@ -563,6 +565,16 @@ public class HGListener implements Listener{
             if (HGManager.getInstance().isSpec(p)){
                 e.setCancelled(true);
             }
+        }
+    }
+    @EventHandler
+    public void onDeathMatch(HGDeathMatchEvent e){
+        StructureCreator sc = new StructureCreator(e.getLocation(), StructureCreator.Structure.DEATHMATCH);
+        sc.createStrucure();
+        Bukkit.broadcastMessage(Messages.PREFIX+" §4DEATH MATCH!");
+        for (Player p : Bukkit.getOnlinePlayers()){
+            p.setNoDamageTicks(10*20);
+            p.teleport(HGManager.getInstance().getDeathMatchLoc().add(0.5,2,0.5));
         }
     }
 }
