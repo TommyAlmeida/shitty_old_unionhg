@@ -1,6 +1,7 @@
-package eu.union.dev.utils;
+package eu.union.dev.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,16 +36,30 @@ public class SoupListener implements Listener {
         Bukkit.addRecipe(melSoup);
     }
     @EventHandler
-    public void onClick(PlayerInteractEvent e){
+    public void onPlayerInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getHealth() < p.getMaxHealth() && p.getItemInHand().getType() == Material.MUSHROOM_SOUP){
-            if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR){
-                p.setItemInHand(new ItemStack(Material.BOWL,p.getItemInHand().getAmount()));
-                double soup = 7.0;
-                if ((p.getHealth()+soup) <= p.getMaxHealth()){
-                    p.setHealth(p.getHealth()+soup);
-                }else{
+        if (((e.getAction().equals(Action.RIGHT_CLICK_AIR) ||
+                e.getAction().equals(Action.RIGHT_CLICK_BLOCK))) &&
+                !p.getGameMode().equals(GameMode.CREATIVE) &&
+                p.getItemInHand().getType().equals(Material.MUSHROOM_SOUP)){
+            if (p.getHealth() < p.getMaxHealth()) {
+                int soup = 7;
+                if (p.getHealth() < p.getMaxHealth() - soup) {
+                    p.setHealth(p.getHealth() + soup);
+                    p.setItemInHand(new ItemStack(Material.BOWL));
+                } else {
                     p.setHealth(p.getMaxHealth());
+                    p.setItemInHand(new ItemStack(Material.BOWL));
+                }
+            } else
+            if (p.getFoodLevel() < 20){
+                int food = 7;
+                if (p.getFoodLevel() < 20 - food) {
+                    p.setFoodLevel(p.getFoodLevel() + food);
+                    p.setItemInHand(new ItemStack(Material.BOWL));
+                } else {
+                    p.setFoodLevel(20);
+                    p.setItemInHand(new ItemStack(Material.BOWL));
                 }
             }
         }

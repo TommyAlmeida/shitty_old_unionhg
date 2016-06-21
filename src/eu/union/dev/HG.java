@@ -2,9 +2,9 @@ package eu.union.dev;
 
 import eu.union.dev.commands.*;
 import eu.union.dev.invs.KitMenu;
+import eu.union.dev.listeners.*;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.storage.sql.Database;
-import eu.union.dev.utils.SoupListener;
 import net.minecraft.util.com.google.common.collect.ImmutableSet;
 import net.minecraft.util.com.google.common.reflect.ClassPath;
 import org.bukkit.Bukkit;
@@ -52,6 +52,10 @@ public class HG extends JavaPlugin implements Listener{
         pm.registerEvents(new HGListener(), this);
         pm.registerEvents(new KitMenu(),this);
         pm.registerEvents(new SoupListener(),this);
+        pm.registerEvents(new BordaListener(),this);
+        pm.registerEvents(new ChatListener(),this);
+        pm.registerEvents(new CompassListener(),this);
+        pm.registerEvents(new SpecsListener(),this);
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
         getCommand("start").setExecutor(new StartCMD());

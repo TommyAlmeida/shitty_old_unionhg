@@ -24,6 +24,8 @@ public class HGManager {
     private List<Player> specs = new ArrayList<>();
     private ArrayList<Player> noscore = new ArrayList<>();
     private HashMap<Player,Integer> kills = new HashMap<>();
+    private ArrayList<UUID> nodamage = new ArrayList<>();
+    private ArrayList<String> reconect = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
         INVINCIBILITY("Invencibility"),
@@ -67,7 +69,7 @@ public class HGManager {
         scc.createStrucure();
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
     }
-    public static Location RandomLocation(int raio)
+    public Location RandomLocation(int raio)
     {
         Random random = new Random();
         Location startFrom = new Location(Bukkit.getWorlds().get(0),0,0,0);
@@ -184,5 +186,33 @@ public class HGManager {
             return kills.get(p);
         }
         return 0;
+    }
+
+    public boolean isNoDamage(Player p){ return nodamage.contains(p.getUniqueId());}
+
+    public void addNoDamage(Player p){
+        if (!isNoDamage(p)){
+            nodamage.add(p.getUniqueId());
+        }
+    }
+
+    public void removeNoDamage(Player p){
+        if (isNoDamage(p)){
+            nodamage.remove(p.getUniqueId());
+        }
+    }
+
+    public boolean inReconect(Player p){ return reconect.contains(p.getName()); }
+
+    public void addReconect(Player p){
+        if (!inReconect(p)){
+            reconect.add(p.getName());
+        }
+    }
+
+    public void removeReconect(Player p){
+        if (inReconect(p)){
+            reconect.remove(p.getName());
+        }
     }
 }
