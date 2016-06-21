@@ -10,3 +10,5 @@ commands:
   info:
   score:
   ip:
+  gamemode:
+    aliases: [gm]

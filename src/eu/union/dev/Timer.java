@@ -26,7 +26,7 @@ public class Timer {
     public int getTime() {
         return time;
     }
-
+    public void setTime(int time) {this.time = time;}
     private boolean fstart = false;
     private boolean end = false;
     public void start(){
