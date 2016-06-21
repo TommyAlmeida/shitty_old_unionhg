@@ -29,18 +29,21 @@ public class BordaListener implements Listener{
         {
             e.setCancelled(true);
         }
+        if (loc.getY() >= HGManager.getInstance().getCamadalimite()){
+            e.setCancelled(true);
+        }
     }
     @EventHandler
     public void onSeconds(HGTimerSecondsEvent e){
         for (Player p : Bukkit.getOnlinePlayers()){
             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                if (p.getLocation().getY() <= 140){
+                if (p.getLocation().getY() <= HGManager.getInstance().getCamadalimite()){
                     p.teleport(new Location(p.getWorld(),0.5,155,0.5));
                 }
             }
             if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                 if (p.getGameMode() == GameMode.SURVIVAL &&
-                        p.getLocation().getY() >= 145 &&
+                        p.getLocation().getY() >= HGManager.getInstance().getCamadalimite() &&
                         !HGManager.getInstance().isNoDamage(p)){
                     p.damage(4.0);
                 }
@@ -69,7 +72,7 @@ public class BordaListener implements Listener{
     @EventHandler
     public void onBreak(BlockBreakEvent e){
         Player p = e.getPlayer();
-        if (e.getBlock().getY() >=135 && !HGManager.getInstance().inBuild(p)){
+        if (e.getBlock().getY() >=HGManager.getInstance().getCamadalimite() && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);
         }
         Location loc = e.getBlock().getLocation();
@@ -84,7 +87,7 @@ public class BordaListener implements Listener{
     @EventHandler
     public void onPlace(BlockPlaceEvent e){
         Player p = e.getPlayer();
-        if (e.getBlock().getY() >=135 && !HGManager.getInstance().inBuild(p)){
+        if (e.getBlock().getY() >=HGManager.getInstance().getCamadalimite() && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);
         }
         Location loc = e.getBlock().getLocation();

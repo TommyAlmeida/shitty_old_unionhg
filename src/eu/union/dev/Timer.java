@@ -30,7 +30,7 @@ public class Timer {
     private boolean fstart = false;
     private boolean end = false;
     public void start(){
-        int minplayers = 2;
+        int minplayers = 10;
         new BukkitRunnable(){
             @Override
             public void run() {
@@ -78,22 +78,19 @@ public class Timer {
                 }
                 if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
                     Bukkit.getPluginManager().callEvent(new HGTimerSecondsEvent(time, timeformat(time)));
-                    for (Player p : Bukkit.getOnlinePlayers()){
-                       // Packets.getAPI().sendActionBar(p, "§8»§c§l"+timeformat(time)+"§8«");
-                    }
                     detectWin();
                 }
                 if (time == 2*60 && HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){//remove inven
                     HGManager.getInstance().setStatus(HGManager.Status.POS_INVINCIBILITY);
                     Bukkit.getPluginManager().callEvent(new HGEndInvencibleEvent());
                 }
-                if (time == 5*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == 4*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(1),1));
                 }
-                if (time == 10*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == 8*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(2),2));
                 }
-                if (time == 15*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == 12*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(3),3));
                 }
                 if (time == 15*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){

@@ -19,6 +19,7 @@ public class HGManager {
     private Status status;
     Location feast,minifeast1,minifeast2,minifeast3,coliseu,deathmatch = null;
     int bordsize = 600;//480
+    int camadalimite = 135;
     private List<UUID> playersvivos = new ArrayList<>();
     private ArrayList<Player> build = new ArrayList<>();
     private List<Player> specs = new ArrayList<>();
@@ -52,6 +53,8 @@ public class HGManager {
     public int getBordSize() {
         return bordsize;
     }
+
+    public int getCamadalimite(){return camadalimite;}
 
     public void setStatus(Status status) {
         this.status = status;
