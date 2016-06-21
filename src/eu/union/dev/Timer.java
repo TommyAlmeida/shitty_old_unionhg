@@ -63,7 +63,7 @@ public class Timer {
                     }
                 }
                 if ((time == 5*60 || fstart) && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                    if (Bukkit.getOnlinePlayers().size() >= minplayers || fstart){
+                    if (HGManager.getInstance().getPlayersVivos().size() >= minplayers || fstart){
                         for (Player p : Bukkit.getOnlinePlayers()){
                             p.setLevel(0);
                             p.setExp(0);

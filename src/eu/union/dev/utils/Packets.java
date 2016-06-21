@@ -1,21 +1,21 @@
 package eu.union.dev.utils;
 
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 /**
  * Created by Fentis on 06/06/2016.
  */
 
-import java.lang.reflect.Field;
 
 public class Packets {
 
     private static Packets instance = new Packets();
 
-    public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+    public void sendActionBar(Player player, String msg){
+        BossBarAPI.setMessage(player,msg,100,5*20);
+    }
+   /* public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         CraftPlayer craftplayer = (CraftPlayer) player;
         PlayerConnection connection = craftplayer.getHandle().playerConnection;
         IChatBaseComponent titleJSON = IChatBaseComponent.ChatSerializer.a("{'text': '" + title + "'}");
@@ -58,7 +58,7 @@ public class Packets {
         }
 
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-    }
+    }*/
 
     public static Packets getAPI() {
         return instance;

@@ -40,7 +40,6 @@ public enum Weapon {
     RIDER_SADDLE(Material.SADDLE, "§6Rider"),
     PORTAL_GUN(Material.DIAMOND_BARDING, "§6Portal §1Gun"),
     WEATHERLORD_TORNADO(Material.WATCH, "§bWeather Controller"),
-    GUARDIAN_SHARD(Material.PRISMARINE_SHARD, "§bGuardian Tower"),
     QUAKE_GUN(Material.IRON_HOE, "§bQuake Gun"),
     RAIN_ARROW(Material.ARROW, "§4Rain"),
     HEALER_ITEM(Material.RED_ROSE, "§cHealer Item"),

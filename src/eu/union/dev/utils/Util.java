@@ -4,10 +4,9 @@ package eu.union.dev.utils;
 import eu.union.dev.*;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
-import eu.union.dev.storage.KPlayer;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -17,9 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -28,7 +25,6 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Util {
@@ -159,10 +155,10 @@ public class Util {
         server.setPrefix("§6" + serverr);
     }
 
-    public void setTab(Player p){
+    /*public void setTab(Player p){
         String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
         Packets.getAPI().setHeaderFooter(p,"§6§lUnion§f§l-§6§lHG","§cKills: §f"+HGManager.getInstance().getKills(p)+" §bKit: §f"+kit+" §aStage: §f"+getStage()+" §bTimer: §e"+Timer.getInstace().getTimerFormated()+" §7Ping: §f"+((CraftPlayer)p).getHandle().ping);
-    }
+    }*/
     public String getStage(){
         String stage = "";
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){

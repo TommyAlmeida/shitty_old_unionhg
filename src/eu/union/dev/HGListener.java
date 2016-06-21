@@ -8,13 +8,10 @@ import eu.union.dev.storage.sql.Database;
 import eu.union.dev.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.*;
@@ -290,7 +287,6 @@ public class HGListener implements Listener{
             if (!HGManager.getInstance().getNoScore().contains(p)){
                 Util.getInstance().updateSocoreBoard(p);
             }
-            Util.getInstance().setTab(p);
             for (Player ps : Bukkit.getOnlinePlayers()){
                 if (HGManager.getInstance().isSpec(ps)){
                     if (!HGManager.getInstance().isSpec(p)){
@@ -409,9 +405,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onSpawnMobs(CreatureSpawnEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-            if (!(e.getEntity() instanceof ArmorStand)){
-                e.setCancelled(true);
-            }
+            e.setCancelled(true);
         }
         if (e.getEntity() instanceof Ghast ||
                 e.getEntity() instanceof PigZombie){

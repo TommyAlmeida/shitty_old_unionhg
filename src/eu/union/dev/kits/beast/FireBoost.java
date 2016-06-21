@@ -11,6 +11,7 @@ import eu.union.dev.utils.Util;
 import eu.union.dev.utils.Weapon;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +86,7 @@ public class FireBoost extends Kit{
             KitManager km = KitManager.getManager();
             if (km.getKitAmIUsing(p, "fireboost") &&
                     e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                if (e.getDamage() >= 3.5) {
+                if (e.getDamage() >= 3) {
                     e.setDamage(3.5);
                     particles(p.getLocation());
                     for (Entity en : p.getNearbyEntities(10, 5, 10)) {

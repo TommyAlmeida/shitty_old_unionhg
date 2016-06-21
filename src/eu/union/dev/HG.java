@@ -1,17 +1,17 @@
 package eu.union.dev;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.reflect.ClassPath;
 import eu.union.dev.commands.*;
 import eu.union.dev.invs.KitMenu;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.storage.sql.Database;
 import eu.union.dev.utils.SoupListener;
+import net.minecraft.util.com.google.common.collect.ImmutableSet;
+import net.minecraft.util.com.google.common.reflect.ClassPath;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;

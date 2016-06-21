@@ -8,7 +8,7 @@ import eu.union.dev.utils.Packets;
 import eu.union.dev.utils.ParticleEffect;
 import eu.union.dev.utils.Weapon;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftFirework;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftFirework;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
