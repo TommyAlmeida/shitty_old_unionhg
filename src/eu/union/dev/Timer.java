@@ -26,7 +26,11 @@ public class Timer {
     public int getTime() {
         return time;
     }
-    public void setTime(int time) {this.time = time;}
+    public void setTime(int time) {
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            this.time = (5*60)-time;
+        }
+    }
     private boolean fstart = false;
     private boolean end = false;
     public void start(){
