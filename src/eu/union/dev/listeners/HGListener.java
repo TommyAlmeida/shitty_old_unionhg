@@ -307,7 +307,8 @@ public class HGListener implements Listener{
             e.setCancelled(true);
         }
         if (p.getItemInHand().getType() == Material.CHEST &&
-                HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                !HGManager.getInstance().inAdminMode(p)){
             Bukkit.dispatchCommand(p,"kit");
         }
         if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
