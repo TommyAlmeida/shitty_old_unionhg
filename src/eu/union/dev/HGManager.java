@@ -27,6 +27,7 @@ public class HGManager {
     private HashMap<Player,Integer> kills = new HashMap<>();
     private ArrayList<UUID> nodamage = new ArrayList<>();
     private ArrayList<String> reconect = new ArrayList<>();
+    private ArrayList<UUID> admin = new ArrayList<>();
     public enum Status {
         LOBBY("Lobby"),
         INVINCIBILITY("Invencibility"),
@@ -216,6 +217,20 @@ public class HGManager {
     public void removeReconect(Player p){
         if (inReconect(p)){
             reconect.remove(p.getName());
+        }
+    }
+
+    public boolean inAdminMode(Player p){ return admin.contains(p.getUniqueId()); }
+
+    public void addAdminMode(Player p){
+        if (!inAdminMode(p)){
+            admin.add(p.getUniqueId());
+        }
+    }
+
+    public void removeAdminMode(Player p){
+        if (inAdminMode(p)){
+            admin.remove(p.getUniqueId());
         }
     }
 }

@@ -12,3 +12,4 @@ commands:
   ip:
   gamemode:
     aliases: [gm]
+  admin:

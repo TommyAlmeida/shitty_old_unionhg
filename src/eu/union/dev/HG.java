@@ -56,6 +56,8 @@ public class HG extends JavaPlugin implements Listener{
         pm.registerEvents(new ChatListener(),this);
         pm.registerEvents(new CompassListener(),this);
         pm.registerEvents(new SpecsListener(),this);
+        pm.registerEvents(new AdminListener(),this);
+        pm.registerEvents(new CompassListener(),this);
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
         getCommand("start").setExecutor(new StartCMD());
@@ -64,6 +66,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("info").setExecutor(new InfoCMD());
         getCommand("ip").setExecutor(new IpCMD());
         getCommand("gamemode").setExecutor(new GmCMD());
+        getCommand("admin").setExecutor(new AdminCMD());
 
         borda();
         registerKits();

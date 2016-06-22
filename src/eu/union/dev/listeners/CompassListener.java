@@ -1,14 +1,17 @@
 package eu.union.dev.listeners;
 
 import eu.union.dev.HGManager;
+import eu.union.dev.invs.CompassMenu;
 import eu.union.dev.utils.CompassCompare;
 import eu.union.dev.utils.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +48,11 @@ public class CompassListener implements Listener{
                 p.setCompassTarget(nearest.getLocation());
             }
             p.sendMessage(Messages.PREFIX+" "+message);
-            if (HGManager.getInstance().isSpec(p)){
+            if (HGManager.getInstance().isSpec(p) || HGManager.getInstance().inAdminMode(p)){
+                Inventory inv = Bukkit.createInventory(null,6*9,"Teleport");
+                CompassMenu compassMenu = new CompassMenu();
+                compassMenu.setItems(p,inv,1);
+                p.openInventory(inv);
             }
         }
     }

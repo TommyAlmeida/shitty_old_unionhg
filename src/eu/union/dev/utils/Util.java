@@ -75,6 +75,25 @@ public class Util {
         }
     }
 
+    public void buildSpecsIcons(Player player) {
+        Inventory inv = player.getInventory();
+        inv.clear();
+        {
+            Icon compass = new Icon(Material.COMPASS, "§cTeleport");
+            inv.setItem(8, compass.build());
+        }
+    }
+    public void buildAdminIcons(Player player) {
+        Inventory inv = player.getInventory();
+        inv.clear();
+        {
+            Icon chest = new Icon(Material.COMPASS, "§aOpen Inv");
+            inv.setItem(0, chest.build());
+            Icon compass = new Icon(Material.COMPASS, "§cTeleport");
+            inv.setItem(8, compass.build());
+        }
+    }
+
     public void buildScoreboard(Player p) {
         //final KPlayer profile = PlayerManager.getPlayer(p.getUniqueId());
         KitManager km = KitManager.getManager();

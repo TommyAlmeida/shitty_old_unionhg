@@ -58,6 +58,7 @@ public class HGListener implements Listener{
                     p.setFlying(true);
                     p.getInventory().clear();
                     p.getInventory().setArmorContents(null);
+                    Util.getInstance().buildSpecsIcons(p);
                     if (km.getPlayerKitInLobby(p) == null){
                         km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
                     }
@@ -369,6 +370,7 @@ public class HGListener implements Listener{
             p.setFoodLevel(20);
             p.setGameMode(GameMode.ADVENTURE);
             HGManager.getInstance().addSpec(p);
+            Util.getInstance().buildSpecsIcons(p);
             HGManager.getInstance().removePlayersVivos(p);
             eu.union.dev.Timer.getInstace().detectWin();
             death.addLoses();
@@ -416,6 +418,12 @@ public class HGListener implements Listener{
         for (Player p : Bukkit.getOnlinePlayers()){
             p.setNoDamageTicks(10*20);
             p.teleport(HGManager.getInstance().getDeathMatchLoc().add(0.5,2,0.5));
+        }
+    }
+    @EventHandler
+    public void onExplode(EntityExplodeEvent e){
+        if (HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH){
+            e.setCancelled(true);
         }
     }
 }
