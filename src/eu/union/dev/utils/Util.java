@@ -102,8 +102,8 @@ public class Util {
 
         Objective stats = board.registerNewObjective("stats", "dummy");
         stats.setDisplaySlot(DisplaySlot.SIDEBAR);
-        int index = 12;
-        stats.setDisplayName("    §6§lUnion§f§l-§6§lHG    ");
+        int index = 11;
+        stats.setDisplayName("     §6§lUnion-HG     ");
         stats.getScore("§a").setScore(index--);
         stats.getScore("§fStage:").setScore(index--);
         stats.getScore("§1").setScore(index--);
@@ -115,8 +115,7 @@ public class Util {
         stats.getScore("§4").setScore(index--);
         stats.getScore("§c").setScore(index--);
         stats.getScore("§5").setScore(index--);
-        stats.getScore("§7/score").setScore(index--);
-        stats.getScore("§fwww.unionnetwork.eu").setScore(index);
+        stats.getScore("§7/score").setScore(index);
 
         board.registerNewTeam("stage").addEntry("§1");
         board.registerNewTeam("timer").addEntry("§2");
@@ -142,7 +141,7 @@ public class Util {
         String serverr = "A1";
         stage.setPrefix(stagee);
         timer.setPrefix(timerr);
-        online.setPrefix("§d" + onlinee+"/60");
+        online.setPrefix("§e" + onlinee+"/"+Bukkit.getServer().getMaxPlayers());
         kit.setPrefix("§b"+kitt);
         server.setPrefix("§6" + serverr);
 
@@ -169,7 +168,7 @@ public class Util {
         String serverr = HG.getInstance().getConfig().getString("IP");
         stage.setPrefix(stagee);
         timer.setPrefix(timerr);
-        online.setPrefix("§e" + onlinee+"/60");
+        online.setPrefix("§e" + onlinee+"/"+Bukkit.getServer().getMaxPlayers());
         kit.setPrefix("§b"+kitt);
         server.setPrefix("§6" + serverr);
     }

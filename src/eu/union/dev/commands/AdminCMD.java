@@ -2,6 +2,7 @@ package eu.union.dev.commands;
 
 import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
+import eu.union.dev.Timer;
 import eu.union.dev.api.Icon;
 import eu.union.dev.utils.KitLayout;
 import eu.union.dev.utils.Perms;
@@ -48,6 +49,7 @@ public class AdminCMD implements CommandExecutor{
                         //add
                         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
                             HGManager.getInstance().removePlayersVivos(p);
+                            Timer.getInstace().detectWin();
                         }
                         p.getInventory().clear();
                         p.getInventory().setArmorContents(null);

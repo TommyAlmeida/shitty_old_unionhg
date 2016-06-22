@@ -44,7 +44,7 @@ public class HGListener implements Listener{
             }
             p.getInventory().clear();
             Util.getInstance().buildJoinIcons(p);
-            //Util.getInstance().buildScoreboard(p);
+            Util.getInstance().buildScoreboard(p);
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
             p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
             //p.teleport(new Location(p.getWorld(),0.5,160,0.5));
@@ -144,8 +144,10 @@ public class HGListener implements Listener{
                 km.setPlayerKitInLobby(p,kit);
                 p.sendMessage("§aYou kit surprise is §c"+kit.getName());
             }
-            km.applyKit(p,km.getPlayerKitInLobby(p));
-            Weapon.addWeapon(p,Weapon.COMPASS);
+            if (!HGManager.getInstance().inAdminMode(p)){
+                km.applyKit(p,km.getPlayerKitInLobby(p));
+                Weapon.addWeapon(p,Weapon.COMPASS);
+            }
         }
         Bukkit.broadcastMessage(Messages.PREFIX+" §bThe game started! And may the odds be ever in your favor!");
     }
@@ -253,7 +255,7 @@ public class HGListener implements Listener{
     public void onSeconds(HGTimerSecondsEvent e){
         for (Player p : Bukkit.getOnlinePlayers()){
             if (!HGManager.getInstance().getNoScore().contains(p)){
-                //Util.getInstance().updateSocoreBoard(p);
+                Util.getInstance().updateSocoreBoard(p);
             }
         }
     }

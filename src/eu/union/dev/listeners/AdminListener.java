@@ -1,6 +1,8 @@
 package eu.union.dev.listeners;
 
 import eu.union.dev.HGManager;
+import eu.union.dev.Timer;
+import eu.union.dev.events.HGStartEvent;
 import eu.union.dev.events.HGTimerSecondsEvent;
 import eu.union.dev.utils.Perms;
 import org.bukkit.Bukkit;
@@ -64,6 +66,15 @@ public class AdminListener implements Listener{
                         pl.hidePlayer(p);
                     }
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onStart(HGStartEvent e){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            if (HGManager.getInstance().inAdminMode(p)){
+                HGManager.getInstance().removePlayersVivos(p);
+                Timer.getInstace().detectWin();
             }
         }
     }
