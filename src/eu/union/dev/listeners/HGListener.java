@@ -7,6 +7,7 @@ import eu.union.dev.storage.KPlayer;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.utils.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -427,6 +429,19 @@ public class HGListener implements Listener{
     public void onExplode(EntityExplodeEvent e){
         if (HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH){
             e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent e){
+        if (e.getDamager() instanceof Player && e.getEntity() instanceof Player){
+            Player damager = (Player)e.getDamager();
+            Player hited = (Player)e.getEntity();
+            if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
+                if (HGManager.getInstance().getStatus() != HGManager.Status.INVINCIBILITY){
+                    String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(hited).getName());
+                    BossBarAPI.setMessage(damager,"§7"+hited.getName()+" - "+kit);
+                }
+            }
         }
     }
 }

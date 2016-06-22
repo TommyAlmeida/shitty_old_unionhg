@@ -1,6 +1,7 @@
 package eu.union.dev.utils;
 
 import org.bukkit.entity.Player;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 /**
  * Created by Fentis on 06/06/2016.
@@ -12,7 +13,7 @@ public class Packets {
     private static Packets instance = new Packets();
 
     public void sendActionBar(Player player, String msg){
-        //
+        BossBarAPI.setMessage(player,msg,100F,5*20);
     }
    /* public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         CraftPlayer craftplayer = (CraftPlayer) player;
