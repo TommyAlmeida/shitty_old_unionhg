@@ -58,7 +58,6 @@ public class HG extends JavaPlugin implements Listener{
         pm.registerEvents(new CompassListener(),this);
         pm.registerEvents(new SpecsListener(),this);
         pm.registerEvents(new AdminListener(),this);
-        pm.registerEvents(new CompassListener(),this);
         pm.registerEvents(new CompassMenu(),this);
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
