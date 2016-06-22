@@ -1,5 +1,7 @@
 package eu.union.dev.utils;
 
+import eu.union.dev.HG;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.inventivetalent.bossbar.BossBarAPI;
 
@@ -13,7 +15,13 @@ public class Packets {
     private static Packets instance = new Packets();
 
     public void sendActionBar(Player player, String msg){
-        BossBarAPI.setMessage(player,msg,100F,5*20);
+        BossBarAPI.setMessage(player,msg);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                BossBarAPI.removeBar(player);
+            }
+        },3*20);
     }
    /* public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         CraftPlayer craftplayer = (CraftPlayer) player;

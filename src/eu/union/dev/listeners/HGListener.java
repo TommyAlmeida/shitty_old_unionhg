@@ -135,7 +135,7 @@ public class HGListener implements Listener{
                 p.setAllowFlight(false);
             }
             p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL,1.0F,1.0F);
-            if (km.getKitAmIUsing(p,"surprise")){
+            if (km.getPlayerKitInLobby(p).getName().equalsIgnoreCase("surprise")){
                 List<Kit> kits = new ArrayList<>();
                 for (Kit kit : km.getKits()){
                     if (!kit.getName().equalsIgnoreCase("Surprise")){
@@ -440,6 +440,12 @@ public class HGListener implements Listener{
                 if (HGManager.getInstance().getStatus() != HGManager.Status.INVINCIBILITY){
                     String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(hited).getName());
                     BossBarAPI.setMessage(damager,"§7"+hited.getName()+" - "+kit);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+                            BossBarAPI.removeBar(damager);
+                        }
+                    },3*20);
                 }
             }
         }
