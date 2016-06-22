@@ -1,6 +1,9 @@
 package eu.union.dev.commands;
 
 import eu.union.dev.HGManager;
+import eu.union.dev.KitManager;
+import eu.union.dev.api.Icon;
+import eu.union.dev.utils.KitLayout;
 import eu.union.dev.utils.Perms;
 import eu.union.dev.utils.Util;
 import org.bukkit.Bukkit;
@@ -33,6 +36,9 @@ public class AdminCMD implements CommandExecutor{
                             Util.getInstance().buildSpecsIcons(p);
                         }else{
                             Util.getInstance().buildJoinIcons(p);
+                            KitManager km = KitManager.getManager();
+                            Icon icon = km.getPlayerKitInLobby(p).getIcon();
+                            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
                             for (Player pl : Bukkit.getOnlinePlayers()){
                                 pl.showPlayer(p);
                             }

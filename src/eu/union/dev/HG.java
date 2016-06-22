@@ -1,6 +1,7 @@
 package eu.union.dev;
 
 import eu.union.dev.commands.*;
+import eu.union.dev.invs.CompassMenu;
 import eu.union.dev.invs.KitMenu;
 import eu.union.dev.listeners.*;
 import eu.union.dev.storage.Kit;
@@ -58,6 +59,7 @@ public class HG extends JavaPlugin implements Listener{
         pm.registerEvents(new SpecsListener(),this);
         pm.registerEvents(new AdminListener(),this);
         pm.registerEvents(new CompassListener(),this);
+        pm.registerEvents(new CompassMenu(),this);
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
         getCommand("start").setExecutor(new StartCMD());

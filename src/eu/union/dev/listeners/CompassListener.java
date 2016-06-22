@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -25,7 +26,9 @@ public class CompassListener implements Listener{
     @EventHandler
     public void onCompass(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        if (p.getItemInHand().getType() == Material.COMPASS){
+        if (p.getItemInHand().getType() == Material.COMPASS &&
+                (e.getAction() == Action.RIGHT_CLICK_AIR ||
+                e.getAction() == Action.RIGHT_CLICK_BLOCK)){
             String message = "§c§lNo Players Nearby!";
             List<Player> players = new ArrayList<>();
             for (Player ps : p.getWorld().getPlayers()){
