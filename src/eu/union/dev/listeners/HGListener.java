@@ -1,6 +1,7 @@
 package eu.union.dev.listeners;
 
 import eu.union.dev.*;
+import eu.union.dev.Timer;
 import eu.union.dev.api.Icon;
 import eu.union.dev.events.*;
 import eu.union.dev.storage.KPlayer;
@@ -73,14 +74,6 @@ public class HGListener implements Listener{
                 HGManager.getInstance().removeReconect(p);
             }
         }
-        if (HGManager.getInstance().scc.addholo){
-            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    HGManager.getInstance().scc.addHolo();
-                }
-            },10*20);
-        }
     }
     @EventHandler
     public void onLeave(PlayerQuitEvent e){
@@ -96,7 +89,6 @@ public class HGListener implements Listener{
                 } else {
                     System.out.println("Inexisting PlayerProfile for this Player");
                 }
-
                 startReconect(p);
             }
         }else{
@@ -118,7 +110,7 @@ public class HGListener implements Listener{
                 if (i>60){
                     HGManager.getInstance().removeReconect(p);
                     HGManager.getInstance().removePlayersVivos(p);
-                    eu.union.dev.Timer.getInstace().detectWin();
+                    Timer.getInstace().detectWin();
                     Bukkit.broadcastMessage(Messages.PREFIX+" §c"+p.getDisplayName()+" not connected in time!");
                     cancel();
                 }
@@ -377,7 +369,7 @@ public class HGListener implements Listener{
             HGManager.getInstance().addSpec(p);
             Util.getInstance().buildSpecsIcons(p);
             HGManager.getInstance().removePlayersVivos(p);
-            eu.union.dev.Timer.getInstace().detectWin();
+            Timer.getInstace().detectWin();
             death.addLoses();
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
@@ -392,9 +384,20 @@ public class HGListener implements Listener{
             return;
         }else{
             HGManager.getInstance().removePlayersVivos(p);
-            eu.union.dev.Timer.getInstace().detectWin();
+            Timer.getInstace().detectWin();
             death.addLoses();
-            p.kickPlayer(Messages.PREFIX+" §aYou don't have permission for spectate!");
+            if (p.getKiller() != null){
+                if (p.getKiller() instanceof Player){
+                    Player killer = p.getKiller();
+                    String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(killer).getName());
+                    p.kickPlayer(Messages.PREFIX+" §aYou were killed by §7"+killer.getName()+"§c<"+kit+">"+"§a!");
+                }else{
+                    String entity = WordUtils.capitalize(p.getKiller().getType().toString().replaceAll("_"," "));
+                    p.kickPlayer(Messages.PREFIX+" §aYou were killed by §7"+entity+"§a!");
+                }
+            }else{
+                p.kickPlayer(Messages.PREFIX+" §aYou died! Try again!");
+            }
         }
     }
 
