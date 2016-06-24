@@ -87,7 +87,7 @@ public class Util {
         Inventory inv = player.getInventory();
         inv.clear();
         {
-            Icon chest = new Icon(Material.CHEST, "§aOpen Inv");
+            Icon chest = new Icon(Material.CHEST, "§aOpen Inventory");
             inv.setItem(0, chest.build());
             Icon compass = new Icon(Material.COMPASS, "§cTeleport");
             inv.setItem(8, compass.build());

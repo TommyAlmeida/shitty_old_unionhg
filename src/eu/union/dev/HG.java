@@ -69,6 +69,12 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("gamemode").setExecutor(new GmCMD());
         getCommand("admin").setExecutor(new AdminCMD());
         getCommand("score").setExecutor(new ScoreCMD());
+        getCommand("stats").setExecutor(new StartCMD());
+        getCommand("ping").setExecutor(new PingCMD());
+        getCommand("report").setExecutor(new ReportCMD());
+        getCommand("check").setExecutor(new CheckCMD());
+        getCommand("clearchat").setExecutor(new ClearChatCMD());
+        getCommand("inv").setExecutor(new InvCMD());
 
         borda();
         registerKits();

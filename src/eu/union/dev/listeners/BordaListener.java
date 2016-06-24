@@ -6,14 +6,12 @@ import eu.union.dev.utils.Perms;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.util.Vector;
 
 /**
  * Created by Fentis on 21/06/2016.
@@ -38,7 +36,7 @@ public class BordaListener implements Listener{
         for (Player p : Bukkit.getOnlinePlayers()){
             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                 if (p.getLocation().getY() <= HGManager.getInstance().getCamadalimite()){
-                    p.teleport(new Location(p.getWorld(),0.5,155,0.5));
+                    p.teleport(HGManager.getInstance().getColiseuLoc().add(0,5,0));
                 }
             }
             if (HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
@@ -55,7 +53,7 @@ public class BordaListener implements Listener{
             {
                 if (HGManager.getInstance().isSpec(p)){
                     if (!Perms.isStaff(p)){
-                        p.teleport(new Location(p.getWorld(),0.5,155,0.5));
+                        p.teleport(HGManager.getInstance().getColiseuLoc().add(0,5,0));
                     }
                 }else{
                     double dmg = 2.5D;

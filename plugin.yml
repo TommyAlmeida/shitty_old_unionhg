@@ -13,3 +13,10 @@ commands:
   gamemode:
     aliases: [gm]
   admin:
+  stats:
+  ping:
+  report:
+  check:
+  clearchat:
+    aliases: [cc]
+  inv:

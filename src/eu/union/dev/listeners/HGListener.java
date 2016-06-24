@@ -13,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -304,7 +305,7 @@ public class HGListener implements Listener{
         }
         if (p.getItemInHand().getType() == Material.CHEST &&
                 HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
-                !HGManager.getInstance().inAdminMode(p)){
+                !HGManager.getInstance().inAdminMode(p) && e.getAction() != Action.PHYSICAL){
             Bukkit.dispatchCommand(p,"kit");
         }
         if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
