@@ -122,7 +122,7 @@ public class KitManager {
     public void removeKit(Player player) {
 
         if (!playerKit.containsKey(player)) {
-            player.sendMessage(Messages.NO_PERM.toString());
+            //player.sendMessage(Messages.NO_PERMA.toString());
             return;
         }
 

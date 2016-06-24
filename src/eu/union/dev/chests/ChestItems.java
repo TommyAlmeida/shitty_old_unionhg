@@ -30,7 +30,7 @@ public class ChestItems {
             randomItems.add(new ChestRandomItems(20.0D, Material.WATER_BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.WEB, 0, 1, 2));
-            randomItems.add(new ChestRandomItems(15.0D, Material.IRON_CHESTPLATE, 0, 1, 2));
+            randomItems.add(new ChestRandomItems(15.0D, Material.IRON_CHESTPLATE, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.ENDER_PEARL, 0, 1, 6));
             randomItems.add(new ChestRandomItems(20.0D, Material.FLINT_AND_STEEL, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.GRILLED_PORK, 0, 1, 20));
@@ -59,11 +59,16 @@ public class ChestItems {
         if (chesttype == ChestType.MINIFEAST){
             randomItems.add(new ChestRandomItems(5.0D, Material.DIAMOND, 0, 1, 1));
             randomItems.add(new ChestRandomItems(5.0D, Material.IRON_INGOT, 0, 1, 6));
+            randomItems.add(new ChestRandomItems(5.0D, Material.GOLD_INGOT, 0, 1, 6));
             randomItems.add(new ChestRandomItems(20.0D, Material.LAVA_BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.WATER_BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.TNT, 0, 1, 5));
             randomItems.add(new ChestRandomItems(20.0D, Material.MUSHROOM_SOUP, 0, 1, 7));
             randomItems.add(new ChestRandomItems(20.0D, Material.FLINT_AND_STEEL, 0, 1, 1));
+            randomItems.add(new ChestRandomItems(20.0D, Material.EXP_BOTTLE, 0, 5, 15));
+            randomItems.add(new ChestRandomItems(5.0D, Material.POTION, 16460, 1, 1));//insta damage
+            randomItems.add(new ChestRandomItems(5.0D, Material.POTION, 16444, 1, 1));//regem
+            randomItems.add(new ChestRandomItems(5.0D, Material.POTION, 16450, 1, 1));//speed
         }
     }
     public enum ChestType {

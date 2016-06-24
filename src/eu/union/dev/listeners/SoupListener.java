@@ -46,20 +46,24 @@ public class SoupListener implements Listener {
                 int soup = 7;
                 if (p.getHealth() < p.getMaxHealth() - soup) {
                     p.setHealth(p.getHealth() + soup);
-                    p.setItemInHand(new ItemStack(Material.BOWL));
+                    p.getItemInHand().setType(Material.BOWL);
+                    p.getItemInHand().setItemMeta(null);
                 } else {
                     p.setHealth(p.getMaxHealth());
-                    p.setItemInHand(new ItemStack(Material.BOWL));
+                    p.getItemInHand().setType(Material.BOWL);
+                    p.getItemInHand().setItemMeta(null);
                 }
             } else
             if (p.getFoodLevel() < 20){
                 int food = 7;
                 if (p.getFoodLevel() < 20 - food) {
                     p.setFoodLevel(p.getFoodLevel() + food);
-                    p.setItemInHand(new ItemStack(Material.BOWL));
+                    p.getItemInHand().setType(Material.BOWL);
+                    p.getItemInHand().setItemMeta(null);
                 } else {
                     p.setFoodLevel(20);
-                    p.setItemInHand(new ItemStack(Material.BOWL));
+                    p.getItemInHand().setType(Material.BOWL);
+                    p.getItemInHand().setItemMeta(null);
                 }
             }
         }

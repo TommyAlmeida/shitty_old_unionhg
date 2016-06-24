@@ -20,3 +20,4 @@ commands:
   clearchat:
     aliases: [cc]
   inv:
+  tp:

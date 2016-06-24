@@ -67,8 +67,7 @@ public class HGManager {
         minifeast1 = RandomLocation(500);
         minifeast2 = RandomLocation(500);
         minifeast3 = RandomLocation(500);
-        deathmatch = feast;
-        deathmatch.setY(110);
+        deathmatch = new Location(feast.getWorld(),feast.getX(),110,feast.getZ());
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);

@@ -72,7 +72,7 @@ public class SpecsListener implements Listener{
             for (Entity en : p.getNearbyEntities(5,5,5)){
                 if (en instanceof Player){
                     Player p2 = (Player)en;
-                    if (HGManager.getInstance().isSpec(p2)){
+                    if (HGManager.getInstance().isSpec(p2) && !HGManager.getInstance().inAdminMode(p2)){
                         Vector v = p2.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(3);
                         p2.setVelocity(v);
                         if (p2.getLocation().distance(p.getLocation()) <= 1.5){
