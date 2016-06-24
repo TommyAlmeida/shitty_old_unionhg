@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 */
 
 public class ChestItems {
+
     public ArrayList<ChestRandomItems> randomItems = new ArrayList<>();
     public ChestItems(ChestType chesttype)
     {
@@ -29,6 +30,7 @@ public class ChestItems {
             randomItems.add(new ChestRandomItems(20.0D, Material.WATER_BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.BUCKET, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.WEB, 0, 1, 2));
+            randomItems.add(new ChestRandomItems(15.0D, Material.IRON_CHESTPLATE, 0, 1, 2));
             randomItems.add(new ChestRandomItems(20.0D, Material.ENDER_PEARL, 0, 1, 6));
             randomItems.add(new ChestRandomItems(20.0D, Material.FLINT_AND_STEEL, 0, 1, 1));
             randomItems.add(new ChestRandomItems(20.0D, Material.GRILLED_PORK, 0, 1, 20));
