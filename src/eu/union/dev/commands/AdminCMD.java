@@ -35,6 +35,8 @@ public class AdminCMD implements CommandExecutor{
                             p.getInventory().clear();
                             p.getInventory().setArmorContents(null);
                             Util.getInstance().buildSpecsIcons(p);
+                            KitManager km = KitManager.getManager();
+                            km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
                         }else{
                             Util.getInstance().buildJoinIcons(p);
                             KitManager km = KitManager.getManager();
@@ -50,6 +52,8 @@ public class AdminCMD implements CommandExecutor{
                         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
                             HGManager.getInstance().removePlayersVivos(p);
                             Timer.getInstace().detectWin();
+                            KitManager km = KitManager.getManager();
+                            km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
                         }
                         p.getInventory().clear();
                         p.getInventory().setArmorContents(null);

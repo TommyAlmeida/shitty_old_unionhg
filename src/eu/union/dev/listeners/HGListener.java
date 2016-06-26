@@ -63,9 +63,7 @@ public class HGListener implements Listener{
                     p.getInventory().clear();
                     p.getInventory().setArmorContents(null);
                     Util.getInstance().buildSpecsIcons(p);
-                    if (km.getPlayerKitInLobby(p) == null){
-                        km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
-                    }
+                    km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
                     Util.getInstance().buildScoreboard(p);
                 }else{
                     p.kickPlayer(Messages.PREFIX+" §aSorry you don't have permission for spectate!");
@@ -372,6 +370,8 @@ public class HGListener implements Listener{
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
             death.addLoses();
+            KitManager km = KitManager.getManager();
+            km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                 @Override
                 public void run() {
