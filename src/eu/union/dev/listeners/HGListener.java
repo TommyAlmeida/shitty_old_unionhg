@@ -332,7 +332,7 @@ public class HGListener implements Listener{
         if (p.getKiller() instanceof Player){
             KPlayer killer = PlayerManager.getPlayer(p.getKiller().getUniqueId());
             killer.addKills(1);
-            HGManager.getInstance().addKills(p);
+            HGManager.getInstance().addKills(p.getKiller());
         }
         p.getWorld().strikeLightningEffect(p.getLocation());
         if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&

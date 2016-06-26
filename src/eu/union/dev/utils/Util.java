@@ -102,7 +102,7 @@ public class Util {
 
         Objective stats = board.registerNewObjective("stats", "dummy");
         stats.setDisplaySlot(DisplaySlot.SIDEBAR);
-        int index = 11;
+        int index = 13;
         stats.setDisplayName("     §6§lUnion-HG     ");
         stats.getScore("§a").setScore(index--);
         stats.getScore("§fStage:").setScore(index--);
@@ -113,21 +113,23 @@ public class Util {
         stats.getScore("§3").setScore(index--);
         stats.getScore("§fKit:").setScore(index--);
         stats.getScore("§4").setScore(index--);
-        stats.getScore("§c").setScore(index--);
+        stats.getScore("§fKills:").setScore(index--);
         stats.getScore("§5").setScore(index--);
+        stats.getScore("§d").setScore(index--);
+        stats.getScore("§6"+HG.getInstance().getConfig().getString("IP")).setScore(index--);
         stats.getScore("§7/score").setScore(index);
 
         board.registerNewTeam("stage").addEntry("§1");
         board.registerNewTeam("timer").addEntry("§2");
         board.registerNewTeam("online").addEntry("§3");
         board.registerNewTeam("kit").addEntry("§4");
-        board.registerNewTeam("server").addEntry("§5");
+        board.registerNewTeam("kills").addEntry("§5");
 
         final Team stage = board.getTeam("stage");
         final Team timer = board.getTeam("timer");
         final Team online = board.getTeam("online");
         final Team kit = board.getTeam("kit");
-        final Team server = board.getTeam("server");
+        final Team kills = board.getTeam("kills");
 
         String stagee = getStage();
         String timerr = "";
@@ -138,12 +140,11 @@ public class Util {
         }
         String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
         String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
-        String serverr = "A1";
         stage.setPrefix(stagee);
         timer.setPrefix(timerr);
         online.setPrefix("§e" + onlinee+"/"+Bukkit.getServer().getMaxPlayers());
         kit.setPrefix("§b"+kitt);
-        server.setPrefix("§6" + serverr);
+        kills.setPrefix("§c" + HGManager.getInstance().getKills(p));
 
         p.setScoreboard(board);
     }
@@ -154,7 +155,7 @@ public class Util {
         final Team timer = board.getTeam("timer");
         final Team online = board.getTeam("online");
         final Team kit = board.getTeam("kit");
-        final Team server = board.getTeam("server");
+        final Team kills = board.getTeam("kills");
 
         String stagee = getStage();
         String timerr = "";
@@ -165,12 +166,11 @@ public class Util {
         }
         String onlinee = ""+HGManager.getInstance().getPlayersVivos().size();
         String kitt = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
-        String serverr = HG.getInstance().getConfig().getString("IP");
         stage.setPrefix(stagee);
         timer.setPrefix(timerr);
         online.setPrefix("§e" + onlinee+"/"+Bukkit.getServer().getMaxPlayers());
         kit.setPrefix("§b"+kitt);
-        server.setPrefix("§6" + serverr);
+        kills.setPrefix("§c" + HGManager.getInstance().getKills(p));
     }
 
     /*public void setTab(Player p){
