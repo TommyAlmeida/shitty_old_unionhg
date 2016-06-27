@@ -45,6 +45,8 @@ public class AdminCMD implements CommandExecutor{
                             for (Player pl : Bukkit.getOnlinePlayers()){
                                 pl.showPlayer(p);
                             }
+                            p.setAllowFlight(false);
+                            p.setFlying(false);
                         }
                         HGManager.getInstance().removeAdminMode(p);
                     }else{
@@ -59,6 +61,8 @@ public class AdminCMD implements CommandExecutor{
                         p.getInventory().setArmorContents(null);
                         HGManager.getInstance().addAdminMode(p);
                         Util.getInstance().buildAdminIcons(p);
+                        p.setAllowFlight(true);
+                        p.setFlying(true);
                     }
                 }
             }

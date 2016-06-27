@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -75,6 +77,22 @@ public class AdminListener implements Listener{
             if (HGManager.getInstance().inAdminMode(p)){
                 HGManager.getInstance().removePlayersVivos(p);
                 Timer.getInstace().detectWin();
+            }
+        }
+    }
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent e){
+        Player p = e.getPlayer();
+        if (HGManager.getInstance().inAdminMode(p)){
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onTarget(EntityTargetEvent e){
+        if (e.getTarget() instanceof Player){
+            Player p = (Player)e.getTarget();
+            if (HGManager.getInstance().inAdminMode(p)){
+                e.setCancelled(true);
             }
         }
     }
