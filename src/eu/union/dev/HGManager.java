@@ -20,6 +20,7 @@ public class HGManager {
     Location feast,minifeast1,minifeast2,minifeast3,coliseu,deathmatch = null;
     int bordsize = 600;//480
     int camadalimite = 135;
+    int minplayers = 5;
     private List<UUID> playersvivos = new ArrayList<>();
     private ArrayList<Player> build = new ArrayList<>();
     private List<Player> specs = new ArrayList<>();
@@ -231,5 +232,9 @@ public class HGManager {
         if (inAdminMode(p)){
             admin.remove(p.getUniqueId());
         }
+    }
+
+    public int getMinPlayers() {
+        return minplayers;
     }
 }

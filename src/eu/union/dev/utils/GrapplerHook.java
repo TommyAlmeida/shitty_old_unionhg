@@ -1,14 +1,11 @@
 package eu.union.dev.utils;
 
-import eu.union.dev.HGManager;
 import net.minecraft.server.v1_7_R4.EntityFishingHook;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntitySnowball;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftSnowball;
@@ -27,7 +24,7 @@ public class GrapplerHook extends EntityFishingHook
     public boolean lastControllerDead;
     public boolean isHooked;
 
-    public GrapplerHook(World world, EntityHuman entityhuman)
+    public GrapplerHook(org.bukkit.World world, EntityHuman entityhuman)
     {
         super(((CraftWorld)world).getHandle(), entityhuman);
         this.owner = entityhuman;
@@ -37,9 +34,6 @@ public class GrapplerHook extends EntityFishingHook
     }
 
     public void h() {
-        if ((!this.lastControllerDead) && (this.controller.dead)) {
-            ((Player)this.owner.getBukkitEntity()).sendMessage(Messages.PREFIX + " §aYou are now hooked!");
-        }
         this.lastControllerDead = this.controller.dead;
         for (Entity entity : this.controller.world.getWorld().getEntities()) {
             if ((!(entity instanceof Firework)) &&
@@ -48,9 +42,7 @@ public class GrapplerHook extends EntityFishingHook
                     (entity.getEntityId() != this.controller.getBukkitEntity().getEntityId()) &&
                     ((entity.getLocation().distance(this.controller.getBukkitEntity().getLocation()) < 2.0D) ||
                             (((entity instanceof Player)) &&
-                                    (((Player)entity).getEyeLocation().distance(this.controller.getBukkitEntity().getLocation()) < 2.0D))) &&
-                    !(HGManager.getInstance().inAdminMode((Player)entity)) &&
-                    !(HGManager.getInstance().isSpec((Player)entity)))
+                                    (((Player)entity).getEyeLocation().distance(this.controller.getBukkitEntity().getLocation()) < 2.0D))))
             {
                 this.controller.die();
                 this.hooked = entity;

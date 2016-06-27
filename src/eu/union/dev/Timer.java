@@ -34,7 +34,7 @@ public class Timer {
     private boolean fstart = false;
     private boolean end = false;
     public void start(){
-        int minplayers = 10;
+        int minplayers = HGManager.getInstance().getMinPlayers();
         new BukkitRunnable(){
             @Override
             public void run() {

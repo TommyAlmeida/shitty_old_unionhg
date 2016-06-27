@@ -452,6 +452,9 @@ public class HGListener implements Listener{
                     },3*20);
                 }
             }
+            if (damager.getItemInHand().getType().toString().contains("_SWORD")){
+                e.setDamage(e.getDamage()/2);
+            }
         }
     }
     @EventHandler
