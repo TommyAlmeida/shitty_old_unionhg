@@ -82,7 +82,7 @@ public class Quake extends Kit implements Listener {
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
                                 }
-                                ((Player)en).damage(8.0, p);
+                                ((Player)en).damage(6.0, p);
                             }
                         }
                     }

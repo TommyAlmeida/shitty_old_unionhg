@@ -47,6 +47,11 @@ public class Thor extends Kit implements Listener {
                 loc.setY(y);
                 Block b = loc.getBlock();
                 b.getWorld().strikeLightning(b.getLocation());
+                if (b.getType() == Material.NETHERRACK){
+                    b.getWorld().createExplosion(p.getLocation(),2.0F,false);
+                }else{
+                    b.setType(Material.NETHERRACK);
+                }
             } else {
                 Util.getInstance().sendCooldownMessage(p, cooldown, TimeUnit.SECONDS, true);
             }

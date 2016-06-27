@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 /**
@@ -34,6 +35,18 @@ public class Tank extends Kit implements Listener {
             p.getWorld().createExplosion(p.getLocation(),3.0F,true);
             p.getWorld().playEffect(p.getLocation(), Effect.EXPLOSION_LARGE, 10);
             p.getWorld().playSound(p.getLocation(), Sound.EXPLODE, 1, 1);
+        }
+    }
+    @EventHandler
+    public void onDamage(EntityDamageEvent e){
+        if (e.getEntity() instanceof Player){
+            Player p = (Player)e.getEntity();
+            KitManager km = KitManager.getManager();
+            if (km.getKitAmIUsing(p,"tank") &&
+                    (e.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
+                            e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){
+                e.setCancelled(true);
+            }
         }
     }
 }

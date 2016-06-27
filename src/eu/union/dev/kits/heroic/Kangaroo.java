@@ -1,15 +1,19 @@
 package eu.union.dev.kits.heroic;
 
+import eu.union.dev.HG;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Icon;
 import eu.union.dev.storage.Kit;
+import eu.union.dev.utils.Messages;
 import eu.union.dev.utils.Weapon;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 public class Kangaroo extends Kit implements Listener {
 
     ArrayList<String> cd = new ArrayList<>();
+    ArrayList<String> hit = new ArrayList<>();
 
     public Kangaroo() {//
         super("kangaroo", "unkit.kangaroo", Difficulty.MEDIUM, Rarity.HEROIC, 1, new Icon(Material.FIREWORK), Category.SOCIAL, 1000L);
@@ -42,17 +47,21 @@ public class Kangaroo extends Kit implements Listener {
                 e.setCancelled(true);
                 Vector v = p.getEyeLocation().getDirection();
                 if (!cd.contains(p.getName())) {
-                    cd.add(p.getName());
-                    if (!p.isSneaking()) {
-                        p.setFallDistance(-1.0F);
-                        v.multiply(0.5F);
-                        v.setY(1.0D);
-                        p.setVelocity(v);
-                    } else {
-                        p.setFallDistance(-1.0F);
-                        v.multiply(1.5F);
-                        v.setY(0.5D);
-                        p.setVelocity(v);
+                    if (!hit.contains(p.getName())){
+                        cd.add(p.getName());
+                        if (!p.isSneaking()) {
+                            p.setFallDistance(-3.0F);
+                            v.multiply(0.5F);
+                            v.setY(1.0D);
+                            p.setVelocity(v);
+                        } else {
+                            p.setFallDistance(-3.0F);
+                            v.multiply(1.5F);
+                            v.setY(0.5D);
+                            p.setVelocity(v);
+                        }
+                    }else{
+                        p.sendMessage(Messages.PREFIX+" §cYou can not use this kit in pvp!");
                     }
                 }
             }
@@ -81,6 +90,32 @@ public class Kangaroo extends Kit implements Listener {
                     e.setDamage(7.0D);
                 }
             }
+        }
+    }
+    @EventHandler
+    public void ondamage(EntityDamageByEntityEvent e){
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player){
+            Player p1 = (Player)e.getEntity();
+            Player p2 = (Player)e.getDamager();
+            KitManager km = KitManager.getManager();
+            if (km.getKitAmIUsing(p1,"kangaroo")){
+                onhit(p1);
+            }
+            if (km.getKitAmIUsing(p2,"kangaroo")){
+                onhit(p2);
+            }
+        }
+    }
+    public void onhit(Player p){
+        if (!hit.contains(p.getName())){
+            hit.add(p.getName());
+            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    hit.remove(p.getName());
+                    p.sendMessage(Messages.PREFIX+" §aYou can use the kit!");
+                }
+            },8*20);
         }
     }
 }

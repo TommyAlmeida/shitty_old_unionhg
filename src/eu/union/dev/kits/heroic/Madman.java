@@ -60,6 +60,10 @@ public class Madman extends Kit implements Listener {
                                 vitimas.get(p2.getName()) >= 51) {
                             p2.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20, 1));
                         }
+                        if (vitimas.get(p2.getName()) <= 100 &&
+                                vitimas.get(p2.getName()) >=75){
+                            p2.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 3 * 20, 0));
+                        }
                     }
                 }
                 for (Player ps : Bukkit.getOnlinePlayers()) {

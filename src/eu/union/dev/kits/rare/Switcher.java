@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Switcher extends Kit implements Listener {
 
-    Ability cooldown = new Ability(1, 3, TimeUnit.SECONDS);
+    //Ability cooldown = new Ability(1, 3, TimeUnit.SECONDS);
 
     public Switcher() {//
         super("switcher", "unkit.switcher", Difficulty.MEDIUM, Rarity.RARE, 1, new Icon(Material.SNOW_BALL), Category.TELEPORT, 1000L);
@@ -30,10 +30,10 @@ public class Switcher extends Kit implements Listener {
 
     @Override
     public void applyKit(Player player) {
-        Weapon.giveWeapon(player, Weapon.SWITCHER_SNOW_BALL);
+        Weapon.giveWeapon(player, Weapon.SWITCHER_SNOW_BALL,32);
     }
 
-    @SuppressWarnings("deprecation")
+    /*@SuppressWarnings("deprecation")
     @EventHandler
     public void onclick(PlayerInteractEvent e) {
         final Player p = e.getPlayer();
@@ -49,7 +49,7 @@ public class Switcher extends Kit implements Listener {
                 }
             }
         }
-    }
+    }*/
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {

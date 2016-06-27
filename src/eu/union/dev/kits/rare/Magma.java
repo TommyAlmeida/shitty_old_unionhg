@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Random;
 
@@ -37,6 +38,19 @@ public class Magma extends Kit implements Listener {
                 if (porcentagem <= 15) {
                     damager.setFireTicks((new Random().nextInt(3) + 3) * 20);
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onDamage(EntityDamageEvent e){
+        if (e.getEntity() instanceof Player){
+            Player p = (Player)e.getEntity();
+            KitManager km = KitManager.getManager();
+            if (km.getKitAmIUsing(p,"magma") &&
+                    (e.getCause() == EntityDamageEvent.DamageCause.FIRE ||
+                            e.getCause() == EntityDamageEvent.DamageCause.LAVA ||
+                    e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK)){
+                e.setCancelled(true);
             }
         }
     }
