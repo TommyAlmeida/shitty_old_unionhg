@@ -81,7 +81,9 @@ public class HGListener implements Listener{
         e.setQuitMessage(null);
         KPlayer kplayer = PlayerManager.getPlayer(p.getUniqueId());
 
-        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
+        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
+                !HGManager.getInstance().isSpec(p) &&
+                !HGManager.getInstance().inAdminMode(p)){
             if (!HGManager.getInstance().inReconect(p)){
                 HGManager.getInstance().addReconect(p);
                 if (kplayer != null) {
@@ -323,7 +325,7 @@ public class HGListener implements Listener{
         }
     }
 
-    ArrayList<UUID> respawn = new ArrayList<>();
+    //ArrayList<UUID> respawn = new ArrayList<>();
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e){

@@ -16,17 +16,34 @@ public class Icon {
     String[] lore;
     Enchantment enchantment;
     int level;
+    short data;
 
     public Icon(Material mat, String name, String... lore) {
         this.mat = mat;
         this.name = name;
         this.amount = 1;
+        this.data = 0;
+        this.lore = lore;
+    }
+
+    public Icon(Material mat, short data, String name, String... lore) {
+        this.mat = mat;
+        this.name = name;
+        this.amount = 1;
+        this.data = data;
         this.lore = lore;
     }
 
     public Icon(Material mat) {
         this.mat = mat;
         this.amount = 1;
+        this.data = 0;
+    }
+
+    public Icon(Material mat, short data) {
+        this.mat = mat;
+        this.amount = 1;
+        this.data = data;
     }
 
     public Icon(Material mat, Enchantment enchantment, int level, String name) {
@@ -63,7 +80,7 @@ public class Icon {
     }
 
     public ItemStack build() {
-        ItemStack item = new ItemStack(mat, amount);
+        ItemStack item = new ItemStack(mat, amount,data);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
         meta.setLore(Arrays.asList(lore));
