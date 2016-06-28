@@ -66,6 +66,7 @@ public class SoupListener implements Listener {
                     p.getItemInHand().setItemMeta(null);
                 }
             }
+            p.updateInventory();
         }
     }
 }

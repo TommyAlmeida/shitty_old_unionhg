@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -335,7 +336,7 @@ public class HGListener implements Listener{
             HGManager.getInstance().addKills(p.getKiller());
         }
         p.getWorld().strikeLightningEffect(p.getLocation());
-        if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
+        /*if (p.hasPermission(Perms.RESPAWN.toString()) && !respawn.contains(p.getUniqueId()) &&
                 HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
             p.setHealth(20.0D);
             HGManager.getInstance().addNoDamage(p);
@@ -360,7 +361,7 @@ public class HGListener implements Listener{
                 }
             },(2*60)*20);
             return;
-        }
+        }*/
         if (p.hasPermission(Perms.SPECTATOR.toString())){
             p.setHealth(20.0D);
             p.setFoodLevel(20);
@@ -460,5 +461,10 @@ public class HGListener implements Listener{
     @EventHandler
     public void onDeathMenssage(PlayerDeathEvent e){
         Util.getInstance().sendMessageOfDeath(e.getEntity(),e.getEntity().getKiller(),e.getEntity().getLastDamageCause().getCause());
+    }
+    @EventHandler
+    public void onOpenInv(InventoryOpenEvent e){
+        Player p = (Player)e.getPlayer();
+        p.updateInventory();
     }
 }
