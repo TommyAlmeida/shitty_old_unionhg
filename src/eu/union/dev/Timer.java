@@ -35,22 +35,30 @@ public class Timer {
     private boolean end = false;
     public void start(){
         int minplayers = HGManager.getInstance().getMinPlayers();
+        int timestart = 5;
+        int invencibilidade = 2;
+        int minifeast1 = 5;
+        int minifeast2 = 10;
+        int minifeast3 = 15;
+        int feastspawn = 20;
+        int deathmatch = 50;
+        int endgame = 60;
         new BukkitRunnable(){
             @Override
             public void run() {
                 if (!end){
                     time++;
                 }
-                int realtime = (5*60)-time;
-                if (time <= 5*60 && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                int realtime = (timestart*60)-time;
+                if (time <= timestart*60 && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                     Bukkit.getPluginManager().callEvent(new HGTimerSecondsEvent(time,timeformat(realtime)));
                     for (Player p : Bukkit.getOnlinePlayers()){
                         p.setLevel(realtime);
                         //Packets.getAPI().sendActionBar(p, "§8»§a§l"+timeformat(realtime)+"§8«");
                     }
-                    if (realtime == 4*60 ||
-                            realtime == 3*60 ||
-                            realtime == 2*60 ||
+                    if (realtime == (timestart-1)*60 ||
+                            realtime == (timestart-2)*60 ||
+                            realtime == (timestart-3)*60 ||
                             realtime == 60 ||
                             realtime == 30 ||
                             realtime == 10 ||
@@ -66,7 +74,7 @@ public class Timer {
                         }
                     }
                 }
-                if ((time == 5*60 || fstart) && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+                if ((time == timestart*60 || fstart) && HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                     if (HGManager.getInstance().getPlayersVivos().size() >= minplayers || fstart){
                         for (Player p : Bukkit.getOnlinePlayers()){
                             p.setLevel(0);
@@ -76,7 +84,7 @@ public class Timer {
                         HGManager.getInstance().setStatus(HGManager.Status.INVINCIBILITY);
                         time = 0;
                     }else{
-                        time = 4*60;
+                        time = (timestart-1)*60;
                         Bukkit.broadcastMessage("§cWe need at least §b"+minplayers+"§c players to start!");
                     }
                 }
@@ -84,20 +92,20 @@ public class Timer {
                     Bukkit.getPluginManager().callEvent(new HGTimerSecondsEvent(time, timeformat(time)));
                     detectWin();
                 }
-                if (time == 2*60 && HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){//remove inven
+                if (time == invencibilidade*60 && HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){//remove inven
                     HGManager.getInstance().setStatus(HGManager.Status.POS_INVINCIBILITY);
                     Bukkit.getPluginManager().callEvent(new HGEndInvencibleEvent());
                 }
-                if (time == 4*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == minifeast1*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(1),1));
                 }
-                if (time == 8*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == minifeast2*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(2),2));
                 }
-                if (time == 12*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == minifeast3*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(3),3));
                 }
-                if (time == 15*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                if (time == (feastspawn-5)*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     HGManager.getInstance().setStatus(HGManager.Status.FEAST_ANNOUNCEMENT);
                     StructureCreator scf = new StructureCreator(HGManager.getInstance().getFeastLoc(), StructureCreator.Structure.FEASTBASE);
                     scf.createStrucure();
@@ -106,22 +114,29 @@ public class Timer {
                             "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
                             " §ain 5m!");
                 }
-                if ((time == 16*60 || time == 17*60 || time == 18*60 || time == 19*60) &&
+                if ((time == (feastspawn-4)*60 || time == (feastspawn-3)*60 || time == (feastspawn-2)*60 || time == (feastspawn-1)*60) &&
                         HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){
                     Bukkit.broadcastMessage(Messages.PREFIX+" §aThe Feast will appear on " +
                             "§cX:"+HGManager.getInstance().getFeastLoc().getX() +"§a, "+
                             "§cZ:"+HGManager.getInstance().getFeastLoc().getZ() +
-                            " §ain "+(20-(time/60))+"m!");
+                            " §ain "+(feastspawn-(time/60))+"m!");
                 }
-                if (time == 20*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){//spawn feast
+                if (time == feastspawn*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST_ANNOUNCEMENT){//spawn feast
                     HGManager.getInstance().setStatus(HGManager.Status.FEAST);
                     Bukkit.getPluginManager().callEvent(new HGFeastSpawnEvent(HGManager.getInstance().getFeastLoc()));
                 }
-                if (time == 50*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//spawn da arena
+                if ((time == (deathmatch-5)*60 || time == (deathmatch-1)*60) && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//anuncio de deathmatch
+                    String tempo = "5 min";
+                    if (time == (deathmatch-1)*60){
+                        tempo = "1 min";
+                    }
+                    Bukkit.broadcastMessage(Messages.PREFIX+" §cDeathMatch in "+tempo);
+                }
+                if (time == deathmatch*60 && HGManager.getInstance().getStatus() == HGManager.Status.FEAST){//spawn da arena
                     HGManager.getInstance().setStatus(HGManager.Status.DEATH_MATCH);
                     Bukkit.getPluginManager().callEvent(new HGDeathMatchEvent(HGManager.getInstance().getDeathMatchLoc()));
                 }
-                if (time == 60*60 && HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH){//acaba o jogo
+                if (time == endgame*60 && HGManager.getInstance().getStatus() == HGManager.Status.DEATH_MATCH){//acaba o jogo
                     HGManager.getInstance().setStatus(HGManager.Status.ENDGAME);
                     Bukkit.getPluginManager().callEvent(new HGEndEvent());
                 }
@@ -133,9 +148,6 @@ public class Timer {
         this.fstart = fstart;
     }
 
-    public boolean getFeastStart() {
-        return fstart;
-    }
     public String getTimerFormated(){
         int realtime = time;
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){

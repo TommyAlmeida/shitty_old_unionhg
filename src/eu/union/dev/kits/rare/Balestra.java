@@ -42,16 +42,21 @@ public class Balestra extends Kit implements Listener {
             if (p.getItemInHand().getType() == Material.BOW) {
                 e.setCancelled(true);
                 if (p.getInventory().contains(Material.ARROW)){
-                    if (getAmount(p.getInventory(),Material.ARROW) >=2){
-                        boolean status = true;
-                        for (int i = 0; i < p.getInventory().getSize(); i++) {
-                            if (p.getInventory().getItem(i).getType() == Material.ARROW && status){
-                                status = false;
-                                p.getInventory().getItem(i).setAmount(p.getInventory().getItem(i).getAmount()-1);
+                    if (cooldown.tryUse(p)){
+                        if (getAmount(p.getInventory(),Material.ARROW) >=2){
+                            boolean status = true;
+                            for (int i = 0; i < p.getInventory().getSize(); i++) {
+                                if (p.getInventory().getItem(i).getType() == Material.ARROW && status){
+                                    status = false;
+                                    p.getInventory().getItem(i).setAmount(p.getInventory().getItem(i).getAmount()-1);
+                                }
                             }
+                        }else{
+                            p.getInventory().remove(Material.ARROW);
                         }
-                    }else{
-                        p.getInventory().remove(Material.ARROW);
+                        Arrow a = p.shootArrow();
+                        a.setCritical(true);
+                        a.setVelocity(a.getVelocity().multiply(2));
                     }
                 }
             }

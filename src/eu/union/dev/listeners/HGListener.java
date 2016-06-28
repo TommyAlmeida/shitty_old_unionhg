@@ -164,6 +164,7 @@ public class HGListener implements Listener{
     @EventHandler
     public void onPlayerWin(HGPlayerWinEvent e){
         Player p = e.getWinner();
+        HGManager.getInstance().setStatus(HGManager.Status.ENDGAME);
         KPlayer win = PlayerManager.getPlayer(p.getUniqueId());
         win.addWins();
         p.playSound(p.getLocation(),Sound.ORB_PICKUP,1.0F,1.0F);
