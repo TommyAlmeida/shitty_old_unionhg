@@ -45,7 +45,7 @@ public enum Perms {
                 p.hasPermission(UNION_DEV.toString())) {
             return true;
         } else {
-            p.sendMessage(Messages.PREFIX.toString() + " §cYou dont have permission to use this.");
+            //p.sendMessage(Messages.PREFIX.toString() + " §cYou don't have permission to use this.");
             return false;
         }
     }
@@ -54,7 +54,7 @@ public enum Perms {
         if (p.hasPermission(UNION_YT.toString())) {
             return true;
         } else {
-            p.sendMessage(Messages.PREFIX.toString() + " §cYou dont have permission to use this.");
+            //p.sendMessage(Messages.PREFIX.toString() + " §cYou don't have permission to use this.");
             return false;
         }
     }

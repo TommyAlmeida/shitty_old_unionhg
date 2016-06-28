@@ -6,7 +6,7 @@ package eu.union.dev.utils;
 public enum Messages {
 
     PREFIX("§e§lUnionHG §7§l»"),
-    NO_PERM("§e§lUnionHG §cYou dont have permissions to do this");
+    NO_PERMA("§e§lUnionHG §cYou don't have permissions to do this");
 
 
     String s;
