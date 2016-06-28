@@ -35,18 +35,6 @@ public class Util {
         return instance;
     }
 
-    public String center(String msg, int length) {
-        StringBuilder b = new StringBuilder("");
-        int msglength = msg.length();
-        int numberspaces = Math.round(length / 2) - Math.round(msglength / 2);
-        for (int i = 0; i <= numberspaces; i++) {
-            b.append(" ");
-        }
-        for (int i = 0; i < msglength; i++) {
-            b.append(msg.charAt(i));
-        }
-        return b.toString();
-    }
 
     public void sendCooldownMessage(Player player, Ability cooldown, TimeUnit timeUnit, boolean actionbar) {
         if (!actionbar) {
@@ -78,9 +66,20 @@ public class Util {
     public void buildSpecsIcons(Player player) {
         Inventory inv = player.getInventory();
         inv.clear();
+
         {
-            Icon compass = new Icon(Material.COMPASS, "§cTeleport");
-            inv.setItem(8, compass.build());
+            Icon compass = new Icon(Material.COMPASS, "§bTeleport");
+            inv.setItem(0, compass.build());
+        }
+
+        {
+            Icon sponsor = new Icon(Material.CAKE, "§eSponsor");
+            inv.setItem(0, sponsor.build());
+        }
+
+        {
+            Icon leave = new Icon(Material.BED, "§cReturn to the hub");
+            inv.setItem(8, leave.build());
         }
     }
     public void buildAdminIcons(Player player) {
