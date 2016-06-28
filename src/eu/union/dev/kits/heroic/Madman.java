@@ -1,6 +1,7 @@
 package eu.union.dev.kits.heroic;
 
 import eu.union.dev.HG;
+import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Icon;
 import eu.union.dev.events.HGTimerSecondsEvent;
@@ -43,26 +44,28 @@ public class Madman extends Kit implements Listener {
                 for (Entity en : p.getNearbyEntities(20.0, 20.0, 20.0)) {
                     if (en instanceof Player) {
                         Player p2 = (Player) en;
-                        if (vitimas.containsKey(p2.getName())) {
-                            if (vitimas.get(p2.getName()) < 100) {
-                                vitimas.put(p2.getName(), vitimas.get(p2.getName()) + 1);
+                        if (!HGManager.getInstance().isSpec(p2) && HGManager.getInstance().inAdminMode(p2)){
+                            if (vitimas.containsKey(p2.getName())) {
+                                if (vitimas.get(p2.getName()) < 100) {
+                                    vitimas.put(p2.getName(), vitimas.get(p2.getName()) + 1);
+                                }
+                            } else {
+                                vitimas.put(p2.getName(), 1);
                             }
-                        } else {
-                            vitimas.put(p2.getName(), 1);
-                        }
-                        if (vitimas.get(p2.getName()) % 2 == 0) {
-                            msg(p2, "§6§lMadman", vitimas.get(p2.getName()) / 2, 50, vitimas.get(p2.getName()));
-                        }
-                        if (vitimas.get(p2.getName()) <= 50) {
-                            p2.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20, 0));
-                        }
-                        if (vitimas.get(p2.getName()) <= 100 &&
-                                vitimas.get(p2.getName()) >= 51) {
-                            p2.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20, 1));
-                        }
-                        if (vitimas.get(p2.getName()) <= 100 &&
-                                vitimas.get(p2.getName()) >=75){
-                            p2.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 3 * 20, 0));
+                            if (vitimas.get(p2.getName()) % 2 == 0) {
+                                msg(p2, "§6§lMadman", vitimas.get(p2.getName()) / 2, 50, vitimas.get(p2.getName()));
+                            }
+                            if (vitimas.get(p2.getName()) <= 50) {
+                                p2.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20, 0));
+                            }
+                            if (vitimas.get(p2.getName()) <= 100 &&
+                                    vitimas.get(p2.getName()) >= 51) {
+                                p2.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20, 1));
+                            }
+                            if (vitimas.get(p2.getName()) <= 100 &&
+                                    vitimas.get(p2.getName()) >=75){
+                                p2.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 3 * 20, 0));
+                            }
                         }
                     }
                 }

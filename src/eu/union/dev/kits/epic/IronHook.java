@@ -1,6 +1,7 @@
 package eu.union.dev.kits.epic;
 
 import eu.union.dev.HG;
+import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
@@ -58,7 +59,7 @@ public class IronHook extends Kit implements Listener {
                         for (Entity en : item.getNearbyEntities(1.5, 2.0, 1.5)){
                             if (en instanceof Player){
                                 Player p2 = (Player)en;
-                                if (p!=p2){
+                                if (p!=p2 && !HGManager.getInstance().isSpec(p2) && !HGManager.getInstance().inAdminMode(p2)){
                                     status = false;
                                     p2.damage(4.0,p);
                                     Vector vec = en.getLocation().toVector().subtract(p.getLocation().toVector()).normalize();

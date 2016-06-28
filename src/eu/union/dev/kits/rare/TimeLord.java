@@ -1,6 +1,7 @@
 package eu.union.dev.kits.rare;
 
 import eu.union.dev.HG;
+import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
@@ -48,17 +49,19 @@ public class TimeLord extends Kit implements Listener {
                 for (Entity en : p.getNearbyEntities(5.0, 5.0, 5.0)) {
                     if (en instanceof Player) {
                         final Player p2 = (Player) en;
-                        congelados.add(p2.getName());
-                        p2.setAllowFlight(true);
-                        p2.getWorld().playEffect(p2.getLocation(), Effect.SNOWBALL_BREAK, 10);
-                        p2.getWorld().playSound(p2.getLocation(), Sound.WITHER_SHOOT, 10.0F, 1.0F);
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
-                            @Override
-                            public void run() {
-                                congelados.remove(p2.getName());
-                                p2.setAllowFlight(false);
-                            }
-                        }, 5 * 20);
+                        if (!HGManager.getInstance().inAdminMode(p2) && !HGManager.getInstance().isSpec(p2)){
+                            congelados.add(p2.getName());
+                            p2.setAllowFlight(true);
+                            p2.getWorld().playEffect(p2.getLocation(), Effect.SNOWBALL_BREAK, 10);
+                            p2.getWorld().playSound(p2.getLocation(), Sound.WITHER_SHOOT, 10.0F, 1.0F);
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    congelados.remove(p2.getName());
+                                    p2.setAllowFlight(false);
+                                }
+                            }, 5 * 20);
+                        }
                     }
                 }
             } else {
