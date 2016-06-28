@@ -9,19 +9,15 @@ public abstract class Kit {
     public String prefix = Messages.PREFIX.toString();
     Rarity rarity;
     Difficulty difficulty;
-    Category category;
     private String name;
     private String permission;
-    private int level;
     private Icon icon;
     private long price;
 
-    public Kit(String name, String permission, Difficulty difficulty, Rarity rarity, int level, Icon icon, Category category, long price) {
+    public Kit(String name, String permission, Difficulty difficulty, Rarity rarity, Icon icon, long price) {
         this.name = name;
         this.difficulty = difficulty;
         this.rarity = rarity;
-        this.level = level;
-        this.category = category;
         this.permission = permission;
         this.icon = icon;
         this.price = price;
@@ -39,20 +35,8 @@ public abstract class Kit {
         return rarity;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public String getPermission() {
         return permission;
-    }
-
-    public Category getCategory() {
-        return category;
     }
 
     public abstract void applyKit(Player player);

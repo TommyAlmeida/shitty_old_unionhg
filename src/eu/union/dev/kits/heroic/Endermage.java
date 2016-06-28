@@ -25,7 +25,7 @@ public class Endermage extends Kit implements Listener {
     ArrayList<String> cd = new ArrayList<>();
 
     public Endermage() {//
-        super("endermage", "unkit.endermage", Difficulty.MEDIUM, Rarity.HEROIC, 5, new Icon(Material.ENDER_PORTAL_FRAME), Category.SOCIAL, 1000L);
+        super("endermage", "unkit.endermage", Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.ENDER_PORTAL_FRAME), 1000L);
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,12 +27,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Fentis on 08/06/2016.
  */
-public class FireBoost extends Kit{
+public class FireBoost extends Kit implements Listener{
 
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
     public FireBoost() {
-        super("fireboost", "unkit.fireboost", Difficulty.MEDIUM, Rarity.BEAST, 8, new Icon(Material.BLAZE_POWDER), Category.CHARGER, 1000L);
+        super("fireboost", "unkit.fireboost", Difficulty.MEDIUM, Rarity.BEAST, new Icon(Material.BLAZE_POWDER), 1000L);
     }
 
     @Override

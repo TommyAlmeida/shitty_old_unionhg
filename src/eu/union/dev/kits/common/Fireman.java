@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class Fireman extends Kit implements Listener{
 
     public Fireman() {
-        super("fireman", "unkit.fireman", Difficulty.LOW, Rarity.COMMON, 5, new Icon(Material.WATER_BUCKET), Category.PROTECTED, 1000);
+        super("fireman", "unkit.fireman", Difficulty.LOW, Rarity.COMMON, new Icon(Material.WATER_BUCKET), 1000);
     }
 
     @Override

@@ -16,8 +16,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 public class Fisherman extends Kit implements Listener {
 
     public Fisherman() {//
-        super("fisherman", "unkit.fisherman", Difficulty.LOW, Rarity.COMMON, 1, new Icon(Material.FISHING_ROD),
-                Category.CATCHER, 1000L);
+        super("fisherman", "unkit.fisherman", Difficulty.LOW, Rarity.COMMON,  new Icon(Material.FISHING_ROD), 1000L);
     }
 
     @Override

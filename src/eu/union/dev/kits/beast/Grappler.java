@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class Grappler extends Kit implements Listener{
 
     public Grappler() {
-        super("grappler", "unkit.grappler", Difficulty.MEDIUM, Rarity.BEAST, 5, new Icon(Material.LEASH), Category.LONG_DISTANCE, 1000);
+        super("grappler", "unkit.grappler", Difficulty.MEDIUM, Rarity.BEAST, new Icon(Material.LEASH), 1000);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class Madman extends Kit implements Listener {
     HashMap<String, Integer> vitimas = new HashMap<>();
 
     public Madman() {//
-        super("madman", "unkit.madman", Difficulty.LOW, Rarity.HEROIC, 6, new Icon(Material.REDSTONE), Category.CHARGER, 1000L);
+        super("madman", "unkit.madman", Difficulty.LOW, Rarity.HEROIC, new Icon(Material.REDSTONE), 1000L);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public class Monster extends Kit implements Listener{
 
     public Monster() {
-        super("monster", "unkit.monster", Difficulty.LOW, Rarity.COMMON, 5, new Icon(Material.SKULL_ITEM), Category.NONE, 1000);
+        super("monster", "unkit.monster", Difficulty.LOW, Rarity.COMMON, new Icon(Material.SKULL_ITEM), 1000);
     }
 
     @Override

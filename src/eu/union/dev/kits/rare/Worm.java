@@ -21,7 +21,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class Worm extends Kit implements Listener{
 
     public Worm() {
-        super("worm", "unkit.worm", Difficulty.LOW, Rarity.COMMON, 5, new Icon(Material.DIRT), Category.BROKEN, 1000);
+        super("worm", "unkit.worm", Difficulty.LOW, Rarity.COMMON, new Icon(Material.DIRT), 1000);
     }
 
     @Override
