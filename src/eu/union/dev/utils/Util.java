@@ -69,7 +69,7 @@ public class Util {
 
         {
             Icon compass = new Icon(Material.COMPASS, "§bTeleport");
-            inv.setItem(0, compass.build());
+            inv.setItem(4, compass.build());
         }
 
         {
