@@ -52,7 +52,8 @@ public enum Weapon {
     LUMBERJACK_AXE(Material.WOOD_AXE, "§4Lumberjack Axe"),
     BACKPACKER(Material.ENDER_CHEST, "§5Back-Pack"),
     GRAPPLER_HOOK(Material.LEASH, "§7Grappler Hook"),
-    JACK_HAMMER(Material.STONE_AXE,"§7Jack Hammer");
+    JACK_HAMMER(Material.STONE_AXE,"§7Jack Hammer"),
+    GLADIATOR_BARS(Material.IRON_FENCE, "§7Gladiator Bars");
 
 
     Material mat;
