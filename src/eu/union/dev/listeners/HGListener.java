@@ -477,25 +477,25 @@ public class HGListener implements Listener{
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
                 HGManager.getInstance().getPlayersVivos().size() < Bukkit.getServer().getMaxPlayers()){
             if (Timer.getInstace().getTime() <= 10){
-                e.setMotd("Starting");
+                e.setMotd("§aStarting");
             }else{
-                e.setMotd("In lobby");
+                e.setMotd("§bIn lobby");
             }
         }
         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
                 HGManager.getInstance().getPlayersVivos().size() >= Bukkit.getServer().getMaxPlayers()){
             if (Timer.getInstace().getTime() <= 10){
-                e.setMotd("Starting");
+                e.setMotd("§aStarting");
             }else{
-                e.setMotd("Full");
+                e.setMotd("§5Full");
             }
         }
         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
                 HGManager.getInstance().getStatus() != HGManager.Status.ENDGAME){
-            e.setMotd("In game");
+            e.setMotd("§cIn game");
         }
         if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
-            e.setMotd("Restarting");
+            e.setMotd("§4Restarting");
         }
     }
 }
