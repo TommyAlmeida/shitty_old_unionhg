@@ -51,7 +51,8 @@ public enum Weapon {
     FIREMAN_BUCKET(Material.WATER_BUCKET, "§bFireman Bucket"),
     LUMBERJACK_AXE(Material.WOOD_AXE, "§4Lumberjack Axe"),
     BACKPACKER(Material.ENDER_CHEST, "§5Back-Pack"),
-    GRAPPLER_HOOK(Material.LEASH, "§7Grappler Hook");
+    GRAPPLER_HOOK(Material.LEASH, "§7Grappler Hook"),
+    JACK_HAMMER(Material.STONE_AXE,"§7Jack Hammer");
 
 
     Material mat;
