@@ -20,6 +20,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -469,5 +470,16 @@ public class HGListener implements Listener{
     public void onOpenInv(InventoryOpenEvent e){
         Player p = (Player)e.getPlayer();
         p.updateInventory();
+    }
+    @EventHandler
+    public void onMotd(ServerListPingEvent e){
+        String ip = HG.getInstance().getConfig().getString("IP").toUpperCase();
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
+            e.setMotd(Messages.PREFIX+" §e"+ip+" §aCome and see who is the best!\n" +
+                    "§eTimer "+Timer.getInstace().getTimerFormated());
+        }else{
+            e.setMotd(Messages.PREFIX+" §e"+ip+" §cIn Game! Try another server!\n" +
+                    "§eTimer "+Timer.getInstace().getTimerFormated());
+        }
     }
 }
