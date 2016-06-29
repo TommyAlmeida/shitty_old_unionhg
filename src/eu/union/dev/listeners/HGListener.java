@@ -474,12 +474,28 @@ public class HGListener implements Listener{
     @EventHandler
     public void onMotd(ServerListPingEvent e){
         String ip = HG.getInstance().getConfig().getString("IP").toUpperCase();
-        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-            e.setMotd(Messages.PREFIX+" §e"+ip+" §aCome and see who is the best!\n" +
-                    "§eTimer "+Timer.getInstace().getTimerFormated());
-        }else{
-            e.setMotd(Messages.PREFIX+" §e"+ip+" §cIn Game! Try another server!\n" +
-                    "§eTimer "+Timer.getInstace().getTimerFormated());
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                HGManager.getInstance().getPlayersVivos().size() < Bukkit.getServer().getMaxPlayers()){
+            if (Timer.getInstace().getTime() <= 10){
+                e.setMotd("Starting");
+            }else{
+                e.setMotd("In lobby");
+            }
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                HGManager.getInstance().getPlayersVivos().size() >= Bukkit.getServer().getMaxPlayers()){
+            if (Timer.getInstace().getTime() <= 10){
+                e.setMotd("Starting");
+            }else{
+                e.setMotd("Full");
+            }
+        }
+        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
+                HGManager.getInstance().getStatus() != HGManager.Status.ENDGAME){
+            e.setMotd("In game");
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            e.setMotd("Restarting");
         }
     }
 }
