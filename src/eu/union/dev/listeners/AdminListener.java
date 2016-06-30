@@ -4,6 +4,7 @@ import eu.union.dev.HGManager;
 import eu.union.dev.Timer;
 import eu.union.dev.events.HGStartEvent;
 import eu.union.dev.events.HGTimerSecondsEvent;
+import eu.union.dev.invs.TrollMenu;
 import eu.union.dev.utils.Perms;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Created by Fentis on 22/06/2016.
@@ -26,7 +28,8 @@ public class AdminListener implements Listener{
     public void onClick(PlayerInteractEvent e){
         Player p = e.getPlayer();
         if (HGManager.getInstance().inAdminMode(p)){
-            if (p.getItemInHand().getType() == Material.CHEST){
+            if (p.getItemInHand().getType() == Material.CHEST ||
+                    p.getItemInHand().getType() == Material.ENDER_CHEST){
                 e.setCancelled(true);
             }
         }
@@ -35,10 +38,15 @@ public class AdminListener implements Listener{
     public void onClickEnt(PlayerInteractEntityEvent e){
         Player p = e.getPlayer();
         if (HGManager.getInstance().inAdminMode(p)){
-            if (p.getItemInHand().getType() == Material.CHEST){
-                if (e.getRightClicked() instanceof  Player){
-                    Player clicked = (Player) e.getRightClicked();
-                    p.openInventory(clicked.getInventory());
+            if (e.getRightClicked() instanceof Player){
+                Player p2 = (Player)e.getRightClicked();
+                if (p.getItemInHand().getType() == Material.CHEST){
+                    p.openInventory(p2.getInventory());
+                }
+                if (p.getItemInHand().getType() == Material.ENDER_CHEST){
+                    Inventory inv = Bukkit.createInventory(null,3*9,"Troll");
+                    new TrollMenu().setItems(p,p2,inv);
+                    p.openInventory(inv);
                 }
             }
         }

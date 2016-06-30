@@ -88,6 +88,10 @@ public class Util {
         {
             Icon chest = new Icon(Material.CHEST, "§aOpen Inventory");
             inv.setItem(0, chest.build());
+            Icon switchmode = new Icon(Material.SLIME_BALL, "§cSwitch AdminMode");
+            inv.setItem(1, switchmode.build());
+            Icon adminmenu = new Icon(Material.ENDER_CHEST, "§cAdmin menu");
+            inv.setItem(4, adminmenu.build());
             Icon compass = new Icon(Material.COMPASS, "§cTeleport");
             inv.setItem(8, compass.build());
         }
