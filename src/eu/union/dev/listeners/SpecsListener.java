@@ -61,10 +61,11 @@ public class SpecsListener implements Listener{
     }
     @EventHandler
     public void onSeconds(HGTimerSecondsEvent e){
-        for (Player p : Bukkit.getOnlinePlayers()){
-            for (Player ps : Bukkit.getOnlinePlayers()){
+        for (Player p : Bukkit.getOnlinePlayers()){//todos os plaeyrs
+            for (Player ps : Bukkit.getOnlinePlayers()){//player spec
                 if (HGManager.getInstance().isSpec(ps)){
-                    if (!HGManager.getInstance().isSpec(p)){
+                    if (!HGManager.getInstance().isSpec(p) &&
+                            !HGManager.getInstance().inAdminMode(p)){
                         p.hidePlayer(ps);
                     }
                 }

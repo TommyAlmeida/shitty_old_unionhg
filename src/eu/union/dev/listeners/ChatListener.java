@@ -21,7 +21,7 @@ public class ChatListener implements Listener{
         e.setCancelled(true);
         if (HGManager.getInstance().isSpec(e.getPlayer())){
             for (Player p : Bukkit.getOnlinePlayers()){
-                if (HGManager.getInstance().isSpec(e.getPlayer()) ||
+                if (HGManager.getInstance().isSpec(p) ||
                         Perms.isStaff(p)){
                     p.sendMessage("§7" + prefix + "»(Spec)" + e.getPlayer().getName() + ": §f" + ChatColor.translateAlternateColorCodes('&',e.getMessage()));
                 }

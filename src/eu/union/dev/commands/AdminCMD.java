@@ -63,6 +63,9 @@ public class AdminCMD implements CommandExecutor{
                         Util.getInstance().buildAdminIcons(p);
                         p.setAllowFlight(true);
                         p.setFlying(true);
+                        for (Player p2 : Bukkit.getOnlinePlayers()){
+                            p.showPlayer(p2);
+                        }
                     }
                 }
             }

@@ -23,7 +23,7 @@ public class TrollMenu implements Listener{
 
     public void setItems(Player admin, Player hack, Inventory inv){
         for (int i = 0; i < inv.getSize(); i++) {
-            inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE));
+            inv.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE));
         }
         ItemStack i = new ItemStack(Material.SKULL_ITEM,1,(byte)3);
         SkullMeta im = (SkullMeta) i.getItemMeta();
