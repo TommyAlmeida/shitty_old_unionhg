@@ -69,8 +69,8 @@ public class Gladiator extends Kit implements Listener{
                     return;
                 }
                 Location loc = new Location(p.getWorld(), p.getLocation().getBlockX(), HGManager.getInstance().getCamadalimite()-2, p.getLocation().getBlockZ());
-                this.localizacao.put(p, loc);
-                this.localizacao.put(r, loc);
+                localizacao.put(p, loc);
+                localizacao.put(r, loc);
                 Location loc2 = new Location(p.getWorld(),
                         p.getLocation().getBlockX() + 8,
                         HGManager.getInstance().getCamadalimite()+1,
@@ -84,14 +84,14 @@ public class Gladiator extends Kit implements Listener{
                     p.sendMessage(Messages.PREFIX+" §cYou is already in battle!");
                     return;
                 }
-                Integer currentID = Integer.valueOf(this.nextID);
-                this.nextID += 1;
+                Integer currentID = Integer.valueOf(nextID);
+                nextID += 1;
                 ArrayList list = new ArrayList();
                 list.add(p.getName());
                 list.add(r.getName());
-                this.players.put(currentID, (String[])list.toArray(new String[1]));
-                this.oldl.put(p.getName(), p.getLocation());
-                this.oldl.put(r.getName(), r.getLocation());
+                players.put(currentID, (String[])list.toArray(new String[1]));
+                oldl.put(p.getName(), p.getLocation());
+                oldl.put(r.getName(), r.getLocation());
                 List<Location> cuboid = new ArrayList();
                 cuboid.clear();
                 int bY;
@@ -120,7 +120,7 @@ public class Gladiator extends Kit implements Listener{
                 }
                 for (Location loc1 : cuboid){
                     loc1.getBlock().setType(Material.GLASS);
-                    this.bloco.put(loc1, loc1.getBlock());
+                    bloco.put(loc1, loc1.getBlock());
                 }
                 loc2.setYaw(135.0F);
                 p.teleport(loc2);
@@ -134,38 +134,36 @@ public class Gladiator extends Kit implements Listener{
                 fighting.put(r.getName(), p.getName());
                 gladgladiator.add(p.getName());
                 gladgladiator.add(r.getName());
-                this.id2 = Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
+                id2 = Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
                         {
                             public void run()
                             {
                                 if (fighting.containsKey(p.getName()) &&
-                                        ((String)fighting.get(p.getName())).equalsIgnoreCase(r.getName()) &&
+                                        fighting.get(p.getName()).equalsIgnoreCase(r.getName()) &&
                                         fighting.containsKey(r.getName()) &&
-                                        ((String)fighting.get(r.getName())).equalsIgnoreCase(p.getName()))
-                                {
+                                        fighting.get(r.getName()).equalsIgnoreCase(p.getName())){
                                     p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 2000000, 5));
                                     r.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 2000000, 5));
                                 }
                             }
                         }
                         , 2400L);
-                this.id1 = Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
+                id1 = Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
                         {
                             public void run()
                             {
                                 if (fighting.containsKey(p.getName()) &&
-                                        ((String)fighting.get(p.getName())).equalsIgnoreCase(r.getName()) &&
+                                        fighting.get(p.getName()).equalsIgnoreCase(r.getName()) &&
                                         fighting.containsKey(r.getName()) &&
-                                        ((String)fighting.get(r.getName())).equalsIgnoreCase(p.getName()))
-                                {
+                                        fighting.get(r.getName()).equalsIgnoreCase(p.getName())){
                                     fighting.remove(p.getName());
                                     fighting.remove(r.getName());
                                     gladgladiator.remove(p.getName());
                                     gladgladiator.remove(r.getName());
                                     p.teleport(oldl.get(p.getName()));
                                     r.teleport(oldl.get(r.getName()));
-                                    Gladiator.this.oldl.remove(p.getName());
-                                    Gladiator.this.oldl.remove(r.getName());
+                                    oldl.remove(p.getName());
+                                    oldl.remove(r.getName());
                                     p.removePotionEffect(PotionEffectType.WITHER);
                                     r.removePotionEffect(PotionEffectType.WITHER);
                                     p.sendMessage(Messages.PREFIX+" §aThe time is over! You returned to its original position!");
@@ -206,8 +204,7 @@ public class Gladiator extends Kit implements Listener{
         if (e.getAction() == Action.LEFT_CLICK_BLOCK &&
                 e.getClickedBlock().getType() == Material.GLASS &&
                 e.getPlayer().getGameMode() != GameMode.CREATIVE &&
-                fighting.containsKey(e.getPlayer().getName()))
-        {
+                fighting.containsKey(e.getPlayer().getName())){
             e.setCancelled(true);
             e.getClickedBlock().setType(Material.BEDROCK);
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
@@ -225,18 +222,19 @@ public class Gladiator extends Kit implements Listener{
     @EventHandler(priority=EventPriority.MONITOR)
     public void onBlockBreak(final BlockBreakEvent e)
     {
-        if ((e.getBlock().getType() == Material.GLASS) &&
-                (e.getPlayer().getGameMode() != GameMode.CREATIVE) &&
-                (fighting.containsKey(e.getPlayer().getName())))
-        {
+        if (e.getBlock().getType() == Material.GLASS &&
+                e.getPlayer().getGameMode() != GameMode.CREATIVE &&
+                fighting.containsKey(e.getPlayer().getName())){
             e.setCancelled(true);
             e.getBlock().setType(Material.BEDROCK);
             Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable()
                     {
                         public void run()
                         {
-                            if ((e.getPlayer().getGameMode() != GameMode.CREATIVE) && (fighting.containsKey(e.getPlayer().getName())))
+                            if (e.getPlayer().getGameMode() != GameMode.CREATIVE &&
+                                    fighting.containsKey(e.getPlayer().getName())){
                                 e.getBlock().setType(Material.GLASS);
+                            }
                         }
                     }
                     , 30L);
@@ -247,9 +245,8 @@ public class Gladiator extends Kit implements Listener{
     public void onPlayerLeft(PlayerQuitEvent e)
     {
         Player p = e.getPlayer();
-        if (fighting.containsKey(p.getName()))
-        {
-            Player t = Bukkit.getServer().getPlayer((String)fighting.get(p.getName()));
+        if (fighting.containsKey(p.getName())){
+            Player t = Bukkit.getServer().getPlayer(fighting.get(p.getName()));
             fighting.remove(t.getName());
             fighting.remove(p.getName());
             gladgladiator.remove(p.getName());
@@ -257,8 +254,8 @@ public class Gladiator extends Kit implements Listener{
             Location old = oldl.get(t.getName());
             t.teleport(old);
             t.sendMessage(Messages.PREFIX+" §4O §7" + p.getDisplayName() + " gave rage quit!");
-            Bukkit.getScheduler().cancelTask(this.id1);
-            Bukkit.getScheduler().cancelTask(this.id2);
+            Bukkit.getScheduler().cancelTask(id1);
+            Bukkit.getScheduler().cancelTask(id2);
             t.removePotionEffect(PotionEffectType.WITHER);
             Location loc = localizacao.get(p);
             List<Location> cuboid = new ArrayList();

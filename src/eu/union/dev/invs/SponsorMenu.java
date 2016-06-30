@@ -63,12 +63,16 @@ public class SponsorMenu implements Listener{
             }
             if (e.getSlot() >= 9){
                 String ps = item.getItemMeta().getDisplayName().replace("§a", "");
-                Player pl = Bukkit.getPlayer(ps);
-                if (pl != null) {
-                    Inventory inv = Bukkit.createInventory(null,9*6,"Sponsor");
-                    new SponsorMode().setItems(p,pl,inv);
+                Player p2 = null;
+                for (Player pl : Bukkit.getOnlinePlayers()){
+                    if (pl.getName().equalsIgnoreCase(ps)){
+                        p2 = pl;
+                    }
+                }
+                if (p2 != null) {
+                    Inventory inv = Bukkit.createInventory(null,6*9,"Sponsor");
+                    new SponsorMode().setItems(p,p2,inv);
                     p.openInventory(inv);
-                    e.getView().close();
                     e.setCancelled(true);
                 }
             }
