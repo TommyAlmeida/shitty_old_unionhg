@@ -7,6 +7,10 @@ import eu.union.dev.events.*;
 import eu.union.dev.storage.KPlayer;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.utils.*;
+import net.minecraft.server.v1_7_R4.ChatSerializer;
+import net.minecraft.server.v1_7_R4.DedicatedServer;
+import net.minecraft.server.v1_7_R4.IChatBaseComponent;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
@@ -27,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.inventivetalent.bossbar.BossBarAPI;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -81,21 +86,21 @@ public class HGListener implements Listener{
         Player p = e.getPlayer();
         e.setQuitMessage(null);
         KPlayer kplayer = PlayerManager.getPlayer(p.getUniqueId());
-
         if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
                 !HGManager.getInstance().isSpec(p) &&
-                !HGManager.getInstance().inAdminMode(p)){
+                !HGManager.getInstance().inAdminMode(p) &&
+                HGManager.getInstance().isAlive(p)){
             if (!HGManager.getInstance().inReconect(p)){
                 HGManager.getInstance().addReconect(p);
-                if (kplayer != null) {
-                    HG.getInstance().getSQL().updatePlayerProfileSQL(kplayer);
-                } else {
-                    System.out.println("Inexisting PlayerProfile for this Player");
-                }
                 startReconect(p);
             }
         }else{
             HGManager.getInstance().removePlayersVivos(p);
+        }
+        if (kplayer != null) {
+            HG.getInstance().getSQL().updatePlayerProfileSQL(kplayer);
+        } else {
+            System.out.println("Inexisting PlayerProfile for this Player");
         }
     }
     public void startReconect(Player p){
@@ -387,7 +392,6 @@ public class HGListener implements Listener{
                     Util.getInstance().buildSpecsIcons(p);
                 }
             },10);
-            return;
         }else{
             HGManager.getInstance().removePlayersVivos(p);
             Timer.getInstace().detectWin();
@@ -470,6 +474,35 @@ public class HGListener implements Listener{
     public void onOpenInv(InventoryOpenEvent e){
         Player p = (Player)e.getPlayer();
         p.updateInventory();
+    }
+    @EventHandler
+    public void setMotd(HGTimerSecondsEvent e){
+        String motd = "§4ERROR";
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                HGManager.getInstance().getPlayersVivos().size() < Bukkit.getServer().getMaxPlayers()){
+            if (Timer.getInstace().getTime() <= 10){
+                motd = "§aStarting";
+            }else{
+                motd = "§bIn lobby";
+            }
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                HGManager.getInstance().getPlayersVivos().size() >= Bukkit.getServer().getMaxPlayers()){
+            if (Timer.getInstace().getTime() <= 10){
+                motd = "§aStarting";
+            }else{
+                motd = "§5Full";
+            }
+        }
+        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
+                HGManager.getInstance().getStatus() != HGManager.Status.ENDGAME){
+            motd = "§cIn game";
+        }
+        if (HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+            motd = "§4Restarting";
+        }
+        //MinecraftServer.getServer().setMotd(motd);
+        MinecraftServer.getServer().ay().setMOTD(ChatSerializer.a("{\"text\": \"" + motd + "\"}"));
     }
     @EventHandler
     public void onMotd(ServerListPingEvent e){
