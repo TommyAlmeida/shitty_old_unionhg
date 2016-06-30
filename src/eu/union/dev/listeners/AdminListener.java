@@ -1,5 +1,6 @@
 package eu.union.dev.listeners;
 
+import eu.union.dev.HG;
 import eu.union.dev.HGManager;
 import eu.union.dev.Timer;
 import eu.union.dev.events.HGStartEvent;
@@ -13,10 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 
 /**
@@ -31,6 +29,15 @@ public class AdminListener implements Listener{
             if (p.getItemInHand().getType() == Material.CHEST ||
                     p.getItemInHand().getType() == Material.ENDER_CHEST){
                 e.setCancelled(true);
+            }
+            if (p.getItemInHand().getType() == Material.SLIME_BALL){
+                Bukkit.dispatchCommand(p,"admin");
+                Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.dispatchCommand(p,"admin");
+                    }
+                },20);
             }
         }
     }
@@ -102,6 +109,14 @@ public class AdminListener implements Listener{
             if (HGManager.getInstance().inAdminMode(p)){
                 e.setCancelled(true);
             }
+        }
+    }
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e){
+        Player p = e.getPlayer();
+        if (HGManager.getInstance().inAdminMode(p)){
+            HGManager.getInstance().removeAdminMode(p);
+            p.getInventory().clear();
         }
     }
 }
