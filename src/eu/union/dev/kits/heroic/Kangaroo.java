@@ -30,7 +30,7 @@ public class Kangaroo extends Kit implements Listener {
     ArrayList<String> hit = new ArrayList<>();
 
     public Kangaroo() {//
-        super("kangaroo", "unkit.kangaroo", Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.FIREWORK), 1000L);
+        super("kangaroo", false, Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.FIREWORK), 1000L);
     }
 
     @Override

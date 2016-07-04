@@ -17,7 +17,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class Cultivator extends Kit implements Listener{
 
     public Cultivator() {
-        super("cultivator", "unkit.cultivator", Difficulty.LOW, Rarity.COMMON, new Icon(Material.SEEDS), 1000);
+        super("cultivator", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.SEEDS), 1000);
     }
 
     @Override

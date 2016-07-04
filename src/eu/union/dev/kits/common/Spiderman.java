@@ -17,7 +17,7 @@ import org.bukkit.util.Vector;
 public class Spiderman extends Kit implements Listener {
 
     public Spiderman() {//
-        super("spiderman", "unkit.spiderman", Difficulty.LOW, Rarity.COMMON, new Icon(Material.WEB), 1000L);
+        super("spiderman", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.WEB), 1000L);
     }
 
     @Override

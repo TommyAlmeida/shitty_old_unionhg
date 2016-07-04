@@ -26,7 +26,7 @@ public class Thor extends Kit implements Listener {
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
     public Thor() {//
-        super("thor", "unkit.thor", Difficulty.LOW, Rarity.RARE, new Icon(Material.GOLD_AXE), 1000L);
+        super("thor", false, Difficulty.LOW, Rarity.RARE, new Icon(Material.GOLD_AXE), 1000L);
     }
 
     @Override

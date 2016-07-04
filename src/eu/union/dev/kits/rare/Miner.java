@@ -20,7 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class Miner extends Kit implements Listener{
 
     public Miner() {
-        super("miner", "unkit.miner", Difficulty.LOW, Rarity.RARE, new Icon(Material.STONE_PICKAXE), 1000);
+        super("miner", false, Difficulty.LOW, Rarity.RARE, new Icon(Material.STONE_PICKAXE), 1000);
     }
 
     @Override

@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Camel extends Kit implements Listener{
 
     public Camel() {
-        super("camel", "unkit.camel", Difficulty.LOW, Rarity.COMMON, new Icon(Material.SAND), 1000);
+        super("camel", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.SAND), 1000);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Random;
 public class Magma extends Kit implements Listener {
 
     public Magma() {//
-        super("magma", "unkit.magma", Difficulty.LOW, Rarity.RARE, new Icon(Material.MAGMA_CREAM), 1000L);
+        super("magma", false, Difficulty.LOW, Rarity.RARE, new Icon(Material.MAGMA_CREAM), 1000L);
     }
 
     @Override

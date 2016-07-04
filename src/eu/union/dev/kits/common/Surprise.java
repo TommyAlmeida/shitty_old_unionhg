@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 public class Surprise extends Kit{
 
     public Surprise() {//
-        super("surprise", "unkit.surprise", Difficulty.LOW, Rarity.COMMON, new Icon(Material.CAKE), 0);
+        super("surprise", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.CAKE), 0);
     }
 
     @Override

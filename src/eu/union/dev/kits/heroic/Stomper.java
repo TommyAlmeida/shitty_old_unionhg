@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class Stomper extends Kit implements Listener {
 
     public Stomper() {//
-        super("stomper", "unkit.stomper", Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.IRON_BOOTS), 1000L);
+        super("stomper", false, Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.IRON_BOOTS), 1000L);
     }
 
     @Override

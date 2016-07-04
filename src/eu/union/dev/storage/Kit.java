@@ -2,6 +2,7 @@ package eu.union.dev.storage;
 
 import eu.union.dev.api.Icon;
 import eu.union.dev.utils.Messages;
+import eu.union.dev.utils.Perms;
 import org.bukkit.entity.Player;
 
 public abstract class Kit {
@@ -14,13 +15,16 @@ public abstract class Kit {
     private Icon icon;
     private long price;
 
-    public Kit(String name, String permission, Difficulty difficulty, Rarity rarity, Icon icon, long price) {
+    public Kit(String name, boolean free, Difficulty difficulty, Rarity rarity, Icon icon, long price) {
         this.name = name;
         this.difficulty = difficulty;
         this.rarity = rarity;
-        this.permission = permission;
         this.icon = icon;
         this.price = price;
+        if (free)
+            this.permission = Perms.KIT_FREE.toString();
+        else
+            this.permission =  "unkit."+name.toLowerCase();
     }
 
     public String getName() {
@@ -85,35 +89,6 @@ public abstract class Kit {
 
         public String getColor() {
             return this.color;
-        }
-    }
-
-    public enum Category {
-        NONE(""),
-        CHANCE("Chance"),
-        JUMPER("Jumper"),
-        SPAWNER("Spawner"),
-        CHARGER("Charger"),
-        BROKEN("Broken Kit"),
-        LONG_DISTANCE("Long Distance"),
-        PROTECTED("Protected"),
-        KAMIKAZE("Kamikaze"),
-        CATCHER("Catcher"),
-        SOCIAL("Interact"),
-        TELEPORT("Teleport"),
-        FREEZE("Freeze"),
-        GRAB("Grabber"),
-        POTION("Potion"),
-        SWORDS("Swords");
-
-        String name;
-
-        Category(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
         }
     }
 

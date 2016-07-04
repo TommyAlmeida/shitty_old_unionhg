@@ -35,7 +35,7 @@ import java.util.List;
 public class Gladiator extends Kit implements Listener{
 
     public Gladiator() {
-        super("gladiator", "unkit.gladiator", Difficulty.MEDIUM, Rarity.BEAST, new Icon(Material.IRON_FENCE), 1000);
+        super("gladiator", false, Difficulty.MEDIUM, Rarity.BEAST, new Icon(Material.IRON_FENCE), 1000);
     }
 
     @Override

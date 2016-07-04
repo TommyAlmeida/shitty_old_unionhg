@@ -16,7 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class BackPacker extends Kit implements Listener{
 
     public BackPacker() {
-        super("backpacker", "unkit.backpacker", Difficulty.LOW, Rarity.HEROIC, new Icon(Material.ENDER_CHEST), 1000);
+        super("backpacker", false, Difficulty.LOW, Rarity.HEROIC, new Icon(Material.ENDER_CHEST), 1000);
     }
 
     @Override

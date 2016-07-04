@@ -25,7 +25,7 @@ public class Balestra extends Kit implements Listener {
     Ability cooldown = new Ability(1, 3, TimeUnit.SECONDS);
 
     public Balestra() {//
-        super("balestra", "unkit.balestra", Difficulty.PRO, Rarity.RARE, new Icon(Material.WOOD_PICKAXE), 1000L);
+        super("balestra", false, Difficulty.PRO, Rarity.RARE, new Icon(Material.WOOD_PICKAXE), 1000L);
     }
 
     @Override

@@ -19,7 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class LumberJack extends Kit implements Listener{
 
     public LumberJack() {
-        super("lumberjack", "unkit.lumberjack", Difficulty.LOW, Rarity.COMMON, new Icon(Material.WOOD_AXE), 1000);
+        super("lumberjack", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.WOOD_AXE), 1000);
     }
 
     @Override

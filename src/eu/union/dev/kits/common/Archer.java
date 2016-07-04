@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class Archer extends Kit{
 
     public Archer() {//
-        super("archer", Perms.KIT_FREE.toString(), Difficulty.PRO,
+        super("archer", true, Difficulty.PRO,
                 Rarity.COMMON, new Icon(Material.BOW)
                 , 1000L);
     }

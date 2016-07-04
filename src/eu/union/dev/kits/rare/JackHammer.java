@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class JackHammer extends Kit implements Listener{
 
     public JackHammer() {
-        super("jackhammer", "unkit.jackhammer", Difficulty.LOW, Rarity.RARE, new Icon(Material.STONE_AXE), 1000);
+        super("jackhammer", false, Difficulty.LOW, Rarity.RARE, new Icon(Material.STONE_AXE), 1000);
     }
 
     @Override

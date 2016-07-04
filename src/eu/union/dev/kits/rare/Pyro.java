@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class Pyro extends Kit implements Listener{
 
     public Pyro() {
-        super("pyro", "unkit.pyro", Difficulty.PRO, Rarity.RARE, new Icon(Material.FIREBALL), 1000);
+        super("pyro", false, Difficulty.PRO, Rarity.RARE, new Icon(Material.FIREBALL), 1000);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class Simba extends Kit implements Listener{
     * Created by Owen
     */
 	public Simba() {//
-		super("simba", "unkit.simba", Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.DIAMOND_HELMET), 1000L);
+		super("simba", false, Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.DIAMOND_HELMET), 1000L);
 	}
 
 	@Override

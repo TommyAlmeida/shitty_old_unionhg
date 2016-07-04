@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class Specialist extends Kit implements Listener{
 
     public Specialist() {
-        super("specialist", "unkit.specialist", Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.ENCHANTMENT_TABLE), 1000);
+        super("specialist", false, Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.ENCHANTMENT_TABLE), 1000);
     }
 
     @Override

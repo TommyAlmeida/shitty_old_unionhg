@@ -23,7 +23,7 @@ public class Hulk extends Kit implements Listener {
     Ability cooldown = new Ability(1, 30, TimeUnit.SECONDS);
 
     public Hulk() {//
-        super("hulk", "unkit.hulk", Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.SLIME_BALL), 1000L);
+        super("hulk", false, Difficulty.MEDIUM, Rarity.RARE, new Icon(Material.SLIME_BALL), 1000L);
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class CookieMonster extends Kit implements Listener{
 
     public CookieMonster() {
-        super("cookiemonster", "unkit.cookiemonster", Difficulty.LOW, Rarity.COMMON, new Icon(Material.COOKIE), 1000);
+        super("cookiemonster", false, Difficulty.LOW, Rarity.COMMON, new Icon(Material.COOKIE), 1000);
     }
 
     @Override

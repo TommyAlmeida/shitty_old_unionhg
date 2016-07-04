@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class Rain extends Kit implements Listener {
 
     public Rain() {//
-        super("rain", "unkit.rain", Difficulty.MEDIUM, Rarity.EPIC, new Icon(Material.ARROW), 800L);
+        super("rain", false, Difficulty.MEDIUM, Rarity.EPIC, new Icon(Material.ARROW), 800L);
     }
 
     @Override

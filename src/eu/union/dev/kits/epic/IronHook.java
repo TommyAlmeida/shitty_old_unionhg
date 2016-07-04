@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class IronHook extends Kit implements Listener {
 
     public IronHook() {//
-        super("ironhook", "unkit.ironhook", Difficulty.PRO, Rarity.EPIC, new Icon(Material.TRIPWIRE_HOOK), 1000L);
+        super("ironhook", false, Difficulty.PRO, Rarity.EPIC, new Icon(Material.TRIPWIRE_HOOK), 1000L);
     }
 
     @Override

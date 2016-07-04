@@ -31,7 +31,7 @@ public class Portal extends Kit implements Listener {
     HashMap<Player, Location> orange = new HashMap<>();
     Ability cooldown = new Ability(1, 3, TimeUnit.SECONDS);
     public Portal() {//
-        super("portal", "unkit.portal", Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.IRON_BARDING), 1000L);
+        super("portal", false, Difficulty.MEDIUM, Rarity.HEROIC, new Icon(Material.IRON_BARDING), 1000L);
     }
 
     @Override
