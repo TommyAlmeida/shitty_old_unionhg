@@ -9,6 +9,7 @@ import eu.union.dev.utils.Weapon;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,10 +48,10 @@ public class Thor extends Kit implements Listener {
                 loc.setY(y);
                 Block b = loc.getBlock();
                 b.getWorld().strikeLightning(b.getLocation());
-                if (b.getType() == Material.NETHERRACK){
+                if (b.getRelative(BlockFace.DOWN).getType() == Material.NETHERRACK){
                     b.getWorld().createExplosion(p.getLocation(),2.0F,false);
                 }else{
-                    b.setType(Material.NETHERRACK);
+                    b.getRelative(BlockFace.DOWN).setType(Material.NETHERRACK);
                 }
             } else {
                 Util.getInstance().sendCooldownMessage(p, cooldown, TimeUnit.SECONDS, true);
