@@ -17,7 +17,7 @@ public class ChatListener implements Listener{
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        String prefix = BungeePerms.getInstance().getPermissionsManager().getUser(e.getPlayer().getUniqueId()).getGroups().get(0).getPrefix();
+        String prefix = ChatColor.translateAlternateColorCodes('&',BungeePerms.getInstance().getPermissionsManager().getUser(e.getPlayer().getUniqueId()).getGroups().get(0).getPrefix());
         e.setCancelled(true);
         if (HGManager.getInstance().isSpec(e.getPlayer())){
             for (Player p : Bukkit.getOnlinePlayers()){

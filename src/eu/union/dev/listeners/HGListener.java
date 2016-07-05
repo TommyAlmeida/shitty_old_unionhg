@@ -71,13 +71,18 @@ public class HGListener implements Listener{
                     p.getInventory().setArmorContents(null);
                     Util.getInstance().buildSpecsIcons(p);
                     km.setPlayerKitInLobby(p,km.getKitByName("surprise"));
-                    Util.getInstance().buildScoreboard(p);
+                    if (!HGManager.getInstance().getNoScore().contains(p)){
+                        Util.getInstance().buildScoreboard(p);
+                    }
                 }else{
                     p.kickPlayer(Messages.PREFIX+" §aSorry you don't have permission for spectate!");
                 }
             }else{
                 HGManager.getInstance().addPlayersVivos(p);
                 HGManager.getInstance().removeReconect(p);
+                if (!HGManager.getInstance().getNoScore().contains(p)){
+                    Util.getInstance().buildScoreboard(p);
+                }
             }
         }
     }
@@ -86,13 +91,13 @@ public class HGListener implements Listener{
         Player p = e.getPlayer();
         e.setQuitMessage(null);
         KPlayer kplayer = PlayerManager.getPlayer(p.getUniqueId());
-        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY &&
-                !HGManager.getInstance().isSpec(p) &&
-                !HGManager.getInstance().inAdminMode(p) &&
-                HGManager.getInstance().isAlive(p)){
-            if (!HGManager.getInstance().inReconect(p)){
-                HGManager.getInstance().addReconect(p);
-                startReconect(p);
+        if (HGManager.getInstance().getStatus() != HGManager.Status.LOBBY){
+            if (HGManager.getInstance().isAlive(p) &&
+                    !HGManager.getInstance().isSpec(p) &&
+                    !HGManager.getInstance().inAdminMode(p)){
+                if (!HGManager.getInstance().inReconect(p)){
+                    startReconect(p);
+                }
             }
         }else{
             HGManager.getInstance().removePlayersVivos(p);
@@ -104,6 +109,7 @@ public class HGListener implements Listener{
         }
     }
     public void startReconect(Player p){
+        HGManager.getInstance().addReconect(p);
         new BukkitRunnable(){
             int i = 0;
             @Override
@@ -112,6 +118,7 @@ public class HGListener implements Listener{
                 for (Player ps : Bukkit.getOnlinePlayers()){
                     if (p.getName().equalsIgnoreCase(ps.getName())){
                         HGManager.getInstance().removeReconect(p);
+                        Bukkit.broadcastMessage(Messages.PREFIX+" §a"+p.getDisplayName()+" has connected in time!");
                         cancel();
                     }
                 }

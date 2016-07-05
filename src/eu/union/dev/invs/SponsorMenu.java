@@ -43,11 +43,11 @@ public class SponsorMenu implements Listener{
         for (int i = 0; i < HGManager.getInstance().getPlayersVivos().size(); i++) {
             if (players <=44 && page ==1){
                 Player pa = HGManager.getInstance().getPlayersVivos().get(i);
-                inv.setItem(slot++, createSkull(pa,"§a"+pa.getDisplayName()));
+                inv.setItem(slot++, createSkull(pa,"§a"+pa.getName()));
             }
             if (players >=45 && page ==2){
                 Player pa = HGManager.getInstance().getPlayersVivos().get(i);
-                inv.setItem(slot++, createSkull(pa,"§a"+pa.getDisplayName()));
+                inv.setItem(slot++, createSkull(pa,"§a"+pa.getName()));
             }
             players++;
         }
@@ -73,6 +73,8 @@ public class SponsorMenu implements Listener{
                     Inventory inv = Bukkit.createInventory(null,6*9,"Sponsor");
                     new SponsorMode().setItems(p,p2,inv);
                     p.openInventory(inv);
+                    e.setCancelled(true);
+                }else{
                     e.setCancelled(true);
                 }
             }
