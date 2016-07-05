@@ -49,9 +49,25 @@ public class Util {
     public void buildJoinIcons(Player player) {
         Inventory inv = player.getInventory();
         inv.clear();
+        KitManager km = KitManager.getManager();
         {
             Icon kits = new Icon(Material.CHEST, "§bKits", "§7Choose your kit");
             inv.setItem(0, kits.build());
+        }
+
+        {
+            if (km.getKitDaPartidaPlayer(player) == null){
+                Icon menu = new Icon(Material.STORAGE_MINECART, "§5Kit of match", "§7Obtain a random kit in this match");
+                inv.setItem(1, menu.build());
+            }else{
+                Icon menu = new Icon(Material.HOPPER_MINECART, "§cKit of match", "§5Kit:"+WordUtils.capitalize(km.getKitDaPartidaPlayer(player).getName()));
+                inv.setItem(1, menu.build());
+            }
+        }
+
+        {
+            Icon menu = new Icon(Material.NETHER_STAR, "§aMenu", "§7Coming soon...");
+            inv.setItem(4, menu.build());
         }
 
         {

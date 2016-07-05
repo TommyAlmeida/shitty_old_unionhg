@@ -15,8 +15,9 @@ import java.util.UUID;
 public class KitManager {
 
     public static KitManager km = new KitManager();
-    public HashMap<Player, Kit> playerKit = new HashMap<>();
+    private HashMap<UUID, Kit> playerKit = new HashMap<>();
     private HashMap<UUID, Kit> kitselector = new HashMap<>();
+    private HashMap<UUID, Kit> kitdapartida = new HashMap<>();
     List<Kit> kits = new ArrayList<>(); //Lista de Kits.
 
     /**
@@ -61,7 +62,7 @@ public class KitManager {
     }
 
     public boolean getKitAmIUsing(Player p, String name) {
-        return playerKit.containsKey(p) && playerKit.get(p).equals(getKitByName(name));
+        return playerKit.containsKey(p.getUniqueId()) && playerKit.get(p.getUniqueId()).equals(getKitByName(name));
     }
 
 
@@ -72,8 +73,8 @@ public class KitManager {
      * @return
      */
     public Kit getKitByPlayer(Player player) {
-        if (playerKit.containsKey(player))
-            return playerKit.get(player);
+        if (playerKit.containsKey(player.getUniqueId()))
+            return playerKit.get(player.getUniqueId());
         return null;
     }
 
@@ -96,7 +97,7 @@ public class KitManager {
             player.removePotionEffect(pE.getType());
         }
 
-        playerKit.remove(player);
+        playerKit.remove(player.getUniqueId());
     }
 
     /**
@@ -109,7 +110,7 @@ public class KitManager {
         readyPlayer(player);
         kit.applyKit(player);
 
-        playerKit.put(player, kit);
+        playerKit.put(player.getUniqueId(), kit);
 
         player.sendMessage(Messages.PREFIX.toString() + " §7You are using kit: §a" + kit.getName());
     }
@@ -121,13 +122,13 @@ public class KitManager {
      */
     public void removeKit(Player player) {
 
-        if (!playerKit.containsKey(player)) {
+        if (!playerKit.containsKey(player.getUniqueId())) {
             //player.sendMessage(Messages.NO_PERMA.toString());
             return;
         }
 
         readyPlayer(player);
-        playerKit.remove(player);
+        playerKit.remove(player.getUniqueId());
     }
 
     /**
@@ -150,7 +151,7 @@ public class KitManager {
      */
 
     public boolean usingKit(Player player) {
-        return playerKit.containsKey(player);
+        return playerKit.containsKey(player.getUniqueId());
     }
 
 
@@ -171,5 +172,17 @@ public class KitManager {
     }
     public void setPlayerKitInLobby(Player p , Kit kit){
         kitselector.put(p.getUniqueId(),kit);
+    }
+
+    public Kit getKitDaPartidaPlayer(Player p){
+        if (kitdapartida.containsKey(p.getUniqueId())){
+            return kitdapartida.get(p.getUniqueId());
+        }
+        return null;
+    }
+    public void addKitDaPartidaPlayer(Player p, Kit kit){
+        if (getKitDaPartidaPlayer(p)==null){
+            kitdapartida.put(p.getUniqueId(),kit);
+        }
     }
 }

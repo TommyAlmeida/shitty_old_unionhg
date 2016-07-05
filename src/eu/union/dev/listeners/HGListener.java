@@ -101,6 +101,7 @@ public class HGListener implements Listener{
             }
         }else{
             HGManager.getInstance().removePlayersVivos(p);
+            p.setLevel(0);
         }
         if (kplayer != null) {
             HG.getInstance().getSQL().updatePlayerProfileSQL(kplayer);
@@ -110,6 +111,7 @@ public class HGListener implements Listener{
     }
     public void startReconect(Player p){
         HGManager.getInstance().addReconect(p);
+        HGManager.getInstance().removePlayersVivos(p);
         new BukkitRunnable(){
             int i = 0;
             @Override
@@ -118,9 +120,13 @@ public class HGListener implements Listener{
                 for (Player ps : Bukkit.getOnlinePlayers()){
                     if (p.getName().equalsIgnoreCase(ps.getName())){
                         HGManager.getInstance().removeReconect(p);
+                        HGManager.getInstance().addPlayersVivos(p);
                         Bukkit.broadcastMessage(Messages.PREFIX+" §a"+p.getDisplayName()+" has connected in time!");
                         cancel();
                     }
+                }
+                if (!HGManager.getInstance().inReconect(p)){
+                    cancel();
                 }
                 if (i>60){
                     HGManager.getInstance().removeReconect(p);
@@ -322,6 +328,27 @@ public class HGListener implements Listener{
                 HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
                 !HGManager.getInstance().inAdminMode(p) && e.getAction() != Action.PHYSICAL){
             Bukkit.dispatchCommand(p,"kit");
+        }
+        if (p.getItemInHand().getType() == Material.STORAGE_MINECART &&
+                HGManager.getInstance().getStatus() == HGManager.Status.LOBBY &&
+                e.getAction() != Action.PHYSICAL){
+            KitManager km = KitManager.getManager();
+            List<Kit> kits = new ArrayList<>();
+            for (Kit kit : km.getKits()){
+                if (!p.hasPermission(kit.getPermission())){
+                    kits.add(kit);
+                }
+            }
+            if (kits.size() == 0){
+                p.sendMessage(Messages.PREFIX+" §4You have all Kits");
+            }else{
+                Kit kitrandom = kits.get(new Random().nextInt(kits.size()));
+                km.addKitDaPartidaPlayer(p,kitrandom);
+                p.sendMessage(Messages.PREFIX+" §bYou kit random is... "+WordUtils.capitalize(kitrandom.getName()));
+                p.setItemInHand(new Icon(Material.HOPPER_MINECART,"§cKit of match","§5Kit:"+WordUtils.capitalize(kitrandom.getName())).build());
+                p.updateInventory();
+            }
+
         }
         if (HGManager.getInstance().isSpec(p) && !HGManager.getInstance().inBuild(p)){
             e.setCancelled(true);

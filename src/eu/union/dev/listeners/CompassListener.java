@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -31,6 +32,7 @@ public class CompassListener implements Listener{
             for (Player ps : p.getWorld().getPlayers()){
                 if (!(ps.getUniqueId().equals(p.getUniqueId())) &&
                         !HGManager.getInstance().isSpec(ps) &&
+                        !HGManager.getInstance().inAdminMode(ps) &&
                         ps.getGameMode() == GameMode.SURVIVAL &&
                         ps.getLocation().distance(p.getLocation()) >=10.0){
                     players.add(ps);
@@ -48,11 +50,13 @@ public class CompassListener implements Listener{
                 p.setCompassTarget(nearest.getLocation());
             }
             p.sendMessage(Messages.PREFIX+" "+message);
-            if (HGManager.getInstance().isSpec(p) || HGManager.getInstance().inAdminMode(p)){
-                Inventory inv = Bukkit.createInventory(null,6*9,"Teleport");
-                CompassMenu compassMenu = new CompassMenu();
-                compassMenu.setItems(p,inv,1);
-                p.openInventory(inv);
+            if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
+                if (HGManager.getInstance().isSpec(p) || HGManager.getInstance().inAdminMode(p)){
+                    Inventory inv = Bukkit.createInventory(null,6*9,"Teleport");
+                    CompassMenu compassMenu = new CompassMenu();
+                    compassMenu.setItems(p,inv,1);
+                    p.openInventory(inv);
+                }
             }
         }
     }

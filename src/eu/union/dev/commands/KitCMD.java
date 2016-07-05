@@ -33,14 +33,16 @@ public class KitCMD implements CommandExecutor{
                     }
                 }else{
                     KitManager km = KitManager.getManager();
-                    String kitname = args[0];
                     if (km.getKitByName(args[0]) != null){
-                        Kit kit = km.getKitByName(args[0]);
+                        String kitname = args[0];
+                        Kit kit = km.getKitByName(kitname);
                         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                            km.setPlayerKitInLobby(p,kit);
-                            Icon icon = km.getPlayerKitInLobby(p).getIcon();
-                            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
-                            p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
+                            if (p.hasPermission(kit.getPermission()) || km.getKitDaPartidaPlayer(p).equals(kit)){
+                                km.setPlayerKitInLobby(p,kit);
+                                Icon icon = km.getPlayerKitInLobby(p).getIcon();
+                                p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+                                p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
+                            }
                         }
                     }
                 }

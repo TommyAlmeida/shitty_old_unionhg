@@ -46,7 +46,8 @@ public class KitMenu implements Listener{
             inv.setItem(0, new Icon(Material.CARPET, "§7Back Page", "§5Page §6" + backpage).build());
             int kits = 0;
             for (int i = 0; i < km.getKits().size(); i++) {
-                if (p.hasPermission(km.getKits().get(i).getPermission())) {
+                if (p.hasPermission(km.getKits().get(i).getPermission()) ||
+                        km.getKitDaPartidaPlayer(p).equals(km.getKits().get(i))) {
                     if (kits <= 44 && page == 1) {
                         Icon icon = km.getKits().get(i).getIcon();
                         inv.setItem(slot++, KitLayout.getLayout().design(icon, km.getKits().get(i)));

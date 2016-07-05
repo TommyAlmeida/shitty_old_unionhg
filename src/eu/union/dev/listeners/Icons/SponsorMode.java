@@ -90,9 +90,9 @@ public class SponsorMode implements Listener {
             if (i<=8){
                 inv.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE));
             }else{
-                if (i-8 <= 9){
+                /*if (i-8 <= 9){
                     inv.addItem(items[i-8]);
-                }
+                }*/
             }
         }
         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
