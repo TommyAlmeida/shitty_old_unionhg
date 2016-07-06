@@ -45,9 +45,11 @@ public class TrollMenu implements Listener{
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        ItemStack item = e.getCurrentItem();
         if (e.getInventory().getName().equalsIgnoreCase("Troll")) {
             if (e.getSlot() < 0) {
+                return;
+            }
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR){
                 return;
             }
             if (e.getSlot() >= 9 && e.getSlot() <=17){

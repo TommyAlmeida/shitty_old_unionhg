@@ -56,11 +56,14 @@ public class SponsorMenu implements Listener{
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        ItemStack item = e.getCurrentItem();
         if (e.getInventory().getName().equalsIgnoreCase("Sponsor Player")) {
             if (e.getSlot() < 0) {
                 return;
             }
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR){
+                return;
+            }
+            ItemStack item = e.getCurrentItem();
             if (e.getSlot() >= 9){
                 String ps = item.getItemMeta().getDisplayName().replace("§a", "");
                 Player p2 = null;

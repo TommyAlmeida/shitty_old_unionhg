@@ -106,13 +106,15 @@ public class SponsorMode implements Listener {
     @EventHandler
     public void onInvClick(InventoryClickEvent e){
         Player p = (Player) e.getWhoClicked();
-        ItemStack item = e.getCurrentItem();
-
-        if(e.getClickedInventory().getName() == "Sponsor"){
+        if(e.getInventory().getName().equalsIgnoreCase("Sponsor")){
             if(e.getSlot() < 0){
                 return;
             }
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR){
+                return;
+            }
             e.setCancelled(true);
+            ItemStack item = e.getCurrentItem();
             if (e.getSlot() >=9){
                 if (cooldown.tryUse(p)){
                     Player p2 = null;

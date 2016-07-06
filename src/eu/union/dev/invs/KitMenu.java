@@ -33,7 +33,7 @@ public class KitMenu implements Listener{
             sm.setOwner(p.getName());
             sm.setDisplayName("§bYour Kits");
             item.setItemMeta(sm);
-            inv.setItem(slot++, new Icon(Material.CARPET, "§7Back Page").build());
+            inv.setItem(slot++, new Icon(Material.CARPET,(byte)7, "§7Back Page").build());
             inv.setItem(slot++, createItem(Material.STAINED_GLASS_PANE, 1, (byte) 5, "§7"));
             inv.setItem(slot++, createItem(Material.STAINED_GLASS_PANE, 1, (byte) 5, "§7"));
             inv.setItem(slot++, createItem(Material.STAINED_GLASS_PANE, 1, (byte) 5, "§7"));
@@ -43,8 +43,8 @@ public class KitMenu implements Listener{
             inv.setItem(slot++, createItem(Material.STAINED_GLASS_PANE, 1, (byte) 5, "§7"));
         }
         if (type.contains("player")) {
-            inv.setItem(slot++, new Icon(Material.CARPET, "§aNext Page", "§5Page §6" + nextpage).build());
-            inv.setItem(0, new Icon(Material.CARPET, "§7Back Page", "§5Page §6" + backpage).build());
+            inv.setItem(slot++, new Icon(Material.CARPET,(byte)5, "§aNext Page", "§5Page §6" + nextpage).build());
+            inv.setItem(0, new Icon(Material.CARPET,(byte)7, "§7Back Page", "§5Page §6" + backpage).build());
             int kits = 0;
             for (int i = 0; i < km.getKits().size(); i++) {
                 if (p.hasPermission(km.getKits().get(i).getPermission()) ||
@@ -63,8 +63,61 @@ public class KitMenu implements Listener{
             }
         }
     }
-
     @EventHandler
+    public void onClickInv(InventoryClickEvent e){
+        Player p = (Player) e.getWhoClicked();
+        if (e.getInventory().getName().equalsIgnoreCase("Kits")){
+            if (e.getSlot() < 0) {
+                return;
+            }
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR){
+                return;
+            }
+            ItemStack item = e.getCurrentItem();
+            if (e.getSlot() >= 9 && e.getSlot() <= 6*9){
+                if (item.hasItemMeta()){
+                    String kit = item.getItemMeta().getDisplayName()
+                            .replaceAll("§7Kit » ", "")
+                            .replaceAll("§7", "")
+                            .replaceAll("§b", "")
+                            .replaceAll("§d", "")
+                            .replaceAll("§6", "")
+                            .replaceAll("§5", "");
+                    if (KitManager.getManager().getKitByName(kit) != null){
+                        offerKit(p, kit);
+                        e.getView().close();
+                        e.setCancelled(true);
+                    }
+                }
+            }
+            if (e.getSlot() == 0){
+                if (item.hasItemMeta() && item.getItemMeta().hasLore()){
+                    String nome = item.getItemMeta().getLore().get(0);
+                    if (nome.contains("§5Page §6")){
+                        int page = Integer.parseInt(nome.replace("§5Page §6", ""));
+                        if (page >= 1){
+                            setItems(p,e.getClickedInventory(),"player",page);
+                        }
+                    }
+                }
+            }
+            if (e.getSlot() == 8){
+                if (item.hasItemMeta() && item.getItemMeta().hasLore()){
+                    String name = item.getItemMeta().getLore().get(0);
+                    if (name.contains("§5Page §6")){
+                        int page = Integer.parseInt(name.replace("§5Page §6", ""));
+                        if (page <= 2){
+                            setItems(p,e.getClickedInventory(),"player",page);
+                        }
+                    }
+                }
+            }
+            if (e.getSlot() <= 8){
+                e.setCancelled(true);
+            }
+        }
+    }
+    /*@EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         ItemStack item = e.getCurrentItem();
@@ -102,7 +155,7 @@ public class KitMenu implements Listener{
                 e.setCancelled(true);
             }
         }
-    }
+    }*/
 
     public void offerKit(Player p, String kit) {
         p.chat("/kit %kit".replace("%kit", kit.trim()));
