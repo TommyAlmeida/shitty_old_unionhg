@@ -581,5 +581,6 @@ public class HGListener implements Listener{
     @EventHandler
     public void onDungeonSpawn(HGDungeonSpawnEvent e){
         HGManager.getInstance().scc.createStrucure();
+        Bukkit.broadcastMessage(Messages.PREFIX+" §cDungeon has spawned in §cX:"+e.getLocation().getX()+"§a, §cZ:"+e.getLocation().getZ()+"§a!");
     }
 }
