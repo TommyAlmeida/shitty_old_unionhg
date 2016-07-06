@@ -57,12 +57,17 @@ public class Util {
 
         {
             if (km.getKitDaPartidaPlayer(player) == null){
-                Icon menu = new Icon(Material.STORAGE_MINECART, "§5Kit of match", "§7Obtain a random kit in this match");
-                inv.setItem(1, menu.build());
+                Icon kitm = new Icon(Material.STORAGE_MINECART, "§5Kit of match", "§7Obtain a random kit in this match");
+                inv.setItem(7, kitm.build());
             }else{
-                Icon menu = new Icon(Material.HOPPER_MINECART, "§cKit of match", "§5Kit:"+WordUtils.capitalize(km.getKitDaPartidaPlayer(player).getName()));
-                inv.setItem(1, menu.build());
+                Icon kitm = new Icon(Material.HOPPER_MINECART, "§cKit of match", "§5Kit:"+WordUtils.capitalize(km.getKitDaPartidaPlayer(player).getName()));
+                inv.setItem(7, kitm.build());
             }
+        }
+
+        {
+            Icon kang = new Icon(Material.FIREWORK, "§dJump!");
+            inv.setItem(8, kang.build());
         }
 
         {

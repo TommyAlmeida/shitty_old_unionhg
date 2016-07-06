@@ -1,6 +1,7 @@
 package eu.union.dev.kits.heroic;
 
 import eu.union.dev.HG;
+import eu.union.dev.HGManager;
 import eu.union.dev.KitManager;
 import eu.union.dev.api.Icon;
 import eu.union.dev.storage.Kit;
@@ -43,7 +44,8 @@ public class Kangaroo extends Kit implements Listener {
         Player p = e.getPlayer();
         KitManager km = KitManager.getManager();
         if (p.getItemInHand().getType() == Material.FIREWORK) {
-            if (km.getKitAmIUsing(p, "kangaroo")) {
+            if (km.getKitAmIUsing(p, "kangaroo") ||
+                    HGManager.getInstance().getStatus() == HGManager.Status.LOBBY) {
                 e.setCancelled(true);
                 Vector v = p.getEyeLocation().getDirection();
                 if (!cd.contains(p.getName())) {

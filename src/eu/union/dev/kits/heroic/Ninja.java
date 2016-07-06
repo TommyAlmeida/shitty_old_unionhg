@@ -24,7 +24,7 @@ public class Ninja extends Kit implements Listener {
     Ability cooldown = new Ability(1, 15, TimeUnit.SECONDS);
 
     public Ninja() {//
-        super("ninja", false, Difficulty.LOW, Rarity.HEROIC, new Icon(Material.COAL_BLOCK), 1000L);
+        super("ninja", true, Difficulty.LOW, Rarity.HEROIC, new Icon(Material.COAL_BLOCK), 1000L);
     }
 
     @Override

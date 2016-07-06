@@ -37,10 +37,12 @@ public class KitCMD implements CommandExecutor{
                         String kitname = args[0];
                         Kit kit = km.getKitByName(kitname);
                         if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
-                            if (p.hasPermission(kit.getPermission()) || km.getKitDaPartidaPlayer(p).equals(kit)){
+                            if (p.hasPermission(kit.getPermission()) ||
+                                    km.getKitDaPartidaPlayer(p).equals(kit) ||
+                                    kit.getPermission().equalsIgnoreCase(Perms.KIT_FREE.toString())){
                                 km.setPlayerKitInLobby(p,kit);
                                 Icon icon = km.getPlayerKitInLobby(p).getIcon();
-                                p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+                                p.getInventory().setItem(1, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
                                 p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
                             }
                         }

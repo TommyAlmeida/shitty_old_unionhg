@@ -4,6 +4,7 @@ import eu.union.dev.KitManager;
 import eu.union.dev.api.Icon;
 import eu.union.dev.storage.Kit;
 import eu.union.dev.utils.KitLayout;
+import eu.union.dev.utils.Perms;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,7 +48,8 @@ public class KitMenu implements Listener{
             int kits = 0;
             for (int i = 0; i < km.getKits().size(); i++) {
                 if (p.hasPermission(km.getKits().get(i).getPermission()) ||
-                        km.getKitDaPartidaPlayer(p).equals(km.getKits().get(i))) {
+                        km.getKitDaPartidaPlayer(p).equals(km.getKits().get(i)) ||
+                        km.getKits().get(i).getPermission().equalsIgnoreCase(Perms.KIT_FREE.toString())) {
                     if (kits <= 44 && page == 1) {
                         Icon icon = km.getKits().get(i).getIcon();
                         inv.setItem(slot++, KitLayout.getLayout().design(icon, km.getKits().get(i)));

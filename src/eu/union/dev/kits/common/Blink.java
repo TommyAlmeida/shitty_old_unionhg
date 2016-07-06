@@ -27,7 +27,7 @@ import java.util.HashSet;
 public class Blink extends Kit implements Listener{
 
     public Blink() {//
-        super("blink", false, Difficulty.LOW, Rarity.COMMON,new Icon(Material.NETHER_STAR), 1000L);
+        super("blink", true, Difficulty.LOW, Rarity.COMMON,new Icon(Material.NETHER_STAR), 1000L);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class HGListener implements Listener{
             Util.getInstance().buildJoinIcons(p);
             Util.getInstance().buildScoreboard(p);
             Icon icon = km.getPlayerKitInLobby(p).getIcon();
-            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+            p.getInventory().setItem(1, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
             //p.teleport(new Location(p.getWorld(),0.5,160,0.5));
             HGManager.getInstance().addPlayersVivos(p);
         }else{
@@ -277,7 +277,8 @@ public class HGListener implements Listener{
     }
     @EventHandler
     public void onDrop(PlayerDropItemEvent e){
-        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY || HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
+        if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY ||
+                HGManager.getInstance().getStatus() == HGManager.Status.ENDGAME){
             e.setCancelled(true);
         }else{
             if (e.getItemDrop().getItemStack().hasItemMeta()){
