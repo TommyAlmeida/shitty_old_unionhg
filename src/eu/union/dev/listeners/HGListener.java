@@ -566,4 +566,20 @@ public class HGListener implements Listener{
             e.setMotd("§4Restarting");
         }
     }
+    @EventHandler
+    public void onGuardianDeath(EntityDeathEvent e){
+        if (e.getEntity() instanceof Zombie){
+            if (HGManager.getInstance().getDungeonGuardian() != null){
+                if (e.getEntity().getUniqueId().equals(HGManager.getInstance().getDungeonGuardian())){
+                    HGManager.getInstance().scd.addChestDungeon();
+                    e.getDrops().clear();
+                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(),Sound.ENDERDRAGON_DEATH,1,1);
+                }
+            }
+        }
+    }
+    @EventHandler
+    public void onDungeonSpawn(HGDungeonSpawnEvent e){
+        HGManager.getInstance().scc.createStrucure();
+    }
 }

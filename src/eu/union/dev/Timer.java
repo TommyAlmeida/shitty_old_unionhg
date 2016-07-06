@@ -38,6 +38,7 @@ public class Timer {
         int timestart = 5;
         int invencibilidade = 2;
         int minifeast1 = 5;
+        int dungeon = 7;
         int minifeast2 = 10;
         int minifeast3 = 15;
         int feastspawn = 20;
@@ -95,6 +96,9 @@ public class Timer {
                 if (time == invencibilidade*60 && HGManager.getInstance().getStatus() == HGManager.Status.INVINCIBILITY){//remove inven
                     HGManager.getInstance().setStatus(HGManager.Status.POS_INVINCIBILITY);
                     Bukkit.getPluginManager().callEvent(new HGEndInvencibleEvent());
+                }
+                if (time == dungeon*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
+                    Bukkit.getPluginManager().callEvent(new HGDungeonSpawnEvent(HGManager.getInstance().getDungeonLoc()));
                 }
                 if (time == minifeast1*60 && HGManager.getInstance().getStatus() == HGManager.Status.POS_INVINCIBILITY){
                     Bukkit.getPluginManager().callEvent(new HGMiniFeastSpawnEvent(HGManager.getInstance().getMiniFeastLoc(1),1));

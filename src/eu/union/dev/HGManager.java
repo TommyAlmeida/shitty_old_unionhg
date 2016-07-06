@@ -17,7 +17,7 @@ public class HGManager {
         return instance;
     }
     private Status status;
-    Location feast,minifeast1,minifeast2,minifeast3,coliseu,deathmatch = null;
+    Location feast,minifeast1,minifeast2,minifeast3,coliseu,deathmatch,dungeon = null;
     int bordsize = 600;//480
     int camadalimite = 135;
     int minplayers = 5;
@@ -29,6 +29,7 @@ public class HGManager {
     private ArrayList<UUID> nodamage = new ArrayList<>();
     private ArrayList<String> reconect = new ArrayList<>();
     private ArrayList<UUID> admin = new ArrayList<>();
+    private UUID dungeonguardian=null;
     public enum Status {
         LOBBY("Lobby"),
         INVINCIBILITY("Invencibility"),
@@ -61,7 +62,7 @@ public class HGManager {
     public void setStatus(Status status) {
         this.status = status;
     }
-    public StructureCreator scc;
+    public StructureCreator scc,scd;
     public void setup(){
         coliseu = new Location(Bukkit.getWorlds().get(0),0,150,0);
         feast = RandomLocation(150);
@@ -69,8 +70,10 @@ public class HGManager {
         minifeast2 = RandomLocation(500);
         minifeast3 = RandomLocation(500);
         deathmatch = new Location(feast.getWorld(),feast.getX(),110,feast.getZ());
+        dungeon = RandomLocation(500);
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
+        scd = new StructureCreator(coliseu, StructureCreator.Structure.DUNGEON);
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
     }
     public Location RandomLocation(int raio)
@@ -95,6 +98,8 @@ public class HGManager {
     }
 
     public Location getDeathMatchLoc() { return deathmatch;}
+
+    public Location getDungeonLoc() { return dungeon; }
 
     public Location getMiniFeastLoc(int n) {
         if (n == 1){
@@ -236,5 +241,9 @@ public class HGManager {
 
     public int getMinPlayers() {
         return minplayers;
+    }
+
+    public UUID getDungeonGuardian() {
+        return dungeonguardian;
     }
 }

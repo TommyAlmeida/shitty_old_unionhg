@@ -3,6 +3,7 @@ package eu.union.dev.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import eu.union.dev.HG;
 import eu.union.dev.chests.ChestItems;
@@ -10,10 +11,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by Fentis on 08/06/2016.
@@ -31,6 +36,7 @@ public class StructureCreator implements Listener{
         COLISEU("Coliseu"),
         CAKE("Cake"),
         MINIFEAST("MiniFeast"),
+        DUNGEON("Dungeon"),
         FEAST("Feast"),
         FEASTBASE("FeastBase"),
         DEATHMATCH("DeathMatch");
@@ -113,27 +119,50 @@ public class StructureCreator implements Listener{
                     this.blocks.add(loccenter.getBlock().getLocation().add(x,y,z).getBlock());
                 }
             }
+            if (type == Structure.DUNGEON){
+                Block b = loccenter.getBlock().getLocation().add(x, y, z).getBlock();
+                if (m == Material.BEDROCK){
+                    Zombie a = (Zombie)b.getWorld().spawnEntity(b.getLocation().add(0.5,1,0.5), EntityType.ZOMBIE);
+                    a.setCustomName("§a§lGuardian");
+                    a.setCustomNameVisible(true);
+                    a.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    a.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+                    a.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+                    a.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+                    a.getEquipment().setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+                    locg = b.getLocation().add(0.5,1,0.5);
+                }
+                if (m == Material.MOB_SPAWNER){
+                    addMobspawner(b);
+                }
+            }
         }
     }
-    public boolean addholo = true;
-    public void addHolo(){
-        for (Block b : blocks){
-            /*if (addholo){
-                if (b.getType() == Material.GOLD_BLOCK){
-                    b.setType(Material.AIR);
-                     holoj = new (b.getLocation().add(0.5,1,0.5),0.0,"- - - - - - - -",
-                            "§6Jump here",
-                            "- - - - - - - -");
-                    holoj.spawn();
-                }
-                if (b.getType() == Material.ENDER_CHEST){
-                     holoc = new (b.getLocation().add(0.5,1,0.5),-0.8,"§f§lUnion Crates");
-                    holoc.spawn();
-                }
-            }*/
+    Location locg = null;
+    public void addChestDungeon(){
+        if (locg != null){
+            locg.getBlock().setType(Material.CHEST);
+            Chest chest = (Chest)locg.getBlock().getState();
+            ChestItems items = new ChestItems(ChestItems.ChestType.FEAST);
+            items.fillChest(chest.getInventory());
         }
-        addholo = false;
     }
+    public void addMobspawner(Block b){
+        List<EntityType> list = new ArrayList<>();
+        list.add(EntityType.BLAZE);
+        list.add(EntityType.ZOMBIE);
+        list.add(EntityType.MAGMA_CUBE);
+        list.add(EntityType.SKELETON);
+        list.add(EntityType.WITCH);
+        list.add(EntityType.CREEPER);
+        list.add(EntityType.SPIDER);
+        list.add(EntityType.CAVE_SPIDER);
+        list.add(EntityType.ENDERMAN);
+        list.add(EntityType.SILVERFISH);
+        CreatureSpawner s = (CreatureSpawner) b.getState();
+        s.setSpawnedType(list.get(new Random().nextInt(list.size())));
+    }
+
     public void removePistons(){
         if (type == Structure.COLISEU){
             for (Block b : piston){
