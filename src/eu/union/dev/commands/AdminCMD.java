@@ -41,7 +41,7 @@ public class AdminCMD implements CommandExecutor{
                             Util.getInstance().buildJoinIcons(p);
                             KitManager km = KitManager.getManager();
                             Icon icon = km.getPlayerKitInLobby(p).getIcon();
-                            p.getInventory().setItem(8, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+                            p.getInventory().setItem(1, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
                             for (Player pl : Bukkit.getOnlinePlayers()){
                                 pl.showPlayer(p);
                             }
