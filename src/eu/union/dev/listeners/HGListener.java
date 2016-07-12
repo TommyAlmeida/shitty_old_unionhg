@@ -222,13 +222,9 @@ public class HGListener implements Listener{
         Bukkit.broadcastMessage(Messages.PREFIX+" §cNo winners! Opening next match!");
         for (Player p : Bukkit.getOnlinePlayers()){
             p.kickPlayer(Messages.PREFIX+" §cNo winners! Opening next match!");
+            Util.getInstance().sendToServer("hub", p);
         }
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(HG.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.shutdown();
-            }
-        },20);
+
     }
     @EventHandler
     public void onDamage(EntityDamageEvent e){

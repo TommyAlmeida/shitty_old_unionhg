@@ -1,12 +1,19 @@
 package eu.union.dev.utils;
 
 
-import eu.union.dev.*;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import eu.union.dev.HG;
+import eu.union.dev.HGManager;
+import eu.union.dev.KitManager;
+import eu.union.dev.Timer;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -366,5 +373,12 @@ public class Util {
         list.add(Color.WHITE);
         list.add(Color.YELLOW);
         return list;
+    }
+
+    public void sendToServer(String server, Player p){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(server);
+        p.sendPluginMessage(HG.getInstance(), "BungeeCord", out.toByteArray());
     }
 }
