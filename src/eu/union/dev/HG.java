@@ -82,6 +82,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("clearchat").setExecutor(new ClearChatCMD());
         getCommand("inv").setExecutor(new InvCMD());
         getCommand("tp").setExecutor(new TpCMD());
+        getCommand("nokit").setExecutor(new NoKitCMD());
 
         borda();
         registerKits();

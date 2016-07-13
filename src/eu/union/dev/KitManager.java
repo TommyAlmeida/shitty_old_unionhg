@@ -19,6 +19,7 @@ public class KitManager {
     private HashMap<UUID, Kit> kitselector = new HashMap<>();
     private HashMap<UUID, Kit> kitdapartida = new HashMap<>();
     List<Kit> kits = new ArrayList<>(); //Lista de Kits.
+    List<Kit> disable = new ArrayList<>();
 
     /**
      * Método que sempre retornará o mesmo KitManager.
@@ -183,6 +184,27 @@ public class KitManager {
     public void addKitDaPartidaPlayer(Player p, Kit kit){
         if (getKitDaPartidaPlayer(p)==null){
             kitdapartida.put(p.getUniqueId(),kit);
+        }
+    }
+    public List<Kit> getKitsDisable(){
+        return disable;
+    }
+    public boolean isKitDisable(Kit kit){
+        for (Kit k : disable){
+            if (k.getName().equalsIgnoreCase(kit.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+    public void addKitDisable(Kit kit){
+        if (!isKitDisable(kit)){
+            disable.add(kit);
+        }
+    }
+    public void removeKitDisable(Kit kit){
+        if (isKitDisable(kit)){
+            disable.remove(kit);
         }
     }
 }

@@ -40,10 +40,14 @@ public class KitCMD implements CommandExecutor{
                             if (p.hasPermission(kit.getPermission()) ||
                                     km.getKitDaPartidaPlayer(p).equals(kit) ||
                                     kit.getPermission().equalsIgnoreCase(Perms.KIT_FREE.toString())){
-                                km.setPlayerKitInLobby(p,kit);
-                                Icon icon = km.getPlayerKitInLobby(p).getIcon();
-                                p.getInventory().setItem(1, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
-                                p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
+                                if (!km.isKitDisable(kit)){
+                                    km.setPlayerKitInLobby(p,kit);
+                                    Icon icon = km.getPlayerKitInLobby(p).getIcon();
+                                    p.getInventory().setItem(1, KitLayout.getLayout().design(icon, km.getPlayerKitInLobby(p)));
+                                    p.sendMessage(Messages.PREFIX+" §aYou selected kit §a"+kit.getName());
+                                }else{
+                                    p.sendMessage(Messages.PREFIX+" §cThis kit is disabled");
+                                }
                             }
                         }
                     }

@@ -152,7 +152,9 @@ public class HGListener implements Listener{
                 List<Kit> kits = new ArrayList<>();
                 for (Kit kit : km.getKits()){
                     if (!kit.getName().equalsIgnoreCase("Surprise")){
-                        kits.add(kit);
+                        if (!km.isKitDisable(kit)){
+                            kits.add(kit);
+                        }
                     }
                 }
                 Kit kit = kits.get(new Random().nextInt(kits.size()));
@@ -221,10 +223,9 @@ public class HGListener implements Listener{
     public void onEnd(HGEndEvent e){
         Bukkit.broadcastMessage(Messages.PREFIX+" §cNo winners! Opening next match!");
         for (Player p : Bukkit.getOnlinePlayers()){
-            p.kickPlayer(Messages.PREFIX+" §cNo winners! Opening next match!");
+            p.sendMessage(Messages.PREFIX+" §cNo winners! Opening next match!");
             Util.getInstance().sendToServer("hub", p);
         }
-
     }
     @EventHandler
     public void onDamage(EntityDamageEvent e){
@@ -431,14 +432,15 @@ public class HGListener implements Listener{
                 if (p.getKiller() instanceof Player){
                     Player killer = p.getKiller();
                     String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(killer).getName());
-                    p.kickPlayer(Messages.PREFIX+" §aYou were killed by §7"+killer.getName()+"§c<"+kit+">"+"§a!");
+                    p.sendMessage(Messages.PREFIX+" §aYou were killed by §7"+killer.getName()+"§c<"+kit+">"+"§a!");
                 }else{
                     String entity = WordUtils.capitalize(p.getKiller().getType().toString().replaceAll("_"," "));
-                    p.kickPlayer(Messages.PREFIX+" §aYou were killed by §7"+entity+"§a!");
+                    p.sendMessage(Messages.PREFIX+" §aYou were killed by §7"+entity+"§a!");
                 }
             }else{
-                p.kickPlayer(Messages.PREFIX+" §aYou died! Try again!");
+                p.sendMessage(Messages.PREFIX+" §aYou died! Try again!");
             }
+            Util.getInstance().sendToServer("hub",p);
         }
     }
 

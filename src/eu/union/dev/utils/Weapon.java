@@ -87,34 +87,60 @@ public enum Weapon {
 
     public static void giveWeapon(Player p, Weapon weapon) {
         ItemStack item = Weapon.makeWeapon(weapon);
-        p.getInventory().setItem(0, item);
+        if (p.getInventory().firstEmpty() == -1){
+            deleteSoup(p);
+        }
+        p.getInventory().addItem(item);
     }
 
     public static void addWeapon(Player p, Weapon weapon) {
         ItemStack item = Weapon.makeWeapon(weapon);
+        if (p.getInventory().firstEmpty() == -1){
+            deleteSoup(p);
+        }
         p.getInventory().addItem(item);
     }
 
     public static void giveWeapon(Player p, Weapon weapon, int slot) {
         ItemStack item = Weapon.makeWeapon(weapon);
-        p.getInventory().setItem(slot, item);
+        if (p.getInventory().firstEmpty() == -1){
+            deleteSoup(p);
+        }
+        p.getInventory().addItem(item);
     }
 
     public static void giveWeapon(Player p, Weapon weapon, int slot, Enchantment enchant, int level) {
         ItemStack item = Weapon.makeWeapon(weapon);
-        p.getInventory().setItem(slot, item);
-        p.getInventory().getItem(slot).addEnchantment(enchant, level);
+        item.addEnchantment(enchant, level);
+        if (p.getInventory().firstEmpty() == -1){
+            deleteSoup(p);
+        }
+        p.getInventory().addItem(item);
     }
 
     public static void giveWeapon(Player p, Weapon weapon, Enchantment enchant, int level) {
         ItemStack item = Weapon.makeWeapon(weapon);
-        p.getInventory().setItem(0, item);
-        p.getInventory().getItem(0).addEnchantment(enchant, level);
+        item.addEnchantment(enchant,level);
+        if (p.getInventory().firstEmpty() == -1){
+            deleteSoup(p);
+        }
+        p.getInventory().addItem(item);
     }
 
     public String getName() {
         return this.name;
     }
 
-
+    private static void deleteSoup(Player p){
+        boolean s = true;
+        for (int i = 0; i < p.getInventory().getSize(); i++) {
+            if (p.getInventory().getItem(i) != null){
+                if (p.getInventory().getItem(i).getType() == Material.MUSHROOM_SOUP && s){
+                    s = false;
+                    p.getInventory().getItem(i).setType(Material.AIR);
+                    p.getInventory().setItem(i,new ItemStack(Material.AIR));
+                }
+            }
+        }
+    }
 }
