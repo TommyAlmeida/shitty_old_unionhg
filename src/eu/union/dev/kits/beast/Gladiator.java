@@ -22,6 +22,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,11 +46,9 @@ public class Gladiator extends Kit implements Listener{
 
     HashMap<String, Location> oldl = new HashMap<>();
     HashMap<String, String> fighting = new HashMap<>();
-    HashMap<Integer, ArrayList<Location>> blocks = new HashMap<>();
     HashMap<Player, Location> localizacao = new HashMap<>();
     HashMap<Location, Block> bloco = new HashMap<>();
     HashMap<Integer, String[]> players = new HashMap<>();
-    HashMap<String, Integer> tasks = new HashMap<>();
     ArrayList<String> gladgladiator = new ArrayList<>();
     int nextID = 0;
     int id1;
@@ -298,6 +297,11 @@ public class Gladiator extends Kit implements Listener{
             Location old = oldl.get(p.getName());
             k.teleport(old);
             k.sendMessage(Messages.PREFIX+" §aYou killed §7" + p.getDisplayName() + "§a!");
+            List<ItemStack> items = e.getDrops();
+            for (int i = 0; i < items.size(); i++) {
+                k.getWorld().dropItemNaturally(p.getLocation(),items.get(i));
+            }
+            e.getDrops().clear();
             Bukkit.getScheduler().cancelTask(id1);
             Bukkit.getScheduler().cancelTask(id2);
             k.removePotionEffect(PotionEffectType.WITHER);

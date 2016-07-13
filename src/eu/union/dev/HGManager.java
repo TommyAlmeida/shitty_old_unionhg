@@ -73,7 +73,7 @@ public class HGManager {
         dungeon = RandomLocation(500);
         scc = new StructureCreator(coliseu, StructureCreator.Structure.COLISEU);
         scc.createStrucure();
-        scd = new StructureCreator(coliseu, StructureCreator.Structure.DUNGEON);
+        scd = new StructureCreator(dungeon, StructureCreator.Structure.DUNGEON);
         Bukkit.getWorlds().get(0).setSpawnLocation(0,155,0);
     }
     public Location RandomLocation(int raio)

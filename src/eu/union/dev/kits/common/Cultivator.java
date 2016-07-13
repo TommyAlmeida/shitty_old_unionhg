@@ -35,10 +35,11 @@ public class Cultivator extends Kit implements Listener{
         KitManager km = KitManager.getManager();
         if (km.getKitAmIUsing(p,"cultivator")) {
             if (b.getType() == Material.SAPLING) {
+                byte data = b.getData();
+                b.setType(Material.AIR);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(HG.getInstance(), new Runnable() {
                     @Override
                     public void run() {
-                        byte data = b.getData();
                         switch (data){
                             case (byte)0:
                                 b.getWorld().generateTree(b.getLocation(),TreeType.TREE);
@@ -53,12 +54,9 @@ public class Cultivator extends Kit implements Listener{
                                 b.getWorld().generateTree(b.getLocation(),TreeType.SMALL_JUNGLE);
                                 break;
                             case (byte)4:
-                                b.getWorld().generateTree(b.getLocation(),TreeType.REDWOOD);
-                                break;
-                            case (byte)5:
                                 b.getWorld().generateTree(b.getLocation(),TreeType.ACACIA);
                                 break;
-                            case (byte)6:
+                            case (byte)5:
                                 b.getWorld().generateTree(b.getLocation(),TreeType.DARK_OAK);
                                 break;
                             default:

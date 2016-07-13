@@ -3,6 +3,8 @@ package eu.union.dev.listeners;
 import eu.union.dev.HGManager;
 import eu.union.dev.utils.Perms;
 import net.alpenblock.bungeeperms.BungeePerms;
+import net.alpenblock.bungeeperms.Group;
+import net.alpenblock.bungeeperms.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,7 +19,9 @@ public class ChatListener implements Listener{
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        String prefix = ChatColor.translateAlternateColorCodes('&',BungeePerms.getInstance().getPermissionsManager().getUser(e.getPlayer().getUniqueId()).getGroups().get(0).getPrefix());
+        User user = BungeePerms.getInstance().getPermissionsManager().getUser(e.getPlayer().getName());
+        Group group = BungeePerms.getInstance().getPermissionsManager().getMainGroup(user);
+        String prefix = ChatColor.translateAlternateColorCodes('&',group.getPrefix())+"§7";
         e.setCancelled(true);
         if (HGManager.getInstance().isSpec(e.getPlayer())){
             for (Player p : Bukkit.getOnlinePlayers()){
