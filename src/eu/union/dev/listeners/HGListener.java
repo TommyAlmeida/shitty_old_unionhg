@@ -209,7 +209,8 @@ public class HGListener implements Listener{
                 Util.getInstance().fireworksRandom(p);
                 if (i>=20){
                     for (Player ps: Bukkit.getOnlinePlayers()){
-                        ps.kickPlayer(Messages.PREFIX+" §aThe "+p.getDisplayName()+" won the game! Good game!");
+                        ps.sendMessage(Messages.PREFIX+" §aThe "+p.getDisplayName()+" won the game! Good game!");
+                        Util.getInstance().sendToServer("hub", ps);
                     }
                 }
                 if (i>=22){
