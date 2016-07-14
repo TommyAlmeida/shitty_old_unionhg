@@ -65,6 +65,7 @@ public class HG extends JavaPlugin implements Listener{
         pm.registerEvents(new TrollMenu(),this);
         pm.registerEvents(new SponsorMenu(),this);
         pm.registerEvents(new SponsorMode(),this);
+        pm.registerEvents(new PvPCMD(), this);
         getCommand("kit").setExecutor(new KitCMD());
         getCommand("feast").setExecutor(new FeastCMD());
         getCommand("start").setExecutor(new StartCMD());
