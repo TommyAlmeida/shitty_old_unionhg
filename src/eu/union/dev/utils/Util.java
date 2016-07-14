@@ -261,65 +261,80 @@ public class Util {
     public void sendMessageOfDeath(Player killer, Player killed, EntityDamageEvent.DamageCause damage){
         KitManager km = KitManager.getManager();
         String kit = WordUtils.capitalize(km.getPlayerKitInLobby(killed).getName());
-        if ((killer == null)) {
-            if (damage == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
-                    damage == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {//explosão
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" +"§c has died by explosion");
-            }
-            if (damage == EntityDamageEvent.DamageCause.LAVA) {//lava
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by lava");
-            }
-            if (damage == EntityDamageEvent.DamageCause.FALL) {//queda
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c thought it was a bird and died");
-            }
-            if (damage == EntityDamageEvent.DamageCause.FIRE ||
-                    damage == EntityDamageEvent.DamageCause.FIRE_TICK) {//fogo
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by fire");
-            }
-            if (damage == EntityDamageEvent.DamageCause.MAGIC) {//magica
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by magic");
-            }
-            if (damage == EntityDamageEvent.DamageCause.DROWNING) {//falta de ar
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c thought it was a fish and died");
-            }
-            if (damage == EntityDamageEvent.DamageCause.WITHER) {//whiter potion
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by wither");
-            }
-            if (damage == EntityDamageEvent.DamageCause.POISON) {//veneno
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by poison");
-            }
-            if (damage == EntityDamageEvent.DamageCause.FALLING_BLOCK) {//bloco (bigorna)
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by falling block");
-            }
-            if (damage == EntityDamageEvent.DamageCause.LIGHTNING) {//raio
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by lightning");
-            }
-            if (damage == EntityDamageEvent.DamageCause.PROJECTILE) {//projetil
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by projectile");
-            }
-            if (damage == EntityDamageEvent.DamageCause.VOID) {//void
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by void");
-            }
-            if (damage == EntityDamageEvent.DamageCause.SUICIDE) {//se matou
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by suicide");
-            }
-            if (damage == EntityDamageEvent.DamageCause.SUFFOCATION){//sufocado
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by suffocation");
-            }
-            if (damage == EntityDamageEvent.DamageCause.STARVATION){//fome
-                Bukkit.broadcastMessage("§a" + killed.getName() +"§a<"+kit+">" + "§c has died by starvation");
-            }
-            if (damage == EntityDamageEvent.DamageCause.THORNS){//armadura de thorns
-                Bukkit.broadcastMessage("§a" + killed.getName() + "§a<"+kit+">" + "§c has died by thorns");
-            }
-            if (damage == EntityDamageEvent.DamageCause.ENTITY_ATTACK){//entidades
-                Entity en = killed.getLastDamageCause().getEntity();
-                String entidade = en.toString().toLowerCase();
-                Bukkit.broadcastMessage("§a" + killed.getName() + "§a<"+kit+">" + "§c has died by thorns");
+        String msg = "§c" + killed.getName() +"§7<§a"+kit+"§7>§a has died by ";
+        if (killer == null){
+            switch (damage){
+                case BLOCK_EXPLOSION:
+                    Bukkit.broadcastMessage(msg+"explosion of TNT");
+                    break;
+                case ENTITY_EXPLOSION:
+                    Bukkit.broadcastMessage(msg+"explosion of Creeper");
+                    break;
+                case LAVA:
+                    Bukkit.broadcastMessage(msg+"lava");
+                    break;
+                case FALL:
+                    Bukkit.broadcastMessage(msg+"fall damage");
+                    break;
+                case FIRE:
+                    Bukkit.broadcastMessage(msg+"fire");
+                    break;
+                case FIRE_TICK:
+                    Bukkit.broadcastMessage(msg+"fire");
+                    break;
+                case MAGIC:
+                    Bukkit.broadcastMessage(msg+"magic");
+                    break;
+                case DROWNING:
+                    Bukkit.broadcastMessage(msg+"drowning");
+                    break;
+                case WITHER:
+                    Bukkit.broadcastMessage(msg+"wither poison");
+                    break;
+                case POISON:
+                    Bukkit.broadcastMessage(msg+"poison");
+                    break;
+                case FALLING_BLOCK:
+                    Bukkit.broadcastMessage(msg+"falling block");
+                    break;
+                case LIGHTNING:
+                    Bukkit.broadcastMessage(msg+"lightning");
+                    break;
+                case PROJECTILE:
+                    Bukkit.broadcastMessage(msg+"projectile");
+                    break;
+                case VOID:
+                    Bukkit.broadcastMessage(msg+"void");
+                    break;
+                case SUICIDE:
+                    Bukkit.broadcastMessage(msg+"suicide");
+                    break;
+                case SUFFOCATION:
+                    Bukkit.broadcastMessage(msg+"suffocation");
+                    break;
+                case STARVATION:
+                    Bukkit.broadcastMessage(msg+"starvation");
+                    break;
+                case THORNS:
+                    Bukkit.broadcastMessage(msg+"thorns");
+                    break;
+                case ENTITY_ATTACK:
+                    Entity en = killed.getLastDamageCause().getEntity();
+                    String entidade = en.toString().toLowerCase();
+                    Bukkit.broadcastMessage(msg + entidade);
+                    break;
+                default:
+                    Bukkit.broadcastMessage(msg.replace("by ",""));
+                    break;
             }
         }else{
-            String kitk = WordUtils.capitalize(km.getPlayerKitInLobby(killer).getName());
-            Bukkit.broadcastMessage("§a" + killed.getDisplayName()+ "§a<"+kit+">" + " §chas been slained by §b" + killer.getDisplayName()+"§a<"+kitk+">");
+            if (km.getPlayerKitInLobby(killer).getName() != null){
+                String kitk = WordUtils.capitalize(km.getPlayerKitInLobby(killer).getName());
+                Bukkit.broadcastMessage("§a" + killed.getDisplayName()+ "§a<"+kit+">" + " §chas been slained by §b" + killer.getDisplayName()+"§a<"+kitk+">");
+            }else{
+                String kitk = "None";
+                Bukkit.broadcastMessage("§a" + killed.getDisplayName()+ "§a<"+kit+">" + " §chas been slained by §b" + killer.getDisplayName()+"§a<"+kitk+">");
+            }
         }
     }
 
