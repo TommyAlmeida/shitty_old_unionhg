@@ -39,15 +39,15 @@ public class NoKitCMD implements CommandExecutor{
                             if (HGManager.getInstance().getStatus() == HGManager.Status.LOBBY){
                                 Bukkit.broadcastMessage(Messages.PREFIX+" §cKit:"+kit.getName()+" is disabled! You kit is now Surprise!");
                                 for (Player p2 : Bukkit.getOnlinePlayers()){
-                                    if (km.getPlayerKitInLobby(p).getName().equalsIgnoreCase(kit.getName())){
-                                        km.setPlayerKitInLobby(p,km.getKitByName("Surprise"));
+                                    if (km.getPlayerKitInLobby(p2).getName().equalsIgnoreCase(kit.getName())){
+                                        km.setPlayerKitInLobby(p2,km.getKitByName("Surprise"));
                                     }
                                 }
                             }else{
                                 Bukkit.broadcastMessage(Messages.PREFIX+" §cKit:"+kit.getName()+" is disabled! You kit is now Random!");
                                 for (Player p2 : Bukkit.getOnlinePlayers()){
-                                    if (km.getPlayerKitInLobby(p).getName().equalsIgnoreCase(kit.getName())){
-                                        km.setPlayerKitInLobby(p,km.getKitByName("Surprise"));
+                                    if (km.getPlayerKitInLobby(p2).getName().equalsIgnoreCase(kit.getName())){
+                                        km.setPlayerKitInLobby(p2,km.getKitByName("Surprise"));
                                         List<Kit> kits = new ArrayList<>();
                                         for (Kit kitss : km.getKits()){
                                             if (!kit.getName().equalsIgnoreCase("Surprise")){
@@ -57,9 +57,9 @@ public class NoKitCMD implements CommandExecutor{
                                             }
                                         }
                                         Kit newkit = kits.get(new Random().nextInt(kits.size()));
-                                        km.setPlayerKitInLobby(p,kit);
-                                        km.applyKit(p,newkit);
-                                        p.sendMessage("§aYou kit surprise is §c"+kit.getName());
+                                        km.setPlayerKitInLobby(p2,kit);
+                                        km.applyKit(p2,newkit);
+                                        p2.sendMessage("§aYou kit surprise is §c"+kit.getName());
                                     }
                                 }
                             }
