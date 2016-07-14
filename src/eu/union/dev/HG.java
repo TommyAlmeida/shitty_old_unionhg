@@ -41,6 +41,7 @@ public class HG extends JavaPlugin implements Listener{
     @Override
     public void onEnable() {
         instance = this;
+        Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         canConnect(true);
 
         HGManager hgm = HGManager.getInstance();
