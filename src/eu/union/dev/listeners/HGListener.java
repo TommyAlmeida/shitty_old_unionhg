@@ -163,7 +163,7 @@ public class HGListener implements Listener{
             }
             if (!HGManager.getInstance().inAdminMode(p)){
                 km.applyKit(p,km.getPlayerKitInLobby(p));
-                Weapon.addWeapon(p,Weapon.COMPASS);
+                Weapon.giveWeapon(p,Weapon.COMPASS);
             }
         }
         Bukkit.broadcastMessage(Messages.PREFIX+" §bThe game started! And may the odds be ever in your favor!");

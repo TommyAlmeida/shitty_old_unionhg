@@ -93,29 +93,13 @@ public enum Weapon {
         p.getInventory().addItem(item);
     }
 
-    public static void addWeapon(Player p, Weapon weapon) {
-        ItemStack item = Weapon.makeWeapon(weapon);
-        if (p.getInventory().firstEmpty() == -1){
-            deleteSoup(p);
-        }
-        p.getInventory().addItem(item);
-    }
-
     public static void giveWeapon(Player p, Weapon weapon, int slot) {
         ItemStack item = Weapon.makeWeapon(weapon);
-        if (p.getInventory().firstEmpty() == -1){
-            deleteSoup(p);
+        if (p.getInventory().getItem(slot) != null){
+            ItemStack i = p.getInventory().getItem(slot);
+            deleteSoup(p,i);
         }
-        p.getInventory().addItem(item);
-    }
-
-    public static void giveWeapon(Player p, Weapon weapon, int slot, Enchantment enchant, int level) {
-        ItemStack item = Weapon.makeWeapon(weapon);
-        item.addEnchantment(enchant, level);
-        if (p.getInventory().firstEmpty() == -1){
-            deleteSoup(p);
-        }
-        p.getInventory().addItem(item);
+        p.getInventory().setItem(slot,item);
     }
 
     public static void giveWeapon(Player p, Weapon weapon, Enchantment enchant, int level) {
@@ -139,6 +123,18 @@ public enum Weapon {
                     s = false;
                     p.getInventory().getItem(i).setType(Material.AIR);
                     p.getInventory().setItem(i,new ItemStack(Material.AIR));
+                }
+            }
+        }
+    }
+    private static void deleteSoup(Player p,ItemStack item){
+        boolean s = true;
+        for (int i = 0; i < p.getInventory().getSize(); i++) {
+            if (p.getInventory().getItem(i) != null){
+                if (p.getInventory().getItem(i).getType() == Material.MUSHROOM_SOUP && s){
+                    s = false;
+                    p.getInventory().getItem(i).setType(Material.AIR);
+                    p.getInventory().setItem(i,item);
                 }
             }
         }

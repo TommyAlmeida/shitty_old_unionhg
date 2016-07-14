@@ -32,7 +32,7 @@ public class CheckPoint extends Kit implements Listener {
     @Override
     public void applyKit(Player player) {
         Weapon.giveWeapon(player, Weapon.CHECKPOINT_FENCE);
-        Weapon.giveWeapon(player, Weapon.CHECKPOINT_POT, 1);
+        Weapon.giveWeapon(player, Weapon.CHECKPOINT_POT);
     }
 
     @SuppressWarnings("deprecation")
