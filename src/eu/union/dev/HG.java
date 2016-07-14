@@ -83,6 +83,7 @@ public class HG extends JavaPlugin implements Listener{
         getCommand("inv").setExecutor(new InvCMD());
         getCommand("tp").setExecutor(new TpCMD());
         getCommand("nokit").setExecutor(new NoKitCMD());
+        getCommand("pvp").setExecutor(new PvPCMD());
 
         borda();
         registerKits();
