@@ -10,10 +10,7 @@ import eu.union.dev.Timer;
 import eu.union.dev.api.Ability;
 import eu.union.dev.api.Icon;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -135,6 +132,7 @@ public class Util {
         stats.setDisplaySlot(DisplaySlot.SIDEBAR);
         int index = 13;
         stats.setDisplayName("     §6§lUnion-HG     ");
+        //stats.setDisplayName("§6"+csl.next());
         stats.getScore("§a").setScore(index--);
         stats.getScore("§fStage:").setScore(index--);
         stats.getScore("§1").setScore(index--);
@@ -182,6 +180,7 @@ public class Util {
 
     public void updateSocoreBoard(Player p){
         Scoreboard board = p.getScoreboard();
+        //board.getObjective(DisplaySlot.SIDEBAR).setDisplayName("§6"+csl.next());
         final Team stage = board.getTeam("stage");
         final Team timer = board.getTeam("timer");
         final Team online = board.getTeam("online");
@@ -203,7 +202,49 @@ public class Util {
         kit.setPrefix("§b"+kitt);
         kills.setPrefix("§c" + HGManager.getInstance().getKills(p));
     }
-
+    boolean color = true;
+    public String nextColor(String text){
+        String[] s = text.split(",");
+        String linha = "";
+        boolean cor = true;
+        if (!color){
+            color = false;
+            cor = false;
+        }else{
+            color = true;
+        }
+        for (int i = 0; i < s.length; i++) {
+            if (cor){
+                cor = false;
+                linha = linha+"§6"+s[i];
+            }else{
+                cor = true;
+                linha = linha+"§e"+s[i];
+            }
+        }
+        return linha;
+    }
+    //ColorScroll csl = new ColorScroll(ChatColor.GOLD,"Union-Network","§6","§c","§e",true,true,ColorScroll.ScrollType.FORWARD);
+    StringScroll csl = new StringScroll("Union-Network HG",28,1,'§');
+    public List<ChatColor> chatColorList(){
+        List<ChatColor> cores = new ArrayList<>();
+        cores.add(ChatColor.AQUA);
+        cores.add(ChatColor.BLACK);
+        cores.add(ChatColor.DARK_AQUA);
+        cores.add(ChatColor.DARK_GRAY);
+        cores.add(ChatColor.DARK_GREEN);
+        cores.add(ChatColor.DARK_PURPLE);
+        cores.add(ChatColor.DARK_BLUE);
+        cores.add(ChatColor.DARK_RED);
+        cores.add(ChatColor.GOLD);
+        cores.add(ChatColor.GRAY);
+        cores.add(ChatColor.GREEN);
+        cores.add(ChatColor.LIGHT_PURPLE);
+        cores.add(ChatColor.RED);
+        cores.add(ChatColor.YELLOW);
+        cores.add(ChatColor.WHITE);
+        return cores;
+    }
     /*public void setTab(Player p){
         String kit = WordUtils.capitalize(KitManager.getManager().getPlayerKitInLobby(p).getName());
         Packets.getAPI().setHeaderFooter(p,"§6§lUnion§f§l-§6§lHG","§cKills: §f"+HGManager.getInstance().getKills(p)+" §bKit: §f"+kit+" §aStage: §f"+getStage()+" §bTimer: §e"+Timer.getInstace().getTimerFormated()+" §7Ping: §f"+((CraftPlayer)p).getHandle().ping);
